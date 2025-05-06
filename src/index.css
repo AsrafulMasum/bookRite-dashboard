@@ -22,8 +22,10 @@
 }
 
 .ant-menu-item-selected {
-  background-color: #007ba5 !important;
-  color: #fff !important;
+  border-left: 8px solid #5B5CE2 !important;
+  background-color: transparent !important;
+  color: #757575 !important;
+  padding-left: 14px !important;
 }
 
 .ant-menu .ant-menu-item .ant-menu-item-icon + span {

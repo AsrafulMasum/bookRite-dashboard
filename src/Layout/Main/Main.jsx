@@ -17,7 +17,7 @@ const Main = () => {
           <Header />
         </div>
 
-        <div className="bg-[#F6F6F6] p-6 h-[calc(100vh-68px)]">
+        <div className="p-6 h-[calc(100vh-68px)]">
           <div className="h-full overflow-y-auto rounded-md  p-6">
             <Outlet />
           </div>

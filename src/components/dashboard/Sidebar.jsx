@@ -9,6 +9,8 @@ import { TbDatabaseDollar } from "react-icons/tb";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { BiSolidCategory } from "react-icons/bi";
+import logo from "../../assets/logo.svg";
+import Sider from "antd/es/layout/Sider";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -152,20 +154,35 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="mt-5">
-      <Link to={"/"} className=" flex items-center justify-center py-4">
-        <p className="text-4xl font-semibold font-sans tracking-wider text-primary">
-          TradCouples
-        </p>
-      </Link>
-      <Menu
-        mode="inline"
-        selectedKeys={[selectedKey]}
-        openKeys={openKeys}
-        onOpenChange={handleOpenChange}
-        style={{ borderRightColor: "transparent", background: "transparent" }}
-        items={menuItems}
-      />
+    <div className="min-h-screen">
+      <Sider
+        width="344"
+        style={{
+          overflow: "auto",
+          position: "fixed",
+          top: "30px",
+          bottom: "30px",
+          height: "auto",
+          paddingBottom: "60px",
+          overflowX: "hidden",
+          zIndex: 2,
+          borderTopRightRadius: "16px",
+          borderBottomRightRadius: "16px",
+          backgroundColor: "#E6E6FF66",
+        }}
+      >
+        <Link to={"/"} className=" flex items-center justify-center pt-[30px] pb-6">
+          <img src={logo} alt="Logo" />
+        </Link>
+        <Menu
+          mode="inline"
+          selectedKeys={[selectedKey]}
+          openKeys={openKeys}
+          onOpenChange={handleOpenChange}
+          style={{ borderRightColor: "transparent", background: "transparent" }}
+          items={menuItems}
+        />
+      </Sider>
     </div>
   );
 };
