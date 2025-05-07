@@ -61,35 +61,36 @@ const Profile = () => {
   };
 
   return (
-    <div>
+    <div className="px-52 pt-40">
       {!profileEdit ? (
         <Form form={form} className="grid grid-cols-12 gap-6" layout="vertical">
-          <div className="col-span-12  flex items-center justify-between border-b-[1px] border-[#d9d9d9d] pb-6 mb-10">
-            <div className="flex gap-5 items-center">
+          <div className="col-span-12  flex items-center justify-between pb-6 mb-10">
+            <div className="flex gap-5 items-end">
               <img
-                width={142}
-                height={142}
-                style={{ borderRadius: "8px" }}
+                width={140}
+                height={140}
+                style={{ borderRadius: "100%" }}
                 src={src}
               />
               <div>
-                <h2>{user?.firstName + " " + user?.lastName}</h2>
-                <p>{user?.email}</p>
+                <h2 className="text-2xl text-sub_title font-semibold ">{user?.firstName + " " + user?.lastName}</h2>
               </div>
             </div>
 
             <Button
               onClick={() => setProfileEdit(true)}
               style={{
-                background: "#6C57EC",
-                color: "#fff",
+                background: "#E6E6FF",
+                color: "#3536FF",
                 display: "flex",
                 alignItems: "center",
                 border: "none",
+                fontSize: "18px",
+                padding: "16px 40px 16px 40px"
               }}
             >
-              <LiaEditSolid fontSize={16} />
-              Edit
+              <LiaEditSolid fontSize={18} />
+              Edit Profile
             </Button>
           </div>
 

@@ -13,6 +13,7 @@ import users from "../../assets/users.svg";
 import dashboard from "../../assets/dashboard.svg";
 import privacy from "../../assets/privacy.svg";
 import terms from "../../assets/terms.svg";
+import subscription from "../../assets/subscription.svg";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -50,6 +51,11 @@ const Sidebar = () => {
       key: "/bookings",
       label: "Booking List",
       icon: <img src={booking} className="h-6" alt="booking icon" />,
+    },
+    {
+      key: "/subscriptions",
+      label: "Subscriptions",
+      icon: <img src={subscription} className="h-6" alt="subscription icon" />,
     },
     {
       key: "/category",

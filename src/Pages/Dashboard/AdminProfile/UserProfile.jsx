@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { Button, Form, Input } from "antd";
 import { useUser } from "../../../provider/User";
+import { FaRegEdit } from "react-icons/fa";
 
 const UserProfile = () => {
   const [form] = Form.useForm();
@@ -37,7 +37,7 @@ const UserProfile = () => {
   return (
     <div className=" lg:grid lg:grid-rows-2">
       {/* image   */}
-      <div className="col-row-1">
+      <div className="col-row-1 pt-20">
         <div
           style={{
             display: "flex",
@@ -56,11 +56,11 @@ const UserProfile = () => {
             className="relative"
             htmlFor="img"
             style={{
-              width: "195px",
+              width: "120px",
+              height: "120px",
               cursor: "pointer",
-              height: "195px",
               borderRadius: "100%",
-              border: "1px solid #1D75F2",
+              border: "2px solid #3F857B",
               background: "white",
               backgroundImage: `url(${imgURL})`,
               backgroundSize: "cover",
@@ -68,12 +68,8 @@ const UserProfile = () => {
             }}
           >
             <div
-              className="absolute -right-1 bottom-1 "
+              className="absolute right-0 bottom-0"
               style={{
-                background: "#E8F6FE",
-                width: "50px",
-                height: "50px",
-                border: "2px solid  #1D75F2",
                 borderRadius: "100%",
                 display: "flex",
                 flexDirection: "column",
@@ -81,7 +77,7 @@ const UserProfile = () => {
                 justifyContent: "center",
               }}
             >
-              <MdOutlineAddPhotoAlternate size={22} color="#1D75F2" />
+              <FaRegEdit size={22} color="#FED12F" />
             </div>
           </label>
         </div>
@@ -189,7 +185,7 @@ const UserProfile = () => {
             </div>
           </div>
 
-          <div className="text-end mt-6">
+          <div className="text-end mt-12">
             <Form.Item>
               <Button
                 type="primary"
@@ -197,15 +193,15 @@ const UserProfile = () => {
                 block
                 style={{
                   border: "none",
-                  height: "41px",
-                  background: "#1D75F2",
+                  height: "64px",
+                  background: "#3536FF",
                   color: "white",
                   borderRadius: "8px",
                   outline: "none",
-                  width: "150px",
+                  width: "100%",
                 }}
               >
-                Save
+                Save & Change
               </Button>
             </Form.Item>
           </div>

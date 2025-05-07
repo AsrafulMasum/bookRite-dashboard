@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
     mobileNumber: "+555 5555 5555",
     location: "Dhaka,Bangladesh",
     image:
-      "https://avatars.design/wp-content/uploads/2021/02/corporate-avatars-TN-1.jpg",
+      "https://i.ibb.co.com/BK33y03f/user.jpg",
   };
 
   useEffect(() => {
