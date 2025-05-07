@@ -21,12 +21,12 @@
   color: #fff !important;
 }
 
-.ant-menu-item-selected {
+/* .ant-menu-item-selected {
   border-left: 8px solid #5B5CE2 !important;
   background-color: transparent !important;
   color: #757575 !important;
   padding-left: 14px !important;
-}
+} */
 
 .ant-menu .ant-menu-item .ant-menu-item-icon + span {
   transition: none !important;

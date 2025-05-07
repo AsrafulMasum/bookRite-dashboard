@@ -1,23 +1,23 @@
-import { Menu } from "antd";
-import React, { useEffect, useState } from "react";
-import { MdOutlineCategory } from "react-icons/md";
-import { AiOutlineDashboard } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiUserGroup } from "react-icons/hi2";
-import { HiUsers } from "react-icons/hi2";
+import { AiOutlineDashboard } from "react-icons/ai";
 import { TbDatabaseDollar } from "react-icons/tb";
+import { HiUsers, HiUserGroup } from "react-icons/hi2";
+import { MdOutlineCategory } from "react-icons/md";
+import { BiSolidCategory } from "react-icons/bi";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { BiSolidCategory } from "react-icons/bi";
 import logo from "../../assets/logo.svg";
-import Sider from "antd/es/layout/Sider";
+import booking from "../../assets/booking.svg";
+import dashboard from "../../assets/dashboard.svg";
+import faq from "../../assets/faq.svg";
+import services from "../../assets/services.svg";
+import setting from "../../assets/setting.svg";
+import users from "../../assets/users.svg";
 
 const Sidebar = () => {
   const location = useLocation();
-  const path = location.pathname;
-  const [selectedKey, setSelectedKey] = useState("");
-  const [openKeys, setOpenKeys] = useState([]);
   const navigate = useNavigate();
+  const path = location.pathname;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -27,162 +27,82 @@ const Sidebar = () => {
   const menuItems = [
     {
       key: "/",
-      icon: <AiOutlineDashboard size={24} />,
-      label: <Link to="/">Dashboard</Link>,
-    },
-    {
-      key: "/earnings",
-      icon: <TbDatabaseDollar size={24} />,
-      label: <Link to="/earnings">Earnings</Link>,
-    },
-    {
-      key: "/artists",
-      icon: <HiUsers size={24} />,
-      label: <Link to="/artists">Artists</Link>,
+      label: "Dashboard",
+      icon: <img src={dashboard} alt="Dashboard icon" />,
     },
     {
       key: "/users",
-      icon: <HiUserGroup size={24} />,
-      label: <Link to="/users">User</Link>,
+      label: "Users",
+      icon: <img src={users} alt="users icon" />,
     },
-    /* {
-            key: "/subscription",
-            icon: <MdOutlineAdminPanelSettings size={24} />,
-            label: <Link to="/subscription">Subscription</Link>
-        }, */
-    /* {
-            key: "/admin",
-            icon: <MdOutlineAdminPanelSettings size={24} />,
-            label: <Link to="/admin">Make Admin</Link>
-        }, */
+    {
+      key: "/artists",
+      label: "Services",
+      icon: <img src={services} alt="services icon" />,
+    },
+    {
+      key: "/users",
+      label: "Booking List",
+      icon: <img src={booking} alt="booking icon" />,
+    },
     {
       key: "/category",
-      icon: <MdOutlineCategory size={24} />,
-      label: <Link to="/category">Category</Link>,
+      label: "FAQ",
+      icon: <img src={faq} alt="faq icon" />,
     },
     {
-      key: "/sub-category",
-      icon: <BiSolidCategory size={24} />,
-      label: <Link to="/sub-category">Sub Category</Link>,
-    },
-    {
-      key: "/events",
-      icon: <MdOutlineCategory size={24} />,
-      label: <Link to="/events">Events</Link>,
-    },
-    {
-      key: "subMenuSetting",
-      icon: <IoSettingsOutline size={24} />,
+      key: "/settings",
       label: "Settings",
-      children: [
-        {
-          key: "/banner",
-          label: (
-            <Link to="/banner" className="text-white hover:text-white">
-              Banner
-            </Link>
-          ),
-        },
-        {
-          key: "/about-us",
-          label: (
-            <Link to="/about-us" className="text-white hover:text-white">
-              About Us
-            </Link>
-          ),
-        },
-        {
-          key: "/terms-and-conditions",
-          label: (
-            <Link
-              to="/terms-and-conditions"
-              className="text-white hover:text-white"
-            >
-              Terms And Condition
-            </Link>
-          ),
-        },
-        {
-          key: "/privacy-policy",
-          label: (
-            <Link to="/privacy-policy" className="text-white hover:text-white">
-              Privacy Policy
-            </Link>
-          ),
-        },
-        {
-          key: "/change-password",
-          label: (
-            <Link to="/change-password" className="text-white hover:text-white">
-              Change Password
-            </Link>
-          ),
-        },
+      icon: <img src={setting} alt="setting icon" />,
+      submenu: [
+        { key: "/banner", label: "Banner" },
+        { key: "/about-us", label: "About Us" },
+        { key: "/terms-and-conditions", label: "Terms And Condition" },
+        { key: "/privacy-policy", label: "Privacy Policy" },
+        { key: "/change-password", label: "Change Password" },
       ],
-    },
-    {
-      key: "/logout",
-      icon: <IoIosLogOut size={24} />,
-      label: <p onClick={handleLogout}>Logout</p>,
     },
   ];
 
-  useEffect(() => {
-    const selectedItem = menuItems.find(
-      (item) =>
-        item.key === path || item.children?.some((sub) => sub.key === path)
-    );
-
-    if (selectedItem) {
-      setSelectedKey(path);
-
-      if (selectedItem.children) {
-        setOpenKeys([selectedItem.key]);
-      } else {
-        const parentItem = menuItems.find((item) =>
-          item.children?.some((sub) => sub.key === path)
-        );
-        if (parentItem) {
-          setOpenKeys([parentItem.key]);
-        }
-      }
-    }
-  }, [path]);
-
-  const handleOpenChange = (keys) => {
-    setOpenKeys(keys);
-  };
+  const isActive = (route) => path === route;
 
   return (
     <div className="min-h-screen">
-      <Sider
-        width="344"
-        style={{
-          overflow: "auto",
-          position: "fixed",
-          top: "30px",
-          bottom: "30px",
-          height: "auto",
-          paddingBottom: "60px",
-          overflowX: "hidden",
-          zIndex: 2,
-          borderTopRightRadius: "16px",
-          borderBottomRightRadius: "16px",
-          backgroundColor: "#E6E6FF66",
-        }}
-      >
-        <Link to={"/"} className=" flex items-center justify-center pt-[30px] pb-6">
+      <aside className="w-[344px] fixed top-[30px] bottom-[30px] bg-[#E6E6FF66] rounded-tr-[16px] rounded-br-[16px] py-6 overflow-y-auto max-h-screen">
+        <div className="flex justify-center mb-6">
           <img src={logo} alt="Logo" />
-        </Link>
-        <Menu
-          mode="inline"
-          selectedKeys={[selectedKey]}
-          openKeys={openKeys}
-          onOpenChange={handleOpenChange}
-          style={{ borderRightColor: "transparent", background: "transparent" }}
-          items={menuItems}
-        />
-      </Sider>
+        </div>
+        <nav className="relative h-[75vh]">
+          <div className="flex flex-col gap-5">
+            {menuItems.map((item) => {
+              const active = isActive(item.key);
+              return (
+                <Link
+                  to={item.key}
+                  key={item.key}
+                  className={`flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575]
+                  ${active && "relative"}
+                `}
+                >
+                  {active && (
+                    <span className="absolute left-0 top-0 h-[52px] w-[8px] bg-primary rounded-r-md"></span>
+                  )}
+                  <span className="text-[20px]">{item.icon}</span>
+                  <span className="text-xl">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="absolute bottom-[0px] flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 hover:bg-red-100 transition-all mt-4"
+          >
+            <IoIosLogOut size={20} />
+            <span>Log Out</span>
+          </button>
+        </nav>
+      </aside>
     </div>
   );
 };
