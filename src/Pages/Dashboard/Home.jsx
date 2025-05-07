@@ -1,8 +1,9 @@
 import React from "react";
-import { FaUserGroup } from "react-icons/fa6";
 import totalUsers from "../../assets/totalUsers.svg";
 import totalServices from "../../assets/totalServices.svg";
 import earnings from "../../assets/earnings.svg";
+import UsersBarChart from "../../components/charts/UsersBarChart";
+import EarningLineChart from "../../components/charts/EarningLineChart";
 
 const Home = () => {
   const statistics = [
@@ -42,22 +43,24 @@ const Home = () => {
   ];
   return (
     <div>
-      <div className="grid grid-cols-3 gap-6 h-[120px]">
+      <div className="grid grid-cols-3 gap-6 h-[120px] mb-4">
         {statistics?.map((statistic) => (
           <div
             key={statistic?.title}
             className="bg-secondary rounded-lg p-[25px] flex items-center gap-4"
           >
             <div>{statistic?.icon}</div>
-            <div className="flex flex-col gap-3">
-              <h2 className="text-center text-2xl ">{statistic?.title}</h2>
-              <h3 className="text-center text-primary text-[32px] font-semibold">
-                $10
-              </h3>
+            <div className="flex flex-col gap-1">
+              <h2 className="text-center text-xl font-medium text-sub_title">
+                {statistic?.title}
+              </h2>
+              <h3 className="text-sub_title text-3xl font-semibold">$10</h3>
             </div>
           </div>
         ))}
       </div>
+      <UsersBarChart />
+      <EarningLineChart />
     </div>
   );
 };

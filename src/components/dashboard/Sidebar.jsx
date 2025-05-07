@@ -8,7 +8,7 @@ import faq from "../../assets/faq.svg";
 import services from "../../assets/services.svg";
 import users from "../../assets/users.svg";
 import dashboard from "../../assets/dashboard.svg";
-import { PiUsersThree } from "react-icons/pi";
+import { CiLogout } from "react-icons/ci";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -94,8 +94,8 @@ const Sidebar = () => {
             onClick={handleLogout}
             className="absolute bottom-[0px] flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 hover:bg-red-100 transition-all mt-4"
           >
-            <IoIosLogOut size={20} />
-            <span>Log Out</span>
+            <CiLogout size={24} />
+            <span className="text-lg">Log Out</span>
           </button>
         </nav>
       </aside>
