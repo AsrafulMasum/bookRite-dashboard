@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoSettingsOutline } from "react-icons/io5";
 import { CiLock, CiLogout, CiUser } from "react-icons/ci";
+import { IoIosArrowDown } from "react-icons/io";
+import { PiInfoThin } from "react-icons/pi";
 import logo from "../../assets/logo.svg";
 import booking from "../../assets/booking.svg";
 import faq from "../../assets/faq.svg";
@@ -9,17 +12,21 @@ import users from "../../assets/users.svg";
 import dashboard from "../../assets/dashboard.svg";
 import privacy from "../../assets/privacy.svg";
 import terms from "../../assets/terms.svg";
-import { IoIosArrowDown } from "react-icons/io";
-import { PiInfoThin } from "react-icons/pi";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const path = location.pathname;
 
+  const [openMenu, setOpenMenu] = useState(null); // Track open submenu
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/auth/login");
+  };
+
+  const toggleMenu = (key) => {
+    setOpenMenu(openMenu === key ? null : key);
   };
 
   const menuItems = [
@@ -49,7 +56,7 @@ const Sidebar = () => {
       icon: <img src={faq} className="h-6" alt="faq icon" />,
     },
     {
-      key: "/settings",
+      key: "settings",
       label: "Settings",
       icon: <IoSettingsOutline className="text-2xl" />,
       submenu: [
@@ -71,14 +78,12 @@ const Sidebar = () => {
         {
           key: "/settings/privacy-policy",
           label: "Privacy Policy",
-          icon: (
-            <img src={privacy} className="h-[22px] pl-1" alt="dashboard icon" />
-          ),
+          icon: <img src={privacy} className="h-[22px] pl-1" alt="icon" />,
         },
         {
           key: "/settings/change-password",
           label: "Terms of Services",
-          icon: <img src={terms} className="h-6" alt="dashboard icon" />,
+          icon: <img src={terms} className="h-6" alt="icon" />,
         },
       ],
     },
@@ -95,29 +100,44 @@ const Sidebar = () => {
             {menuItems.map((item) => {
               const isActive =
                 path === item.key ||
-                (item.submenu &&
-                  item.submenu.some((sub) => path.startsWith(sub.key)));
+                (item.submenu && item.submenu.some((sub) => path === sub.key));
+              const isSubmenuOpen = openMenu === item.key;
+
               return (
                 <div key={item.key}>
-                  <Link
-                    to={item.key}
-                    className={`flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575] relative
-                      ${isActive ? "relative" : ""}
-                    `}
-                  >
-                    {isActive && (
-                      <span className="absolute left-0 top-0 h-full w-[8px] bg-primary rounded-r-md"></span>
-                    )}
-                    <span className="text-[20px]">{item.icon}</span>
-                    <span className="text-lg">{item.label}</span>
-                    {item?.label === "Settings" && (
-                      <span className="text-[20px] pl-36">
-                        <IoIosArrowDown />
+                  {item.submenu ? (
+                    <button
+                      onClick={() => toggleMenu(item.key)}
+                      className={`w-full flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575] relative`}
+                    >
+                      {isActive && (
+                        <span className="absolute left-0 top-0 h-full w-[8px] bg-primary rounded-r-md"></span>
+                      )}
+                      <span className="text-[20px]">{item.icon}</span>
+                      <span className="text-lg">{item.label}</span>
+                      <span className="text-[20px] ml-auto">
+                        <IoIosArrowDown
+                          className={`transition-transform ${
+                            isSubmenuOpen ? "rotate-180" : ""
+                          }`}
+                        />
                       </span>
-                    )}
-                  </Link>
+                    </button>
+                  ) : (
+                    <Link
+                      to={item.key}
+                      className={`flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575] relative`}
+                    >
+                      {isActive && (
+                        <span className="absolute left-0 top-0 h-full w-[8px] bg-primary rounded-r-md"></span>
+                      )}
+                      <span className="text-[20px]">{item.icon}</span>
+                      <span className="text-lg">{item.label}</span>
+                    </Link>
+                  )}
 
-                  {item.submenu && isActive && (
+                  {/* Submenu */}
+                  {item.submenu && isSubmenuOpen && (
                     <div className="px-[22px] flex flex-col gap-2 pt-2">
                       {item.submenu.map((sub) => {
                         const subActive = path === sub.key;
@@ -126,9 +146,7 @@ const Sidebar = () => {
                             to={sub.key}
                             key={sub.key}
                             className={`flex items-center gap-4 py-1 rounded transition-all ${
-                              subActive
-                                ? "text-primary font-semibold"
-                                : "text-[#757575]"
+                              subActive ? "text-primary" : "text-[#757575]"
                             }`}
                           >
                             <span className="text-lg">{sub.icon}</span>
