@@ -7,6 +7,7 @@ import { PiInfoThin } from "react-icons/pi";
 import logo from "../../assets/logo.svg";
 import booking from "../../assets/booking.svg";
 import faq from "../../assets/faq.svg";
+import setting from "../../assets/setting.svg";
 import services from "../../assets/services.svg";
 import users from "../../assets/users.svg";
 import dashboard from "../../assets/dashboard.svg";
@@ -18,7 +19,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const path = location.pathname;
 
-  const [openMenu, setOpenMenu] = useState(null); // Track open submenu
+  const [openMenu, setOpenMenu] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -58,7 +59,7 @@ const Sidebar = () => {
     {
       key: "settings",
       label: "Settings",
-      icon: <IoSettingsOutline className="text-2xl" />,
+      icon: <img src={setting} className="h-6" alt="settings icon" />,
       submenu: [
         {
           key: "/settings/profile",
