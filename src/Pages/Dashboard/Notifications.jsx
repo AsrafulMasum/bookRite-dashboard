@@ -5,6 +5,7 @@ import {
   useReadMutation,
 } from "../../redux/apiSlices/notificationSlice";
 import toast from "react-hot-toast";
+import bell from "../../assets/bell.svg";
 
 const Notifications = () => {
   const [page, setPage] = useState(1);
@@ -24,6 +25,7 @@ const Notifications = () => {
       toast.error(error?.data?.message);
     }
   };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -43,13 +45,12 @@ const Notifications = () => {
               <img
                 className="object-cover"
                 style={{
-                  height: "50px",
-                  width: "50px",
+                  backgroundColor: "#E7F0EF",
+                  padding: "8px",
                   borderRadius: "100%",
-                  border: "2px solid gray",
                   objectFit: "cover",
                 }}
-                src="https://img.freepik.com/free-photo/everything-is-okay-cheerful-friendly-looking-caucasian-guy-with-moustache-beard-raising-hand-with-ok-great-gesture-giving-approval-like-having-situation-control_176420-22386.jpg"
+                src={bell}
               />
               <div>
                 <p>
@@ -68,7 +69,7 @@ const Notifications = () => {
           theme={{
             components: {
               Pagination: {
-                itemActiveBg: "#6C57EC",
+                itemActiveBg: "#3536FF",
                 borderRadius: "100%",
               },
             },
