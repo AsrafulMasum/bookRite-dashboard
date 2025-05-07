@@ -11,10 +11,10 @@ const Header = () => {
     ? user?.image
     : `${imageUrl}/${user?.image}`;
   return (
-    <div className="flex items-center gap-5 justify-end">
+    <div className="flex items-center gap-8 justify-end bg-secondary h-20 mt-8 ml-14 mr-6 rounded-lg p-5">
       <Link to="/notification" className="h-fit mt-[10px]">
-        <Badge count={5}>
-          <FaRegBell color="#6C57EC" size={24} />
+        <Badge count={1}>
+          <FaRegBell color="#757575" size={20} />
         </Badge>
       </Link>
 

@@ -7,8 +7,8 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const profile = {
-    firstName: "Test",
-    lastName: "User",
+    firstName: "Admin",
+    lastName: "Humphrey",
     email: "sparktech@gmail.com",
     mobileNumber: "+555 5555 5555",
     location: "Dhaka,Bangladesh",

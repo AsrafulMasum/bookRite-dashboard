@@ -1,18 +1,14 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { TbDatabaseDollar } from "react-icons/tb";
-import { HiUsers, HiUserGroup } from "react-icons/hi2";
-import { MdOutlineCategory } from "react-icons/md";
-import { BiSolidCategory } from "react-icons/bi";
+import { MdOutlineDashboard } from "react-icons/md";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import logo from "../../assets/logo.svg";
 import booking from "../../assets/booking.svg";
-import dashboard from "../../assets/dashboard.svg";
 import faq from "../../assets/faq.svg";
 import services from "../../assets/services.svg";
-import setting from "../../assets/setting.svg";
 import users from "../../assets/users.svg";
+import dashboard from "../../assets/dashboard.svg";
+import { PiUsersThree } from "react-icons/pi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -28,32 +24,32 @@ const Sidebar = () => {
     {
       key: "/",
       label: "Dashboard",
-      icon: <img src={dashboard} alt="Dashboard icon" />,
+      icon: <img src={dashboard} className="h-5" alt="booking icon" />,
     },
     {
       key: "/users",
       label: "Users",
-      icon: <img src={users} alt="users icon" />,
+      icon: <img src={users} className="h-6" alt="booking icon" />,
     },
     {
       key: "/artists",
       label: "Services",
-      icon: <img src={services} alt="services icon" />,
+      icon: <img src={services} className="h-6" alt="services icon" />,
     },
     {
       key: "/users",
       label: "Booking List",
-      icon: <img src={booking} alt="booking icon" />,
+      icon: <img src={booking} className="h-6" alt="booking icon" />,
     },
     {
       key: "/category",
       label: "FAQ",
-      icon: <img src={faq} alt="faq icon" />,
+      icon: <img src={faq} className="h-6" alt="faq icon" />,
     },
     {
       key: "/settings",
       label: "Settings",
-      icon: <img src={setting} alt="setting icon" />,
+      icon: <IoSettingsOutline className="text-2xl" />,
       submenu: [
         { key: "/banner", label: "Banner" },
         { key: "/about-us", label: "About Us" },
@@ -88,7 +84,7 @@ const Sidebar = () => {
                     <span className="absolute left-0 top-0 h-[52px] w-[8px] bg-primary rounded-r-md"></span>
                   )}
                   <span className="text-[20px]">{item.icon}</span>
-                  <span className="text-xl">{item.label}</span>
+                  <span className="text-lg">{item.label}</span>
                 </Link>
               );
             })}

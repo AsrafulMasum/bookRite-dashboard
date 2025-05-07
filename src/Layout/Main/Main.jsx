@@ -13,12 +13,12 @@ const Main = () => {
 
       {/* main container with header */}
       <div className="col-span-10">
-        <div className="h-[68px] flex items-center justify-end pr-5">
+        <div>
           <Header />
         </div>
 
         <div className="p-6 h-[calc(100vh-68px)]">
-          <div className="h-full overflow-y-auto rounded-md  p-6">
+          <div className="h-full overflow-y-auto rounded-md pl-[30px]">
             <Outlet />
           </div>
         </div>
