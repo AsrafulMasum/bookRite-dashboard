@@ -1,14 +1,16 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MdOutlineDashboard } from "react-icons/md";
-import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
+import { CiLock, CiLogout, CiUser } from "react-icons/ci";
 import logo from "../../assets/logo.svg";
 import booking from "../../assets/booking.svg";
 import faq from "../../assets/faq.svg";
 import services from "../../assets/services.svg";
 import users from "../../assets/users.svg";
 import dashboard from "../../assets/dashboard.svg";
-import { CiLogout } from "react-icons/ci";
+import privacy from "../../assets/privacy.svg";
+import terms from "../../assets/terms.svg";
+import { IoIosArrowDown } from "react-icons/io";
+import { PiInfoThin } from "react-icons/pi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -24,12 +26,12 @@ const Sidebar = () => {
     {
       key: "/",
       label: "Dashboard",
-      icon: <img src={dashboard} className="h-5" alt="booking icon" />,
+      icon: <img src={dashboard} className="h-5" alt="dashboard icon" />,
     },
     {
       key: "/users",
       label: "Users",
-      icon: <img src={users} className="h-6" alt="booking icon" />,
+      icon: <img src={users} className="h-6" alt="users icon" />,
     },
     {
       key: "/artists",
@@ -37,7 +39,7 @@ const Sidebar = () => {
       icon: <img src={services} className="h-6" alt="services icon" />,
     },
     {
-      key: "/users",
+      key: "/bookings",
       label: "Booking List",
       icon: <img src={booking} className="h-6" alt="booking icon" />,
     },
@@ -51,16 +53,36 @@ const Sidebar = () => {
       label: "Settings",
       icon: <IoSettingsOutline className="text-2xl" />,
       submenu: [
-        { key: "/banner", label: "Banner" },
-        { key: "/about-us", label: "About Us" },
-        { key: "/terms-and-conditions", label: "Terms And Condition" },
-        { key: "/privacy-policy", label: "Privacy Policy" },
-        { key: "/change-password", label: "Change Password" },
+        {
+          key: "/settings/profile",
+          label: "Change Password",
+          icon: <CiLock className="text-2xl" />,
+        },
+        {
+          key: "/settings/about-us",
+          label: "Profile",
+          icon: <CiUser className="text-2xl" />,
+        },
+        {
+          key: "/settings/terms-and-conditions",
+          label: "About Us",
+          icon: <PiInfoThin className="text-2xl" />,
+        },
+        {
+          key: "/settings/privacy-policy",
+          label: "Privacy Policy",
+          icon: (
+            <img src={privacy} className="h-[22px] pl-1" alt="dashboard icon" />
+          ),
+        },
+        {
+          key: "/settings/change-password",
+          label: "Terms of Services",
+          icon: <img src={terms} className="h-6" alt="dashboard icon" />,
+        },
       ],
     },
   ];
-
-  const isActive = (route) => path === route;
 
   return (
     <div className="min-h-screen">
@@ -71,28 +93,59 @@ const Sidebar = () => {
         <nav className="relative h-[75vh]">
           <div className="flex flex-col gap-5">
             {menuItems.map((item) => {
-              const active = isActive(item.key);
+              const isActive =
+                path === item.key ||
+                (item.submenu &&
+                  item.submenu.some((sub) => path.startsWith(sub.key)));
               return (
-                <Link
-                  to={item.key}
-                  key={item.key}
-                  className={`flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575]
-                  ${active && "relative"}
-                `}
-                >
-                  {active && (
-                    <span className="absolute left-0 top-0 h-[52px] w-[8px] bg-primary rounded-r-md"></span>
+                <div key={item.key}>
+                  <Link
+                    to={item.key}
+                    className={`flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575] relative
+                      ${isActive ? "relative" : ""}
+                    `}
+                  >
+                    {isActive && (
+                      <span className="absolute left-0 top-0 h-full w-[8px] bg-primary rounded-r-md"></span>
+                    )}
+                    <span className="text-[20px]">{item.icon}</span>
+                    <span className="text-lg">{item.label}</span>
+                    {item?.label === "Settings" && (
+                      <span className="text-[20px] pl-36">
+                        <IoIosArrowDown />
+                      </span>
+                    )}
+                  </Link>
+
+                  {item.submenu && isActive && (
+                    <div className="px-[22px] flex flex-col gap-2 pt-2">
+                      {item.submenu.map((sub) => {
+                        const subActive = path === sub.key;
+                        return (
+                          <Link
+                            to={sub.key}
+                            key={sub.key}
+                            className={`flex items-center gap-4 py-1 rounded transition-all ${
+                              subActive
+                                ? "text-primary font-semibold"
+                                : "text-[#757575]"
+                            }`}
+                          >
+                            <span className="text-lg">{sub.icon}</span>
+                            <span>{sub.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
                   )}
-                  <span className="text-[20px]">{item.icon}</span>
-                  <span className="text-lg">{item.label}</span>
-                </Link>
+                </div>
               );
             })}
           </div>
 
           <button
             onClick={handleLogout}
-            className="absolute bottom-[0px] flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 hover:bg-red-100 transition-all mt-4"
+            className="absolute bottom-0 flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 hover:bg-red-100 transition-all mt-4"
           >
             <CiLogout size={24} />
             <span className="text-lg">Log Out</span>

@@ -87,11 +87,15 @@ const router = createBrowserRouter([
         element: <SubCategory />,
       },
       {
-        path: "/profile",
+        path: "/settings/profile",
         element: <AdminProfile />,
       },
       {
         path: "/notification",
+        element: <Notifications />,
+      },
+      {
+        path: "/settings",
         element: <Notifications />,
       },
     ],
