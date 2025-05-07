@@ -4,109 +4,169 @@ import React, { useState } from "react";
 import { FiEye } from "react-icons/fi";
 import { useUsersQuery } from "../../redux/apiSlices/userSlice";
 import { imageUrl } from "../../redux/api/baseApi";
+import eye from "../../assets/eye.svg";
+import deleteIcon from "../../assets/delete.svg";
 
 const data = [
   {
     key: "1",
-    invoiceNo: "10",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    mobileNumber: "+1234567890",
+    createdAt: "2024-05-01T10:00:00Z",
   },
   {
     key: "2",
-    invoiceNo: "11",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Jane",
+    lastName: "Smith",
+    email: "jane.smith@example.com",
+    mobileNumber: "+1987654321",
+    createdAt: "2024-06-15T08:30:00Z",
   },
   {
     key: "3",
-    invoiceNo: "12",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Alice",
+    lastName: "Johnson",
+    email: "alice.johnson@example.com",
+    mobileNumber: "+1112233445",
+    createdAt: "2024-07-20T12:45:00Z",
   },
   {
     key: "4",
-    invoiceNo: "13",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Bob",
+    lastName: "Williams",
+    email: "bob.williams@example.com",
+    mobileNumber: "+1123456789",
+    createdAt: "2024-03-18T14:00:00Z",
   },
   {
     key: "5",
-    invoiceNo: "14",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Emma",
+    lastName: "Brown",
+    email: "emma.brown@example.com",
+    mobileNumber: "+9988776655",
+    createdAt: "2024-04-10T09:15:00Z",
   },
-
   {
     key: "6",
-    invoiceNo: "12",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Liam",
+    lastName: "Davis",
+    email: "liam.davis@example.com",
+    mobileNumber: "+5566778899",
+    createdAt: "2024-01-25T17:30:00Z",
   },
   {
     key: "7",
-    invoiceNo: "13",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Olivia",
+    lastName: "Garcia",
+    email: "olivia.garcia@example.com",
+    mobileNumber: "+1234987654",
+    createdAt: "2024-02-10T10:20:00Z",
   },
   {
     key: "8",
-    invoiceNo: "14",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Noah",
+    lastName: "Martinez",
+    email: "noah.martinez@example.com",
+    mobileNumber: "+7865432190",
+    createdAt: "2024-08-08T11:00:00Z",
   },
-
   {
     key: "9",
-    invoiceNo: "12",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "Sophia",
+    lastName: "Rodriguez",
+    email: "sophia.rodriguez@example.com",
+    mobileNumber: "+2223334444",
+    createdAt: "2024-06-03T16:15:00Z",
   },
   {
     key: "10",
-    invoiceNo: "13",
-    time: "18 Jul, 2023  4:30pm",
-    username: "Tushar",
-    method: "Credit Card",
-    amount: "$850.00",
-    status: "complete",
-    printView: "Button",
+    firstName: "James",
+    lastName: "Lee",
+    email: "james.lee@example.com",
+    mobileNumber: "+3216549870",
+    createdAt: "2024-05-21T13:10:00Z",
+  },
+  {
+    key: "11",
+    firstName: "Isabella",
+    lastName: "Walker",
+    email: "isabella.walker@example.com",
+    mobileNumber: "+6543219870",
+    createdAt: "2024-01-05T15:00:00Z",
+  },
+  {
+    key: "12",
+    firstName: "Ethan",
+    lastName: "Hall",
+    email: "ethan.hall@example.com",
+    mobileNumber: "+3456789012",
+    createdAt: "2024-03-12T08:25:00Z",
+  },
+  {
+    key: "13",
+    firstName: "Mia",
+    lastName: "Allen",
+    email: "mia.allen@example.com",
+    mobileNumber: "+4343434343",
+    createdAt: "2024-09-01T09:45:00Z",
+  },
+  {
+    key: "14",
+    firstName: "Alexander",
+    lastName: "Young",
+    email: "alex.young@example.com",
+    mobileNumber: "+6565656565",
+    createdAt: "2024-02-22T07:30:00Z",
+  },
+  {
+    key: "15",
+    firstName: "Charlotte",
+    lastName: "Hernandez",
+    email: "charlotte.hernandez@example.com",
+    mobileNumber: "+7778889990",
+    createdAt: "2024-04-30T13:50:00Z",
+  },
+  {
+    key: "16",
+    firstName: "Benjamin",
+    lastName: "King",
+    email: "ben.king@example.com",
+    mobileNumber: "+9090909090",
+    createdAt: "2024-07-11T14:35:00Z",
+  },
+  {
+    key: "17",
+    firstName: "Amelia",
+    lastName: "Wright",
+    email: "amelia.wright@example.com",
+    mobileNumber: "+8181818181",
+    createdAt: "2024-10-09T10:05:00Z",
+  },
+  {
+    key: "18",
+    firstName: "Lucas",
+    lastName: "Lopez",
+    email: "lucas.lopez@example.com",
+    mobileNumber: "+2323232323",
+    createdAt: "2024-11-13T11:40:00Z",
+  },
+  {
+    key: "19",
+    firstName: "Harper",
+    lastName: "Scott",
+    email: "harper.scott@example.com",
+    mobileNumber: "+5656565656",
+    createdAt: "2024-12-01T09:30:00Z",
+  },
+  {
+    key: "20",
+    firstName: "Henry",
+    lastName: "Green",
+    email: "henry.green@example.com",
+    mobileNumber: "+7878787878",
+    createdAt: "2024-08-25T12:10:00Z",
   },
 ];
 
@@ -114,12 +174,12 @@ const Users = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  const { data: users } = useUsersQuery({ page: page, search: search });
+  // const { data: users } = useUsersQuery({ page: page, search: search });
   const [value, setValue] = useState(null);
 
   const columns = [
     {
-      title: "Serial No.",
+      title: "Serial ID",
       dataIndex: "name",
       key: "name",
       render: (_, record, index) => (
@@ -127,20 +187,11 @@ const Users = () => {
       ),
     },
     {
-      title: "Artist",
+      title: "User Name",
       dataIndex: "artist",
       key: "artist",
       render: (_, record, index) => (
         <div className="flex items-center gap-2">
-          <img
-            src={
-              record?.image?.startsWith("https")
-                ? record?.image
-                : `${imageUrl}${record?.image}`
-            }
-            style={{ height: 50, width: 50, borderRadius: 8 }}
-            alt=""
-          />
           <p>
             {record?.firstName} {record?.lastName}
           </p>
@@ -148,38 +199,41 @@ const Users = () => {
       ),
     },
     {
-      title: "EMAIL",
+      title: "Email",
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "CONTACT",
+      title: "Contact Number",
       dataIndex: "mobileNumber",
       key: "mobileNumber",
     },
     {
-      title: "DATE",
+      title: "Start Date",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
     },
     {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-      render: (_, record) => <p> {record?.appId ? "Social" : "General"}</p>,
-    },
-    {
-      title: "ACTIONS",
+      title: "Actions",
       dataIndex: "actions",
       key: "actions",
+      align: "right",
       render: (_, record) => (
-        <FiEye
-          size={22}
-          color="#999999"
-          onClick={() => setValue(record)}
-          className={"cursor-pointer"}
-        />
+        <div className="flex justify-end gap-8">
+          <img
+            className="cursor-pointer"
+            onClick={() => setValue(record)}
+            src={eye}
+            alt="View Icon"
+          />
+          <img
+            className="cursor-pointer"
+            onClick={() => setValue(record)}
+            src={deleteIcon}
+            alt="Delete Icon"
+          />
+        </div>
       ),
     },
   ];
@@ -204,7 +258,7 @@ const Users = () => {
         theme={{
           components: {
             Pagination: {
-              itemActiveBg: "#6C57EC",
+              itemActiveBg: "#3536FF",
               borderRadius: "100%",
             },
           },
@@ -215,11 +269,12 @@ const Users = () => {
       >
         <Table
           columns={columns}
-          dataSource={users?.data}
+          dataSource={data}
           pagination={{
             current: parseInt(page),
             onChange: (page) => setPage(page),
           }}
+          className="custom-table"
         />
       </ConfigProvider>
 

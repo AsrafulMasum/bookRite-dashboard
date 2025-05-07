@@ -58,3 +58,14 @@
   line-height: 130% !important;
   opacity: 1 !important; 
 }
+
+.custom-table .ant-table-thead > tr > th {
+  background-color: #E6E6FF80;
+  color: #3536FF;
+}
+
+.custom-table .ant-table-tbody > tr > td {
+  color: #757575 !important;
+  font-size: 16px !important;
+  font-weight: 500;
+}
