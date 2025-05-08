@@ -16,7 +16,8 @@ const data = [
     serviceType: "Move-In Cleaning",
     serviceLocation: "Houston, TX",
     price: 146,
-    serviceImage: "https://via.placeholder.com/100x60?text=Move-In+Cleaning",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-17T00:00:00",
   },
   {
@@ -31,7 +32,8 @@ const data = [
     serviceType: "Tile Fixing",
     serviceLocation: "Phoenix, AZ",
     price: 100,
-    serviceImage: "https://via.placeholder.com/100x60?text=Tile+Fixing",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-29T00:00:00",
   },
   {
@@ -46,7 +48,8 @@ const data = [
     serviceType: "Plumbing Repair",
     serviceLocation: "Phoenix, AZ",
     price: 196,
-    serviceImage: "https://via.placeholder.com/100x60?text=Plumbing+Repair",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-29T00:00:00",
   },
   {
@@ -313,12 +316,13 @@ const data = [
     createdAt: "2024-07-05T00:00:00",
   },
 ];
+
 const Users = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   // const { data: users } = useUsersQuery({ page: page, search: search });
   const [value, setValue] = useState(null);
-  console.log(value);
+
   const columns = [
     {
       title: "Serial ID",
@@ -436,9 +440,7 @@ const Users = () => {
                 {value?.serviceType ? value?.serviceType : "Home Service"}
               </p>
               <p className="text-right">
-                {value?.createdAt
-                  ? value?.createdAt?.slice(0, 10)
-                  : "10-04-2005"}
+                {moment(value?.createdAt).format("L")}
               </p>
             </div>
           </div>
@@ -469,9 +471,7 @@ const Users = () => {
                 {value?.serviceType ? "Cloth wash" : "Home Service"}
               </p>
               <p className="text-right">
-                {value?.createdAt
-                  ? value?.createdAt?.slice(0, 10)
-                  : "10-04-2005"}
+                {moment(value?.createdAt).format("L")}
               </p>
             </div>
           </div>
@@ -485,7 +485,7 @@ const Users = () => {
             <div>
               <p className="pb-[5px]">Category</p>
               <p className="pb-[5px]">Service Name</p>
-              <p className="pb-[5px]">Service Image</p>
+              <p className="pb-[5px] h-10">Service Image</p>
               <p className="pb-[5px]">Price</p>
               <p className="pb-[5px]">Booking Date</p>
               <p>Status</p>
@@ -498,20 +498,22 @@ const Users = () => {
               <p className="pb-[5px] text-right">
                 {value?.serviceType ? value?.serviceType : "Cleaning"}
               </p>
-              <p className="pb-[5px] text-right">
-                {value?.serviceImages ? (
-                  <img src={value?.serviceImage} alt="" />
+              <div className="pb-[5px] flex justify-end">
+                {value?.serviceImage ? (
+                  <img
+                    className="h-10 w-10 object-cover"
+                    src={value?.serviceImage}
+                    alt=""
+                  />
                 ) : (
                   "No Image available"
                 )}
-              </p>
+              </div>
               <p className="pb-[5px] text-right">
                 {value?.price ? `$ ${value?.price}` : "$50"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.createdAt
-                  ? value?.createdAt?.slice(0, 10)
-                  : "10-04-2005"}
+                {moment(value?.createdAt).format("L")}
               </p>
               <p className="text-right">
                 {value?.status ? value?.status : "Ongoing"}

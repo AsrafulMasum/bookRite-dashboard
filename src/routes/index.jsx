@@ -15,7 +15,6 @@ import Notifications from "../Pages/Dashboard/Notifications";
 import SubCategory from "../Pages/Dashboard/SubCategory";
 import AboutUs from "../Pages/Dashboard/settings/AboutUs";
 import PrivacyPolicy from "../Pages/Dashboard/settings/PrivacyPolicy";
-import Banner from "../Pages/Dashboard/settings/Banner";
 import TermsAndConditions from "../Pages/Dashboard/settings/TermsAndCondition";
 import Login from "../Pages/Auth/Login";
 import FAQ from "../Pages/Dashboard/FAQ";

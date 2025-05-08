@@ -313,23 +313,13 @@ const Users = () => {
       </ConfigProvider>
 
       <Modal
+        centered
         open={value}
         onCancel={() => setValue(null)}
         onClose={() => setValue(null)}
         footer={false}
       >
         <div>
-          {/* <img
-            width={120}
-            style={{ borderRadius: "12px", margin: "0 auto" }}
-            src={
-              value?.image?.startsWith("https")
-                ? value?.image
-                : `${imageUrl}${value?.image}`
-            }
-            alt=""
-          /> */}
-
           <div className="flex items-center justify-between mt-[35px]">
             <div>
               <p className="pb-[5px]">User Name</p>

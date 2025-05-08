@@ -1,200 +1,204 @@
-import { ConfigProvider, Modal, Table } from "antd";
+import { Button, ConfigProvider, Modal, Table } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
-import { imageUrl } from "../../redux/api/baseApi";
-import eye from "../../assets/eye.svg";
 import deleteIcon from "../../assets/delete.svg";
 import Swal from "sweetalert2";
+import { PlusOutlined } from "@ant-design/icons";
+import { FaRegEdit } from "react-icons/fa";
+import { CiEdit } from "react-icons/ci";
 
 const data = [
   {
     key: "1",
-    firstName: "John",
-    lastName: "Doe",
-    category: "Home Service",
-    email: "john.doe@example.com",
-    mobileNumber: "+1234567890",
-    createdAt: "2024-05-01T10:00:00Z",
+    category: "Maintenance",
+    serviceType: "Plumbing Repair",
+    price: 135,
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
+    createdAt: "2024-07-22T00:00:00",
   },
   {
     key: "2",
-    firstName: "Jane",
-    lastName: "Smith",
-    category: "Home Service",
-    email: "jane.smith@example.com",
-    mobileNumber: "+1987654321",
-    createdAt: "2024-06-15T08:30:00Z",
+    category: "Cleaning",
+    serviceType: "Window Cleaning",
+    price: 75,
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
+    createdAt: "2024-07-15T00:00:00",
   },
   {
     key: "3",
-    firstName: "Alice",
-    lastName: "Johnson",
-    category: "Home Service",
-    email: "alice.johnson@example.com",
-    mobileNumber: "+1112233445",
-    createdAt: "2024-07-20T12:45:00Z",
+    category: "Maintenance",
+    serviceType: "Tile Fixing",
+    price: 197,
+    serviceImage: "https://via.placeholder.com/100x60?text=Tile+Fixing",
+    createdAt: "2024-07-14T00:00:00",
   },
   {
     key: "4",
-    firstName: "Bob",
-    lastName: "Williams",
-    category: "Home Service",
-    email: "bob.williams@example.com",
-    mobileNumber: "+1123456789",
-    createdAt: "2024-03-18T14:00:00Z",
+    category: "HVAC",
+    serviceType: "Heater Repair",
+    price: 162,
+    serviceImage: "https://via.placeholder.com/100x60?text=Heater+Repair",
+    createdAt: "2024-07-24T00:00:00",
   },
   {
     key: "5",
-    firstName: "Emma",
-    lastName: "Brown",
-    category: "Home Service",
-    email: "emma.brown@example.com",
-    mobileNumber: "+9988776655",
-    createdAt: "2024-04-10T09:15:00Z",
+    category: "Cleaning",
+    serviceType: "Window Cleaning",
+    price: 172,
+    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    createdAt: "2024-07-13T00:00:00",
   },
   {
     key: "6",
-    firstName: "Liam",
-    lastName: "Davis",
-    category: "Home Service",
-    email: "liam.davis@example.com",
-    mobileNumber: "+5566778899",
-    createdAt: "2024-01-25T17:30:00Z",
+    category: "Cleaning",
+    serviceType: "Window Cleaning",
+    price: 193,
+    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    createdAt: "2024-07-07T00:00:00",
   },
   {
     key: "7",
-    firstName: "Olivia",
-    lastName: "Garcia",
-    category: "Home Service",
-    email: "olivia.garcia@example.com",
-    mobileNumber: "+1234987654",
-    createdAt: "2024-02-10T10:20:00Z",
+    category: "Maintenance",
+    serviceType: "Faucet Installation",
+    price: 170,
+    serviceImage: "https://via.placeholder.com/100x60?text=Faucet+Installation",
+    createdAt: "2024-07-31T00:00:00",
   },
   {
     key: "8",
-    firstName: "Noah",
-    lastName: "Martinez",
-    category: "Home Service",
-    email: "noah.martinez@example.com",
-    mobileNumber: "+7865432190",
-    createdAt: "2024-08-08T11:00:00Z",
+    category: "Electrical",
+    serviceType: "Ceiling Fan Installation",
+    price: 117,
+    serviceImage:
+      "https://via.placeholder.com/100x60?text=Ceiling+Fan+Installation",
+    createdAt: "2024-07-29T00:00:00",
   },
   {
     key: "9",
-    firstName: "Sophia",
-    lastName: "Rodriguez",
-    category: "Home Service",
-    email: "sophia.rodriguez@example.com",
-    mobileNumber: "+2223334444",
-    createdAt: "2024-06-03T16:15:00Z",
+    category: "Gardening",
+    serviceType: "Tree Trimming",
+    price: 160,
+    serviceImage: "https://via.placeholder.com/100x60?text=Tree+Trimming",
+    createdAt: "2024-07-30T00:00:00",
   },
   {
     key: "10",
-    firstName: "James",
-    lastName: "Lee",
-    category: "Home Service",
-    email: "james.lee@example.com",
-    mobileNumber: "+3216549870",
-    createdAt: "2024-05-21T13:10:00Z",
+    category: "Cleaning",
+    serviceType: "Window Cleaning",
+    price: 95,
+    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    createdAt: "2024-07-08T00:00:00",
   },
   {
     key: "11",
-    firstName: "Isabella",
-    lastName: "Walker",
-    category: "Home Service",
-    email: "isabella.walker@example.com",
-    mobileNumber: "+6543219870",
-    createdAt: "2024-01-05T15:00:00Z",
+    category: "Maintenance",
+    serviceType: "Tile Fixing",
+    price: 165,
+    serviceImage: "https://via.placeholder.com/100x60?text=Tile+Fixing",
+    createdAt: "2024-07-24T00:00:00",
   },
   {
     key: "12",
-    firstName: "Ethan",
-    lastName: "Hall",
-    category: "Home Service",
-    email: "ethan.hall@example.com",
-    mobileNumber: "+3456789012",
-    createdAt: "2024-03-12T08:25:00Z",
+    category: "Electrical",
+    serviceType: "Ceiling Fan Installation",
+    price: 163,
+    serviceImage:
+      "https://via.placeholder.com/100x60?text=Ceiling+Fan+Installation",
+    createdAt: "2024-07-05T00:00:00",
   },
   {
     key: "13",
-    firstName: "Mia",
-    lastName: "Allen",
-    category: "Home Service",
-    email: "mia.allen@example.com",
-    mobileNumber: "+4343434343",
-    createdAt: "2024-09-01T09:45:00Z",
+    category: "Gardening",
+    serviceType: "Tree Trimming",
+    price: 97,
+    serviceImage: "https://via.placeholder.com/100x60?text=Tree+Trimming",
+    createdAt: "2024-07-13T00:00:00",
   },
   {
     key: "14",
-    firstName: "Alexander",
-    lastName: "Young",
-    category: "Home Service",
-    email: "alex.young@example.com",
-    mobileNumber: "+6565656565",
-    createdAt: "2024-02-22T07:30:00Z",
+    category: "HVAC",
+    serviceType: "AC Servicing",
+    price: 162,
+    serviceImage: "https://via.placeholder.com/100x60?text=AC+Servicing",
+    createdAt: "2024-07-10T00:00:00",
   },
   {
     key: "15",
-    firstName: "Charlotte",
-    lastName: "Hernandez",
-    category: "Home Service",
-    email: "charlotte.hernandez@example.com",
-    mobileNumber: "+7778889990",
-    createdAt: "2024-04-30T13:50:00Z",
+    category: "Maintenance",
+    serviceType: "Faucet Installation",
+    price: 145,
+    serviceImage: "https://via.placeholder.com/100x60?text=Faucet+Installation",
+    createdAt: "2024-07-07T00:00:00",
   },
   {
     key: "16",
-    firstName: "Benjamin",
-    lastName: "King",
-    category: "Home Service",
-    email: "ben.king@example.com",
-    mobileNumber: "+9090909090",
-    createdAt: "2024-07-11T14:35:00Z",
+    category: "HVAC",
+    serviceType: "Heater Repair",
+    price: 110,
+    serviceImage: "https://via.placeholder.com/100x60?text=Heater+Repair",
+    createdAt: "2024-07-12T00:00:00",
   },
   {
     key: "17",
-    firstName: "Amelia",
-    lastName: "Wright",
-    category: "Home Service",
-    email: "amelia.wright@example.com",
-    mobileNumber: "+8181818181",
-    createdAt: "2024-10-09T10:05:00Z",
+    category: "Maintenance",
+    serviceType: "Faucet Installation",
+    price: 193,
+    serviceImage: "https://via.placeholder.com/100x60?text=Faucet+Installation",
+    createdAt: "2024-07-10T00:00:00",
   },
   {
     key: "18",
-    firstName: "Lucas",
-    lastName: "Lopez",
-    category: "Home Service",
-    email: "lucas.lopez@example.com",
-    mobileNumber: "+2323232323",
-    createdAt: "2024-11-13T11:40:00Z",
+    category: "Electrical",
+    serviceType: "Wiring Inspection",
+    price: 116,
+    serviceImage: "https://via.placeholder.com/100x60?text=Wiring+Inspection",
+    createdAt: "2024-07-08T00:00:00",
   },
   {
     key: "19",
-    firstName: "Harper",
-    lastName: "Scott",
-    category: "Home Service",
-    email: "harper.scott@example.com",
-    mobileNumber: "+5656565656",
-    createdAt: "2024-12-01T09:30:00Z",
+    category: "Cleaning",
+    serviceType: "Window Cleaning",
+    price: 71,
+    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    createdAt: "2024-07-15T00:00:00",
   },
   {
     key: "20",
-    firstName: "Henry",
-    lastName: "Green",
-    category: "Home Service",
-    email: "henry.green@example.com",
-    mobileNumber: "+7878787878",
-    createdAt: "2024-08-25T12:10:00Z",
+    category: "Gardening",
+    serviceType: "Tree Trimming",
+    price: 172,
+    serviceImage: "https://via.placeholder.com/100x60?text=Tree+Trimming",
+    createdAt: "2024-07-21T00:00:00",
   },
 ];
 
 const Users = () => {
-  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   // const { data: users } = useUsersQuery({ page: page, search: search });
   const [value, setValue] = useState(null);
+  const [openAddModel, setOpenAddModel] = useState(false);
+  const [image, setImage] = useState();
+  const [imgURL, setImgURL] = useState();
+
+  const onChange = (e) => {
+    const file = e.target.files[0];
+    const imgUrl = URL.createObjectURL(file);
+    setImgURL(imgUrl);
+    setImage(file);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const question = e.target.question.value;
+    const ans = e.target.ans.value;
+    if (!question || !ans) {
+      return false;
+    }
+    console.log(question, ans);
+  };
 
   const handleDelete = (value) => {
     Swal.fire({
@@ -227,31 +231,34 @@ const Users = () => {
       ),
     },
     {
-      title: "User Name",
-      dataIndex: "userName",
-      key: "userName",
-      render: (_, record, index) => (
-        <div className="flex items-center gap-2">
-          <p>
-            {record?.firstName} {record?.lastName}
-          </p>
-        </div>
-      ),
-    },
-    {
-      title: "Service Type",
+      title: "Service",
       dataIndex: "category",
       key: "category",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Service Type",
+      dataIndex: "serviceType",
+      key: "serviceType",
     },
     {
-      title: "Contact Number",
-      dataIndex: "mobileNumber",
-      key: "mobileNumber",
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (_, record) => <p>${record?.price}</p>,
+    },
+    {
+      title: "Service Image",
+      dataIndex: "serviceImage",
+      key: "serviceImage",
+      render: (_, record) => (
+        <div>
+          <img
+            className="h-6 w-6 object-cover"
+            src={record?.serviceImage}
+            alt=""
+          />
+        </div>
+      ),
     },
     {
       title: "Date",
@@ -266,11 +273,9 @@ const Users = () => {
       align: "right",
       render: (_, record) => (
         <div className="flex justify-end gap-8">
-          <img
-            className="cursor-pointer"
+          <CiEdit
+            className="cursor-pointer text-2xl text-[#F78F08]"
             onClick={() => setValue(record)}
-            src={eye}
-            alt="View Icon"
           />
           <img
             className="cursor-pointer"
@@ -282,10 +287,49 @@ const Users = () => {
       ),
     },
   ];
+
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <h2 style={{ fontSize: "25px", fontWeight: "normal" }}>User List</h2>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          marginBottom: "20px",
+        }}
+      >
+        <h3
+          style={{
+            color: "#333333",
+            fontSize: 24,
+            fontWeight: "500",
+            lineHeight: "24px",
+          }}
+        >
+          Services
+        </h3>
+        <div>
+          <Button
+            onClick={() => setOpenAddModel(true)}
+            style={{
+              width: "177px",
+              height: "40px",
+              boxShadow: "0px 2px 4px 0px #0000001A",
+              backgroundColor: "#3536FF",
+              border: "none",
+              transition: "none",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+            }}
+          >
+            <PlusOutlined />
+            <span style={{ margin: 0 }}>Add Service</span>
+          </Button>
+        </div>
       </div>
 
       <ConfigProvider
@@ -311,6 +355,156 @@ const Users = () => {
           className="custom-table"
         />
       </ConfigProvider>
+
+      <Modal
+        centered
+        open={openAddModel}
+        onCancel={() => setOpenAddModel(false)}
+        width={500}
+        footer={false}
+      >
+        <div className="p-6">
+          <h1
+            className=" text-[20px] font-medium"
+            style={{ marginBottom: "12px" }}
+          >
+            Add Service
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="flex justify-center items-center gap-10 mb-10">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <input
+                  onChange={onChange}
+                  type="file"
+                  name=""
+                  id="img"
+                  style={{ display: "none" }}
+                />
+                <label
+                  className="relative"
+                  htmlFor="img"
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    cursor: "pointer",
+                    borderRadius: "100%",
+                    border: "2px solid #3F857B",
+                    background: "white",
+                    backgroundImage: `url(${imgURL})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div
+                    className="absolute right-0 bottom-0"
+                    style={{
+                      borderRadius: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FaRegEdit size={22} color="#FED12F" />
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Service
+              </label>
+              <input
+                onChange={(e) => {
+                  setQuestion(e.target.value);
+                }}
+                type="Text"
+                placeholder="Enter Service Name"
+                style={{
+                  border: "1px solid #E0E4EC",
+                  padding: "10px",
+                  height: "52px",
+                  background: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  width: "100%",
+                }}
+                name="service"
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Service Type
+              </label>
+              <input
+                onChange={(e) => {
+                  setQuestion(e.target.value);
+                }}
+                type="Text"
+                placeholder="Enter Service Type"
+                style={{
+                  border: "1px solid #E0E4EC",
+                  padding: "10px",
+                  height: "52px",
+                  background: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  width: "100%",
+                }}
+                name="serviceType"
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Price
+              </label>
+              <input
+                onChange={(e) => {
+                  setQuestion(e.target.value);
+                }}
+                type="Text"
+                placeholder="Price"
+                style={{
+                  border: "1px solid #E0E4EC",
+                  padding: "10px",
+                  height: "52px",
+                  background: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  width: "100%",
+                }}
+                name="price"
+              />
+            </div>
+
+            <input
+              className="cursor-pointer"
+              htmlType="submit"
+              block
+              style={{
+                border: "none",
+                height: "44px",
+                background: "#3536FF",
+                color: "white",
+                borderRadius: "8px",
+                outline: "none",
+                padding: "10px 20px",
+              }}
+              value={`Save & change`}
+              type="submit"
+            />
+          </form>
+        </div>
+      </Modal>
 
       <Modal
         open={value}
