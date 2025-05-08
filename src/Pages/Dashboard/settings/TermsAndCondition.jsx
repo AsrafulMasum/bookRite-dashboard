@@ -48,14 +48,16 @@ const TermsAndCondition = () => {
         onClick={aboutDataSave}
         block
         style={{
-          marginTop: "30px",
+          marginTop: "60px",
+          backgroundColor: "#3536FF",
           border: "none",
-          backgroundColor: "#6C57EC",
           color: "#fff",
-          height: "40px",
+          height: "60px",
+          fontSize: "20px",
+          fontWeight: "600",
         }}
       >
-        save
+        Save
       </Button>
     </div>
   );

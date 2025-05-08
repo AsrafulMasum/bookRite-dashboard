@@ -67,19 +67,19 @@ const router = createBrowserRouter([
         element: <Banner />,
       },
       {
-        path: "/about-us",
+        path: "/settings/about-us",
         element: <AboutUs />,
       },
       {
-        path: "/privacy-policy",
+        path: "/settings/privacy-policy",
         element: <PrivacyPolicy />,
       },
       {
-        path: "/terms-and-conditions",
+        path: "/settings/terms-and-conditions",
         element: <TermsAndConditions />,
       },
       {
-        path: "/change-password",
+        path: "/settings/change-password",
         element: <ChangePassword />,
       },
       {
@@ -88,7 +88,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/settings/profile",
-        element: <AdminProfile />,
+        element: <Profile />,
       },
       {
         path: "/notification",

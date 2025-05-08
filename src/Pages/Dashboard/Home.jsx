@@ -9,7 +9,7 @@ const Home = () => {
   const statistics = [
     {
       title: "Total Users",
-      amount: 28,
+      amount: "28K",
       icon: (
         <img
           className="bg-primary p-[15px] rounded-full"
@@ -20,7 +20,7 @@ const Home = () => {
     },
     {
       title: "Total Services",
-      amount: 88,
+      amount: "88K",
       icon: (
         <img
           className="bg-primary p-[15px] rounded-full"
@@ -31,7 +31,7 @@ const Home = () => {
     },
     {
       title: "Earnings",
-      amount: 457.89,
+      amount: "$457.89K",
       icon: (
         <img
           className="bg-primary p-[15px] rounded-full"
@@ -51,10 +51,12 @@ const Home = () => {
           >
             <div>{statistic?.icon}</div>
             <div className="flex flex-col gap-1">
-              <h2 className="text-center text-xl font-medium text-sub_title">
+              <h2 className="text-xl font-medium text-sub_title">
                 {statistic?.title}
               </h2>
-              <h3 className="text-sub_title text-3xl font-semibold">$10</h3>
+              <h3 className="text-sub_title text-3xl font-semibold">
+                {statistic?.amount}
+              </h3>
             </div>
           </div>
         ))}

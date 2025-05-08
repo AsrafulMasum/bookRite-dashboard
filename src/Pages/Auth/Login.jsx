@@ -114,7 +114,7 @@ const Login = () => {
 
           <Link
             className="text-[#F78F08] text-lg font-semibold underline leading-[150%]"
-            href="/auth/forgot-password"
+            to="/auth/forgot-password"
           >
             Forgot password?
           </Link>
@@ -129,7 +129,7 @@ const Login = () => {
               height: 72,
               color: "#FEFEFE",
               fontWeight: "600",
-              fontSize: "28px",
+              fontSize: "24px",
 
               marginTop: 36,
             }}

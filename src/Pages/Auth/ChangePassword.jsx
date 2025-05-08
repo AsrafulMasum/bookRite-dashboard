@@ -56,11 +56,15 @@ const ChangePassword = () => {
         layout="vertical"
         form={form}
         onFinish={onFinish}
-        className="w-[50%] mx-auto mt-20"
+        className="w-[70%] mx-auto mt-40"
       >
         <Form.Item
           name="currentPass"
-          label={<p>Current Password</p>}
+          label={
+            <p className="text-xl font-medium text-sub_title">
+              Current Password
+            </p>
+          }
           rules={[
             {
               required: true,
@@ -69,7 +73,14 @@ const ChangePassword = () => {
           ]}
         >
           <Input.Password
-            style={{ background: "transparent" }}
+            style={{
+              width: "100%",
+              height: "56px",
+              border: "none",
+              backgroundColor: "#F5F5FF66",
+              color: "#757575",
+              paddingLeft: "20px",
+            }}
             placeholder="Enter current password"
             className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
           />
@@ -83,11 +94,20 @@ const ChangePassword = () => {
               message: "Please Enter New Password!",
             },
           ]}
-          label={<p>New Password</p>}
+          label={
+            <p className="text-xl font-medium text-sub_title">New Password</p>
+          }
           style={{ marginBottom: newPassError ? 0 : null }}
         >
           <Input.Password
-            style={{ background: "transparent" }}
+            style={{
+              width: "100%",
+              height: "56px",
+              border: "none",
+              backgroundColor: "#F5F5FF66",
+              color: "#757575",
+              paddingLeft: "20px",
+            }}
             placeholder="Enter current password"
             className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
           />
@@ -99,7 +119,11 @@ const ChangePassword = () => {
         )}
 
         <Form.Item
-          label={<p>Confirm Password</p>}
+          label={
+            <p className="text-xl font-medium text-sub_title">
+              Confirm Password
+            </p>
+          }
           name="confirmPass"
           rules={[
             {
@@ -110,7 +134,14 @@ const ChangePassword = () => {
           style={{ marginBottom: conPassError ? 0 : null }}
         >
           <Input.Password
-            style={{ background: "transparent" }}
+            style={{
+              width: "100%",
+              height: "56px",
+              border: "none",
+              backgroundColor: "#F5F5FF66",
+              color: "#757575",
+              paddingLeft: "20px",
+            }}
             placeholder="Enter current password"
             className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
           />
@@ -123,25 +154,23 @@ const ChangePassword = () => {
 
         <Form.Item
           style={{
-            marginBottom: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            marginTop: 80,
           }}
         >
           <Button
             htmlType="submit"
             block
             style={{
-              width: 178,
-              height: 48,
-              fontWeight: "400px",
-              background: "#6C57EC",
-              color: "#FCFCFC",
+              width: "100%",
+              height: 56,
+              background: "#3536FF",
+              color: "#fff",
+              fontSize: "18px",
+              fontWeight: "500",
             }}
             className="roboto-medium  text-sm leading-4"
           >
-            {isLoading ? "Changing" : "Update"}
+            {isLoading ? "Changing" : "Submit"}
           </Button>
         </Form.Item>
       </Form>

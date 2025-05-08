@@ -68,17 +68,17 @@ const Sidebar = () => {
       icon: <img src={setting} className="h-6" alt="settings icon" />,
       submenu: [
         {
-          key: "/settings/profile",
+          key: "/settings/change-password",
           label: "Change Password",
           icon: <CiLock className="text-2xl" />,
         },
         {
-          key: "/settings/about-us",
+          key: "/settings/profile",
           label: "Profile",
           icon: <CiUser className="text-2xl" />,
         },
         {
-          key: "/settings/terms-and-conditions",
+          key: "/settings/about-us",
           label: "About Us",
           icon: <PiInfoThin className="text-2xl" />,
         },
@@ -88,7 +88,7 @@ const Sidebar = () => {
           icon: <img src={privacy} className="h-[22px] pl-1" alt="icon" />,
         },
         {
-          key: "/settings/change-password",
+          key: "/settings/terms-and-conditions",
           label: "Terms of Services",
           icon: <img src={terms} className="h-6" alt="icon" />,
         },

@@ -8,6 +8,7 @@ import {
 } from "../../redux/apiSlices/authSlice";
 import { imageUrl } from "../../redux/api/baseApi";
 import { useUser } from "../../provider/User";
+import { FaRegEdit } from "react-icons/fa";
 
 const Profile = () => {
   const [profileEdit, setProfileEdit] = useState(false);
@@ -61,7 +62,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="px-52 pt-40">
+    <div className="px-52 pt-20">
       {!profileEdit ? (
         <Form form={form} className="grid grid-cols-12 gap-6" layout="vertical">
           <div className="col-span-12  flex items-center justify-between pb-6 mb-10">
@@ -73,7 +74,9 @@ const Profile = () => {
                 src={src}
               />
               <div>
-                <h2 className="text-2xl text-sub_title font-semibold ">{user?.firstName + " " + user?.lastName}</h2>
+                <h2 className="text-2xl text-sub_title font-semibold ">
+                  {user?.name}
+                </h2>
               </div>
             </div>
 
@@ -86,57 +89,77 @@ const Profile = () => {
                 alignItems: "center",
                 border: "none",
                 fontSize: "18px",
-                padding: "16px 40px 16px 40px"
+                fontWeight: "600",
+                width: "200px",
+                height: "52px",
               }}
             >
-              <LiaEditSolid fontSize={18} />
+              <LiaEditSolid className="text-lg font-semibold" />
               Edit Profile
             </Button>
           </div>
 
           <Form.Item
-            name={"firstName"}
-            label={<p>First Name</p>}
-            className="col-span-6"
+            name={"name"}
+            label={
+              <p className="text-xl font-medium text-sub_title">Full Name</p>
+            }
+            className="col-span-12"
             style={{ marginBottom: 0 }}
           >
-            <Input readOnly style={{ width: "100%", height: "45px" }} />
-          </Form.Item>
-
-          <Form.Item
-            name={"lastName"}
-            label={<p>Last Name</p>}
-            className="col-span-6"
-            style={{ marginBottom: 0 }}
-          >
-            <Input readOnly style={{ width: "100%", height: "45px" }} />
+            <Input
+              readOnly
+              style={{
+                width: "100%",
+                height: "56px",
+                border: "none",
+                backgroundColor: "#F5F5FF66",
+                color: "#757575",
+                paddingLeft: "20px",
+              }}
+            />
           </Form.Item>
 
           <Form.Item
             name={"email"}
-            label={<p>Email</p>}
+            label={<p className="text-xl font-medium text-sub_title">Email</p>}
             className="col-span-12"
             style={{ marginBottom: 0 }}
           >
-            <Input readOnly style={{ width: "100%", height: "45px" }} />
+            <Input
+              readOnly
+              style={{
+                width: "100%",
+                height: "56px",
+                border: "none",
+                backgroundColor: "#F5F5FF66",
+                color: "#757575",
+                paddingLeft: "20px",
+              }}
+            />
           </Form.Item>
 
           <Form.Item
             name={"mobileNumber"}
-            label={<p>Mobile Number</p>}
-            className="col-span-6"
+            label={
+              <p className="text-xl font-medium text-sub_title">
+                Contact Number
+              </p>
+            }
+            className="col-span-12"
             style={{ marginBottom: 0 }}
           >
-            <Input readOnly style={{ width: "100%", height: "45px" }} />
-          </Form.Item>
-
-          <Form.Item
-            name={"location"}
-            label={<p>Location</p>}
-            className="col-span-6"
-            style={{ marginBottom: 0 }}
-          >
-            <Input readOnly style={{ width: "100%", height: "45px" }} />
+            <Input
+              readOnly
+              style={{
+                width: "100%",
+                height: "56px",
+                border: "none",
+                backgroundColor: "#F5F5FF66",
+                color: "#757575",
+                paddingLeft: "20px",
+              }}
+            />
           </Form.Item>
         </Form>
       ) : (
@@ -147,102 +170,126 @@ const Profile = () => {
           className="w-full grid grid-cols-12 gap-6"
         >
           <div className="col-span-12 flex items-center gap-10 mb-10">
-            <img
-              className=""
-              src={imgURL || src}
-              width={142}
-              height={142}
-              alt=""
-              style={{ borderRadius: "8px" }}
-            />
-            <div>
-              <h2>
-                {user?.firstName} {user?.lastName}
-              </h2>
-              <label
-                htmlFor="img"
-                style={{
-                  marginTop: 0,
-                  cursor: "pointer",
-                  display: "block",
-                  color: "#6C57EC",
-                  fontSize: "18px",
-                  fontWeight: "600",
-                }}
-              >
-                Change Photo
-              </label>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <input
-                style={{ display: "none" }}
                 onChange={onChange}
                 type="file"
                 name=""
                 id="img"
+                style={{ display: "none" }}
               />
+              <label
+                className="relative"
+                htmlFor="img"
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  cursor: "pointer",
+                  borderRadius: "100%",
+                  border: "2px solid #3F857B",
+                  background: "white",
+                  backgroundImage: `url(${imgURL || src})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div
+                  className="absolute right-0 bottom-0"
+                  style={{
+                    borderRadius: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <FaRegEdit size={22} color="#FED12F" />
+                </div>
+              </label>
             </div>
           </div>
 
           <Form.Item
-            name={"firstName"}
-            label={<p>First Name</p>}
-            className="col-span-6"
+            name={"name"}
+            label={
+              <p className="text-xl font-medium text-sub_title">Full Name</p>
+            }
+            className="col-span-12"
             style={{ marginBottom: 0 }}
           >
-            <Input style={{ width: "100%", height: "45px" }} />
-          </Form.Item>
-
-          <Form.Item
-            name={"lastName"}
-            label={<p>Last Name</p>}
-            className="col-span-6"
-            style={{ marginBottom: 0 }}
-          >
-            <Input style={{ width: "100%", height: "45px" }} />
+            <Input
+              style={{
+                width: "100%",
+                height: "56px",
+                border: "none",
+                backgroundColor: "#F5F5FF66",
+                color: "#757575",
+                paddingLeft: "20px",
+              }}
+            />
           </Form.Item>
 
           <Form.Item
             name={"email"}
-            label={<p>Email</p>}
+            label={<p className="text-xl font-medium text-sub_title">Email</p>}
             className="col-span-12"
             style={{ marginBottom: 0 }}
           >
-            <Input style={{ width: "100%", height: "45px" }} />
+            <Input
+              style={{
+                width: "100%",
+                height: "56px",
+                border: "none",
+                backgroundColor: "#F5F5FF66",
+                color: "#757575",
+                paddingLeft: "20px",
+              }}
+            />
           </Form.Item>
 
           <Form.Item
             name={"mobileNumber"}
-            label={<p>Mobile Number</p>}
-            className="col-span-6"
+            label={
+              <p className="text-xl font-medium text-sub_title">
+                Contact Number
+              </p>
+            }
+            className="col-span-12"
             style={{ marginBottom: 0 }}
           >
-            <Input style={{ width: "100%", height: "45px" }} />
+            <Input
+              style={{
+                width: "100%",
+                height: "56px",
+                border: "none",
+                backgroundColor: "#F5F5FF66",
+                color: "#757575",
+                paddingLeft: "20px",
+              }}
+            />
           </Form.Item>
 
-          <Form.Item
-            name={"location"}
-            label={<p>Location</p>}
-            className="col-span-6"
-            style={{ marginBottom: 0 }}
-          >
-            <Input style={{ width: "100%", height: "45px" }} />
-          </Form.Item>
-
-          <Form.Item
-            style={{ marginBottom: 0 }}
-            className="col-span-12 flex items-center justify-center"
-          >
+          <Form.Item style={{ marginBottom: 0 }} className="col-span-12">
             <Button
               htmlType="submit"
               style={{
-                width: 200,
-                height: 45,
-                background: "#6C57EC",
+                width: "100%",
+                height: 56,
+                background: "#3536FF",
                 color: "#fff",
+                fontSize: "18px",
+                fontWeight: "500",
                 marginTop: "20px",
                 border: "none",
               }}
             >
-              {isLoading ? "Loading..." : "Update"}
+              {isLoading ? "Loading..." : "Save & Change"}
             </Button>
           </Form.Item>
         </Form>

@@ -45,15 +45,17 @@ const AboutUs = () => {
         onClick={aboutDataSave}
         block
         style={{
-          marginTop: "30px",
-          backgroundColor: "#6C57EC",
+          marginTop: "60px",
+          backgroundColor: "#3536FF",
           border: "none",
           color: "#fff",
-          height: "40px",
+          height: "60px",
+          fontSize: "20px",
+          fontWeight: "600",
         }}
       >
         {" "}
-        {isLoading ? "Updating..." : "Update"}{" "}
+        {isLoading ? "Updating..." : "Save"}
       </Button>
     </div>
   );
