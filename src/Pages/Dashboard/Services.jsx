@@ -1,11 +1,9 @@
 import { Button, ConfigProvider, Modal, Table } from "antd";
-import moment from "moment";
 import React, { useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
-import Swal from "sweetalert2";
 import { PlusOutlined } from "@ant-design/icons";
-import { FaRegEdit } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
+import { FiPlus } from "react-icons/fi";
 
 const data = [
   {
@@ -182,6 +180,8 @@ const Users = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [image, setImage] = useState();
   const [imgURL, setImgURL] = useState();
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   const onChange = (e) => {
     const file = e.target.files[0];
@@ -192,33 +192,11 @@ const Users = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const question = e.target.question.value;
-    const ans = e.target.ans.value;
-    if (!question || !ans) {
-      return false;
-    }
-    console.log(question, ans);
   };
 
-  const handleDelete = (value) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3536FF",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          confirmButtonColor: "#3536FF",
-        });
-      }
-    });
+  const handleDelete = () => {
+    console.log(deleteId);
+    setShowDelete(false);
   };
 
   const columns = [
@@ -231,7 +209,7 @@ const Users = () => {
       ),
     },
     {
-      title: "Service",
+      title: "Category",
       dataIndex: "category",
       key: "category",
     },
@@ -239,12 +217,6 @@ const Users = () => {
       title: "Service Type",
       dataIndex: "serviceType",
       key: "serviceType",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      render: (_, record) => <p>${record?.price}</p>,
     },
     {
       title: "Service Image",
@@ -261,12 +233,6 @@ const Users = () => {
       ),
     },
     {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
-    },
-    {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
@@ -279,7 +245,10 @@ const Users = () => {
           />
           <img
             className="cursor-pointer"
-            onClick={() => handleDelete(record)}
+            onClick={() => {
+              setDeleteId(record?.key);
+              setShowDelete(true);
+            }}
             src={deleteIcon}
             alt="Delete Icon"
           />
@@ -368,7 +337,7 @@ const Users = () => {
             className=" text-[20px] font-medium"
             style={{ marginBottom: "12px" }}
           >
-            Add Service
+            Add Category
           </h1>
           <form onSubmit={handleSubmit}>
             <div className="flex justify-center items-center gap-10 mb-10">
@@ -394,32 +363,22 @@ const Users = () => {
                     height: "120px",
                     cursor: "pointer",
                     borderRadius: "100%",
-                    border: "2px solid #3F857B",
-                    background: "white",
+                    background: "#E0E0E0",
                     backgroundImage: `url(${imgURL})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
                 >
-                  <div
-                    className="absolute right-0 bottom-0"
-                    style={{
-                      borderRadius: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <FaRegEdit size={22} color="#FED12F" />
-                  </div>
+                  {!imgURL && (
+                    <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                  )}
                 </label>
               </div>
             </div>
 
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
-                Service
+                Service Category
               </label>
               <input
                 onChange={(e) => {
@@ -463,16 +422,92 @@ const Users = () => {
               />
             </div>
 
+            <input
+              onClick={() => setOpenAddModel(false)}
+              className="cursor-pointer"
+              htmlType="submit"
+              block
+              style={{
+                border: "none",
+                width: "100%",
+                height: "44px",
+                marginTop: "10px",
+                background: "#3536FF",
+                color: "white",
+                borderRadius: "8px",
+                outline: "none",
+                padding: "10px 20px",
+              }}
+              value={`Submit`}
+              type="submit"
+            />
+          </form>
+        </div>
+      </Modal>
+
+      <Modal
+        centered
+        open={value}
+        onCancel={() => setValue(null)}
+        onClose={() => setValue(null)}
+        width={500}
+        footer={false}
+      >
+        <div className="p-6">
+          <h1
+            className=" text-[20px] font-medium"
+            style={{ marginBottom: "12px" }}
+          >
+            Add Category
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="flex justify-center items-center gap-10 mb-10">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <input
+                  onChange={onChange}
+                  type="file"
+                  name=""
+                  id="img"
+                  style={{ display: "none" }}
+                />
+                <label
+                  className="relative"
+                  htmlFor="img"
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    cursor: "pointer",
+                    borderRadius: "100%",
+                    background: "#E0E0E0",
+                    backgroundImage: `url(${value?.serviceImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  {!value?.serviceImage && (
+                    <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                  )}
+                </label>
+              </div>
+            </div>
+
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
-                Price
+                Service Category
               </label>
               <input
+                defaultValue={value?.category}
                 onChange={(e) => {
                   setQuestion(e.target.value);
                 }}
                 type="Text"
-                placeholder="Price"
+                placeholder="Enter Service Name"
                 style={{
                   border: "1px solid #E0E4EC",
                   padding: "10px",
@@ -482,24 +517,51 @@ const Users = () => {
                   outline: "none",
                   width: "100%",
                 }}
-                name="price"
+                name="service"
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Service Type
+              </label>
+              <input
+                defaultValue={value?.serviceType}
+                onChange={(e) => {
+                  setQuestion(e.target.value);
+                }}
+                type="Text"
+                placeholder="Enter Service Type"
+                style={{
+                  border: "1px solid #E0E4EC",
+                  padding: "10px",
+                  height: "52px",
+                  background: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  width: "100%",
+                }}
+                name="serviceType"
               />
             </div>
 
             <input
+              onClick={() => setValue(null)}
               className="cursor-pointer"
               htmlType="submit"
               block
               style={{
                 border: "none",
+                width: "100%",
                 height: "44px",
+                marginTop: "10px",
                 background: "#3536FF",
                 color: "white",
                 borderRadius: "8px",
                 outline: "none",
                 padding: "10px 20px",
               }}
-              value={`Save & change`}
+              value={`Submit`}
               type="submit"
             />
           </form>
@@ -507,48 +569,25 @@ const Users = () => {
       </Modal>
 
       <Modal
-        open={value}
-        onCancel={() => setValue(null)}
-        onClose={() => setValue(null)}
+        centered
+        open={showDelete}
+        onCancel={() => setShowDelete(false)}
+        width={400}
         footer={false}
       >
-        <div>
-          {/* <img
-            width={120}
-            style={{ borderRadius: "12px", margin: "0 auto" }}
-            src={
-              value?.image?.startsWith("https")
-                ? value?.image
-                : `${imageUrl}${value?.image}`
-            }
-            alt=""
-          /> */}
-
-          <div className="flex items-center justify-between mt-[35px]">
-            <div>
-              <p className="pb-[5px]">User Name</p>
-              <p className="pb-[5px]">Email</p>
-              <p className="pb-[5px]">Contact Number</p>
-              <p className="pb-[5px]">Service Type</p>
-              <p>Start Date</p>
-            </div>
-
-            <div>
-              <p className="pb-[5px] text-right">
-                {value?.firstName} {value?.firstName}{" "}
-              </p>
-              <p className="pb-[5px] text-right">
-                {value?.email ? value?.email : "Not Added yet"}
-              </p>
-              <p className="pb-[5px] text-right">
-                {value?.mobileNumber ? value?.mobileNumber : "Not Added yet"}
-              </p>
-              <p className="pb-[5px] text-right">
-                {value?.appId ? "Cloth wash" : "Home Service"}
-              </p>
-              <p className="text-right">05 jun,2025</p>
-            </div>
-          </div>
+        <div className="p-6 text-center">
+          <p className="text-[#d90b04] text-center font-semibold">
+            Are you sure !
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content ?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#3536FF] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
         </div>
       </Modal>
     </>
