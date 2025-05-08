@@ -58,7 +58,7 @@ const Sidebar = () => {
       icon: <img src={subscription} className="h-6" alt="subscription icon" />,
     },
     {
-      key: "/category",
+      key: "/faq",
       label: "FAQ",
       icon: <img src={faq} className="h-6" alt="faq icon" />,
     },

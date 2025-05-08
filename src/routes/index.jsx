@@ -23,6 +23,7 @@ import PrivacyPolicy from "../Pages/Dashboard/settings/PrivacyPolicy";
 import Banner from "../Pages/Dashboard/settings/Banner";
 import TermsAndConditions from "../Pages/Dashboard/settings/TermsAndCondition";
 import Login from "../Pages/Auth/Login";
+import FAQ from "../Pages/Dashboard/FAQ";
 
 const router = createBrowserRouter([
   {
@@ -35,24 +36,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/earnings",
-        element: <Earnings />,
-      },
-      {
-        path: "/artists",
-        element: <Artists />,
-      },
-      {
         path: "/users",
         element: <Users />,
       },
       {
-        path: "/subscription",
+        path: "/subscriptions",
         element: <Subscription />,
       },
       {
-        path: "/admin",
-        element: <Admin />,
+        path: "/faq",
+        element: <FAQ />,
       },
       {
         path: "/category",
