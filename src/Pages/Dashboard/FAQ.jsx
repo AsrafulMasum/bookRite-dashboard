@@ -314,7 +314,7 @@ const FAQ = () => {
               style={{
                 border: "none",
                 height: "44px",
-                background: "#BB6D42",
+                background: "#3536FF",
                 color: "white",
                 borderRadius: "8px",
                 outline: "none",
@@ -343,7 +343,7 @@ const FAQ = () => {
           </p>
           <button
             onClick={handleDelete}
-            className="bg-[#BB6D42] py-2 px-5 text-white rounded-md"
+            className="bg-[#3536FF] py-2 px-5 text-white rounded-md"
           >
             Confirm
           </button>

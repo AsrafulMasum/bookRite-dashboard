@@ -576,7 +576,7 @@ const Users = () => {
         footer={false}
       >
         <div className="p-6 text-center">
-          <p className="text-[#d90b04] text-center font-semibold">
+          <p className="text-[#D93D04] text-center font-semibold">
             Are you sure !
           </p>
           <p className="pt-4 pb-12 text-center">

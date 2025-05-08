@@ -44,10 +44,6 @@ const router = createBrowserRouter([
         element: <FAQ />,
       },
       {
-        path: "/category",
-        element: <Category />,
-      },
-      {
         path: "/services",
         element: <Services />,
       },
@@ -72,19 +68,11 @@ const router = createBrowserRouter([
         element: <ChangePassword />,
       },
       {
-        path: "/sub-category",
-        element: <SubCategory />,
-      },
-      {
         path: "/settings/profile",
         element: <Profile />,
       },
       {
         path: "/notification",
-        element: <Notifications />,
-      },
-      {
-        path: "/settings",
         element: <Notifications />,
       },
       {

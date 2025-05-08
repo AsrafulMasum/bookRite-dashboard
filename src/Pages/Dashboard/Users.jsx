@@ -1,10 +1,8 @@
 import { ConfigProvider, Modal, Table } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
-import { imageUrl } from "../../redux/api/baseApi";
 import eye from "../../assets/eye.svg";
 import deleteIcon from "../../assets/delete.svg";
-import Swal from "sweetalert2";
 
 const data = [
   {
@@ -195,26 +193,12 @@ const Users = () => {
   const itemsPerPage = 10;
   // const { data: users } = useUsersQuery({ page: page, search: search });
   const [value, setValue] = useState(null);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
-  const handleDelete = (value) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3536FF",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          confirmButtonColor: "#3536FF",
-        });
-      }
-    });
+  const handleDelete = () => {
+    console.log(deleteId);
+    setShowDelete(false);
   };
 
   const columns = [
@@ -274,7 +258,10 @@ const Users = () => {
           />
           <img
             className="cursor-pointer"
-            onClick={() => handleDelete(record)}
+            onClick={() => {
+              setDeleteId(record?.key);
+              setShowDelete(true);
+            }}
             src={deleteIcon}
             alt="Delete Icon"
           />
@@ -331,7 +318,7 @@ const Users = () => {
 
             <div>
               <p className="pb-[5px] text-right">
-                {value?.firstName} {value?.firstName}{" "}
+                {value?.firstName} {value?.lastName}{" "}
               </p>
               <p className="pb-[5px] text-right">
                 {value?.email ? value?.email : "Not Added yet"}
@@ -345,6 +332,29 @@ const Users = () => {
               <p className="text-right">05 jun,2025</p>
             </div>
           </div>
+        </div>
+      </Modal>
+
+      <Modal
+        centered
+        open={showDelete}
+        onCancel={() => setShowDelete(false)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure !
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content ?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#3536FF] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
         </div>
       </Modal>
     </>
