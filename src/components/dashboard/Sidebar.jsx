@@ -43,7 +43,7 @@ const Sidebar = () => {
       icon: <img src={users} className="h-6" alt="users icon" />,
     },
     {
-      key: "/artists",
+      key: "/services",
       label: "Services",
       icon: <img src={services} className="h-6" alt="services icon" />,
     },

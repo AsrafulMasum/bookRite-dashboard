@@ -228,8 +228,8 @@ const Users = () => {
     },
     {
       title: "User Name",
-      dataIndex: "artist",
-      key: "artist",
+      dataIndex: "userName",
+      key: "userName",
       render: (_, record, index) => (
         <div className="flex items-center gap-2">
           <p>
