@@ -68,6 +68,7 @@
 .custom-table .ant-table-thead > tr > th {
   background-color: #e6e6ff80;
   color: #3536ff;
+  font-size: medium;
 }
 
 .custom-table .ant-table-tbody > tr > td {
