@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
-import AddInputFrom from "./AddInputForm";
 import { IoCheckmarkCircle } from "react-icons/io5";
+import AddInputFrom from "../../components/dashboard/AddInputForm";
 
 const Subscription = () => {
   const [openAddModel, setOpenAddModel] = useState(false);

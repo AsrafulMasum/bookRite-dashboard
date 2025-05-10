@@ -11,6 +11,7 @@ const formItemLayoutWithOutLabel = {
 
 const AddInputFrom = () => {
   const [form] = Form.useForm();
+
   const onFinish = (values) => {
     console.log("Received values of form:", values);
   };
@@ -57,11 +58,11 @@ const AddInputFrom = () => {
 
       {/* Dynamic Passenger Fields */}
       <Form.List
-        name="names"
+        name="packageDetails"
         rules={[
           {
-            validator: async (_, names) => {
-              if (!names || names.length < 1) {
+            validator: async (_, packageDetails) => {
+              if (!packageDetails || packageDetails.length < 1) {
                 return Promise.reject(new Error("At least 1 fields"));
               }
             },
@@ -115,7 +116,7 @@ const AddInputFrom = () => {
                 icon={<PlusOutlined />}
                 style={{ width: "90%", height: 48 }}
               >
-                Add field
+                Add field for package details
               </Button>
               <Form.ErrorList errors={errors} />
             </Form.Item>
