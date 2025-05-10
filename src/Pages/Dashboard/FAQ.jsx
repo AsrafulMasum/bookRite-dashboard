@@ -116,6 +116,7 @@ const FAQ = () => {
           </div>
         </div>
       </div>
+
       <div className="bg-white pb-6 px-4 rounded-md">
         {data.map((item, index) => (
           <div key={index} className="flex justify-between items-start gap-4 ">
@@ -228,6 +229,7 @@ const FAQ = () => {
               htmlType="submit"
               block
               style={{
+                width: "100%",
                 border: "none",
                 height: "44px",
                 background: "#3536FF",
@@ -312,6 +314,7 @@ const FAQ = () => {
               htmlType="submit"
               block
               style={{
+                width: "100%",
                 border: "none",
                 height: "44px",
                 background: "#3536FF",

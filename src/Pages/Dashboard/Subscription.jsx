@@ -1,19 +1,137 @@
 import React, { useEffect, useState } from "react";
-import card1 from "../../assets/SUBS1.jpg";
-import card2 from "../../assets/SUBS2.png";
-import card3 from "../../assets/SUBS3.png";
-import { FaCircleCheck } from "react-icons/fa6";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Modal } from "antd";
+import AddInputFrom from "./AddInputForm";
+import { IoCheckmarkCircle } from "react-icons/io5";
 
 const Subscription = () => {
+  const [openAddModel, setOpenAddModel] = useState(false);
+
+  const data = [
+    {
+      packageName: "Basic",
+      packageFees: 5,
+      packagePrice: 30,
+      packageDetails: [
+        "10 days free trail",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+      ],
+    },
+    {
+      packageName: "Gold",
+      packageFees: 3,
+      packagePrice: 110,
+      packageDetails: [
+        "10 days free trail",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+      ],
+    },
+    {
+      packageName: "Premium",
+      packageFees: 0,
+      packagePrice: 180,
+      packageDetails: [
+        "10 days free trail",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+        "It is a long established fact that a reader will be distracted by the readable content",
+      ],
+    },
+  ];
+
   return (
     <div>
       {/* header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Subscription</h1>
-        <button className="bg-primary text-white h-10 px-4 rounded-md">
-          Create Subscription
-        </button>
+        <h2 className="text-2xl font-semibold">Subscription</h2>
+        <Button
+          onClick={() => setOpenAddModel(true)}
+          style={{
+            width: "200px",
+            height: "40px",
+            boxShadow: "0px 2px 4px 0px #0000001A",
+            backgroundColor: "#3536FF",
+            border: "none",
+            transition: "none",
+            color: "#fff",
+            display: "flex",
+            justifyItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+          }}
+        >
+          <PlusOutlined />
+          <span>Create Subscription</span>
+        </Button>
       </div>
+
+      <div className="flex justify-center items-center gap-10 mt-10">
+        {data?.map((singleData) => (
+          <div className="max-w-[320px] bg-[#F4F4F4] py-4 px-6 border border-[#B1B1FF] rounded-lg">
+            <h4 className="text-text text-xl font-medium text-center pb-2.5">
+              Get {singleData?.packageName} Package
+            </h4>
+            <p className="text-sub_title text-sm leading-[148%] text-center pb-4">
+              {singleData?.packageFees} % Service Fee Per Booking
+            </p>
+            <h4 className="text-text text-center pb-3">
+              <span className="text-4xl font-semibold">
+                $ {singleData?.packagePrice}
+              </span>{" "}
+              / per year
+            </h4>
+            <div className="space-y-4">
+              {singleData?.packageDetails?.map((details) => (
+                <div className="flex gap-2">
+                  <IoCheckmarkCircle className="min-w-[24px] text-[#00BA00]" />
+                  <p className="text-xs text-sub_title leading-[148%]">
+                    {details}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <Button
+              style={{
+                width: "100%",
+                height: 40,
+                marginTop: "24px",
+                backgroundColor: "#3536FF",
+                color: "white",
+                fontSize: "16px",
+                fontWeight: "500",
+                borderRadius: "8px",
+              }}
+            >
+              Get Started
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      <Modal
+        centered
+        open={openAddModel}
+        onCancel={() => setOpenAddModel(false)}
+        width={600}
+        footer={false}
+      >
+        <div className="p-6">
+          <h1
+            className=" text-[20px] font-medium"
+            style={{ marginBottom: "12px" }}
+          >
+            Add Package
+          </h1>
+          <AddInputFrom />
+        </div>
+      </Modal>
     </div>
   );
 };
