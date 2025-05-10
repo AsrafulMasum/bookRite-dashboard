@@ -1,8 +1,8 @@
 import { ConfigProvider, Modal, Table } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
-import eye from "../../assets/eye.svg";
+import { useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
+import { BsInfoCircle } from "react-icons/bs";
 
 const data = [
   {
@@ -188,7 +188,6 @@ const data = [
 ];
 
 const Users = () => {
-  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   // const { data: users } = useUsersQuery({ page: page, search: search });
@@ -250,11 +249,9 @@ const Users = () => {
       align: "right",
       render: (_, record) => (
         <div className="flex justify-end gap-8">
-          <img
-            className="cursor-pointer"
+          <BsInfoCircle
+            className="text-lg text-[#F78F08] cursor-pointer"
             onClick={() => setValue(record)}
-            src={eye}
-            alt="View Icon"
           />
           <img
             className="cursor-pointer"
@@ -269,6 +266,7 @@ const Users = () => {
       ),
     },
   ];
+
   return (
     <>
       <div className="flex items-center justify-between mb-6">
