@@ -3,9 +3,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import AddInputFrom from "../../components/dashboard/AddInputForm";
+import EditInputFrom from "../../components/dashboard/EditInputForm";
 
 const Subscription = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   const data = [
     {
@@ -98,6 +100,7 @@ const Subscription = () => {
               ))}
             </div>
             <Button
+              onClick={() => setOpenEditModal(true)}
               style={{
                 width: "100%",
                 height: 40,
@@ -109,11 +112,29 @@ const Subscription = () => {
                 borderRadius: "8px",
               }}
             >
-              Get Started
+              Edit Package
             </Button>
           </div>
         ))}
       </div>
+
+      <Modal
+        centered
+        open={openEditModal}
+        onCancel={() => setOpenEditModal(false)}
+        width={600}
+        footer={false}
+      >
+        <div className="p-6">
+          <h1
+            className=" text-[20px] font-medium"
+            style={{ marginBottom: "12px" }}
+          >
+            Edit Package
+          </h1>
+          <EditInputFrom />
+        </div>
+      </Modal>
 
       <Modal
         centered
