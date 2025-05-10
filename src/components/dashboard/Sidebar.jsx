@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { IoSettingsOutline } from "react-icons/io5";
 import { CiLock, CiLogout, CiUser } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
 import { PiInfoThin } from "react-icons/pi";
