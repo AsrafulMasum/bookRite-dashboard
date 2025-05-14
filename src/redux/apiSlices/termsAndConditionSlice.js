@@ -1,7 +1,7 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
 
-const termsAndConditionSlice = api.injectEndpoints({
+const termsAndConditionSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         updateTermsAndConditions: builder.mutation({
             query: ({id, description})=> {

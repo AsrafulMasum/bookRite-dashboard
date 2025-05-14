@@ -1,4 +1,3 @@
-import React from "react";
 import totalUsers from "../../assets/totalUsers.svg";
 import totalServices from "../../assets/totalServices.svg";
 import earnings from "../../assets/earnings.svg";

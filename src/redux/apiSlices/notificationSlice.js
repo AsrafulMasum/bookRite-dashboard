@@ -1,6 +1,6 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
-const notificationSlice = api.injectEndpoints({
+const notificationSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         notification: builder.query({
             query: ()=> {

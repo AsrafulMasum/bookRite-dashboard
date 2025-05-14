@@ -1,6 +1,6 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
-const aboutUsSlice = api.injectEndpoints({
+const aboutUsSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         updateAboutUs: builder.mutation({
             query: ({id, description})=> {

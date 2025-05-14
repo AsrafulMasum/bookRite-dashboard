@@ -1,6 +1,6 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
-const earningSlice = api.injectEndpoints({
+const earningSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         earnings: builder.query({
             query: ({page, search})=> {

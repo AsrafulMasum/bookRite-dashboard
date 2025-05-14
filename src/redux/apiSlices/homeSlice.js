@@ -1,6 +1,6 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
-const homeSlice = api.injectEndpoints({
+const homeSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         summary: builder.query({
             query: ()=> {

@@ -1,7 +1,7 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
 
-const eventSlice = api.injectEndpoints({
+const eventSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         createEvent: builder.mutation({
             query: (eventData)=> {

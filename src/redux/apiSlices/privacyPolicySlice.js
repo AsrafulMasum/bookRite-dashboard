@@ -1,7 +1,7 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
 
-const privacyPolicySlice = api.injectEndpoints({
+const privacyPolicySlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         updatePricyPolicy: builder.mutation({
             query: ({id,  description})=> {

@@ -1,7 +1,7 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
 
-const categorySlice = api.injectEndpoints({
+const categorySlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         createCategory: builder.mutation({
             query: (categoryData)=> {

@@ -1,6 +1,6 @@
-import { api } from "../api/baseApi";
+import { baseApi } from "../api/baseApi";
 
-const artistSlice = api.injectEndpoints({
+const artistSlice = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         artists: builder.query({
             query: ({page, search})=> {
