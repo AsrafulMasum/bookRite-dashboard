@@ -1,5 +1,4 @@
-import { Button, Form, Input } from "antd";
-import React from "react";
+import { Form, Input } from "antd";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +6,7 @@ const ResetPassword = () => {
   const email = new URLSearchParams(location.search).get("email");
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     navigate(`/auth/login`);
   };
 
@@ -71,12 +70,22 @@ const ResetPassword = () => {
           </label>
           <Form.Item
             style={{ marginBottom: 0 }}
-            name="password"
+            name="confirm-password"
             rules={[
               {
                 required: true,
                 message: "Please input your Password!",
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("The two passwords do not match!")
+                  );
+                },
+              }),
             ]}
           >
             <Input.Password

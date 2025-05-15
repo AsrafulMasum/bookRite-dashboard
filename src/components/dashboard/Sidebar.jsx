@@ -96,7 +96,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-dvw">
       <aside className="fixed top-[30px] bottom-[30px] bg-[#E6E6FF66] rounded-tr-[16px] rounded-br-[16px] py-6 overflow-y-auto max-h-screen pr-28 min-[1700px]:pr-40">
         <div className="flex justify-center mb-6">
           <img src={logo} alt="Logo" />

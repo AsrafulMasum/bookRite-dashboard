@@ -1,11 +1,11 @@
-import { Button, Form, Input } from "antd";
-import React from "react";
+import { Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    console.log(values)
     navigate(`/auth/verify-otp?email=${values?.email}`);
   };
 

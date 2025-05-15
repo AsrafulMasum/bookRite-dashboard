@@ -1,5 +1,4 @@
 import { Checkbox, Form, Input } from "antd";
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
 // import Cookies from "js-cookie";
@@ -8,6 +7,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    console.log(values)
     navigate("/");
     // Cookies.set('token', token, { expires: 7 })
   };

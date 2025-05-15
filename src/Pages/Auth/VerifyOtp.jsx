@@ -1,5 +1,5 @@
-import { Button, Form, Typography } from "antd";
-import React, { useState } from "react";
+import { Form, Typography } from "antd";
+import  { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate, useParams } from "react-router-dom";
 const { Text } = Typography;
@@ -10,6 +10,7 @@ const VerifyOtp = () => {
   const email = new URLSearchParams(location.search).get("email");
 
   const onFinish = async (values) => {
+    console.log(values)
     navigate(`/auth/reset-password?email=${email}`);
   };
 
