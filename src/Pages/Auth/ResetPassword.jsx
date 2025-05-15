@@ -1,14 +1,19 @@
-import { Form, Input } from "antd";
+import { Form, Input, Button } from "antd";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const ResetPassword = () => {
   const email = new URLSearchParams(location.search).get("email");
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    navigate(`/auth/login`);
-  };
+  const onFinish = useCallback(
+    (values) => {
+      // TODO: Add API call to reset password using values and email
+      navigate(`/auth/login`);
+    },
+    [navigate]
+  );
 
   return (
     <div className="w-full">
@@ -63,7 +68,7 @@ const ResetPassword = () => {
         <div style={{ marginBottom: "60px" }}>
           <label
             style={{ display: "block", marginBottom: "12px" }}
-            htmlFor="password"
+            htmlFor="confirm-password"
             className="text-2xl font-medium leading-6 text-[#333333]"
           >
             Confirm New Password
@@ -71,10 +76,11 @@ const ResetPassword = () => {
           <Form.Item
             style={{ marginBottom: 0 }}
             name="confirm-password"
+            dependencies={["password"]}
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: "Please confirm your Password!",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -112,22 +118,25 @@ const ResetPassword = () => {
         </div>
 
         <Form.Item style={{ marginBottom: 0 }}>
-          <button
+          <Button
             htmlType="submit"
-            type="submit"
+            type="primary"
+            block
             style={{
               width: "100%",
               height: 72,
               color: "#FEFEFE",
               fontWeight: "600",
               fontSize: "28px",
-
               marginTop: 36,
+              background: "#3536FF",
+              border: "none",
+              borderRadius: "16px",
             }}
             className="flex items-center justify-center bg-primary rounded-2xl"
           >
-            {/* {isLoading? < Spinner/> : "Sign in"} */} confirm
-          </button>
+            Confirm
+          </Button>
         </Form.Item>
       </Form>
     </div>

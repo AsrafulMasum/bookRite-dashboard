@@ -174,7 +174,7 @@ const Sidebar = () => {
 
           <button
             onClick={handleLogout}
-            className="absolute bottom-0 flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 hover:bg-red-100 transition-all mt-4"
+            className="absolute bottom-0 flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 mt-4"
           >
             <CiLogout size={24} />
             <span className="text-lg">Log Out</span>

@@ -1,20 +1,22 @@
-import { Form, Typography } from "antd";
-import  { useState } from "react";
+import { Form, Typography, Button } from "antd";
+import { useState, useCallback } from "react";
 import OTPInput from "react-otp-input";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState();
+  const [otp, setOtp] = useState("");
   const email = new URLSearchParams(location.search).get("email");
 
-  const onFinish = async (values) => {
-    console.log(values)
+  const onFinish = useCallback(() => {
+    // TODO: Add OTP verification API call here
     navigate(`/auth/reset-password?email=${email}`);
-  };
+  }, [navigate, email]);
 
-  const handleResendEmail = async () => {};
+  const handleResendEmail = useCallback(() => {
+    // TODO: Add resend OTP API call here
+  }, []);
 
   return (
     <div className="w-full">
@@ -23,7 +25,7 @@ const VerifyOtp = () => {
           Verify OTP
         </h1>
         <p className="text-[#757575] leading-[110%]">
-          Please check your email. We have sent a code to contact @gmail.com
+          Please check your email. We have sent a code to {email || "your email"}
         </p>
       </div>
 
@@ -57,7 +59,7 @@ const VerifyOtp = () => {
               fontSize: "16px",
             }}
           >
-            Don't received code?
+            Didn't receive code?
           </Text>
 
           <p
@@ -75,22 +77,26 @@ const VerifyOtp = () => {
         </div>
 
         <Form.Item style={{ marginBottom: 0 }}>
-          <button
+          <Button
             htmlType="submit"
-            type="submit"
+            type="primary"
+            block
             style={{
               width: "100%",
               height: 72,
               color: "#FEFEFE",
               fontWeight: "600",
               fontSize: "28px",
-
               marginTop: 36,
+              background: "#3536FF",
+              border: "none",
+              borderRadius: "16px",
             }}
             className="flex items-center justify-center bg-primary rounded-2xl"
+            disabled={otp.length !== 4}
           >
-            {/* {isLoading? < Spinner/> : "Sign in"} */} Verity
-          </button>
+            Verify
+          </Button>
         </Form.Item>
       </Form>
     </div>

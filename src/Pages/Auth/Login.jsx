@@ -1,16 +1,20 @@
-import { Checkbox, Form, Input } from "antd";
+import { Checkbox, Form, Input, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
+import { useCallback } from "react";
 // import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
-    console.log(values)
-    navigate("/");
-    // Cookies.set('token', token, { expires: 7 })
-  };
+  const onFinish = useCallback(
+    async (values) => {
+      // TODO: Replace with API call and token handling
+      // Cookies.set('token', token, { expires: 7 })
+      navigate("/");
+    },
+    [navigate]
+  );
 
   return (
     <div className="w-full">
@@ -30,18 +34,15 @@ const Login = () => {
             className="text-2xl font-medium leading-6 text-[#636363]"
             style={{ display: "block", marginBottom: "12px" }}
           >
-            {" "}
-            Email{" "}
+            Email
           </label>
           <Form.Item
             style={{ marginBottom: 0 }}
             name="email"
             id="email"
             rules={[
-              {
-                required: true,
-                message: "Please input your email!",
-              },
+              { required: true, message: "Please input your email!" },
+              { type: "email", message: "Please enter a valid email!" },
             ]}
           >
             <Input
@@ -72,10 +73,7 @@ const Login = () => {
             style={{ marginBottom: 0 }}
             name="password"
             rules={[
-              {
-                required: true,
-                message: "Please input your Password!",
-              },
+              { required: true, message: "Please input your Password!" },
             ]}
           >
             <Input.Password
@@ -121,22 +119,25 @@ const Login = () => {
         </div>
 
         <Form.Item style={{ marginBottom: 0 }}>
-          <button
+          <Button
             htmlType="submit"
-            type="submit"
+            type="primary"
+            block
             style={{
               width: "100%",
               height: 72,
               color: "#FEFEFE",
               fontWeight: "600",
               fontSize: "24px",
-
               marginTop: 36,
+              background: "#3536FF",
+              border: "none",
+              borderRadius: "16px",
             }}
             className="flex items-center justify-center bg-primary rounded-2xl"
           >
-            {/* {isLoading? < Spinner/> : "Sign in"} */} Sign in
-          </button>
+            Sign in
+          </Button>
         </Form.Item>
       </Form>
     </div>

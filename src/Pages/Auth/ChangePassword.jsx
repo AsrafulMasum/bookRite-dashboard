@@ -1,54 +1,43 @@
 import { Button, Form, Input } from "antd";
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { useChangePasswordMutation } from "../../redux/apiSlices/authSlice";
 
 const ChangePassword = () => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
-  const [newPassError, setNewPassError] = useState("");
-  const [conPassError, setConPassError] = useState("");
+  const [errors, setErrors] = useState({ newPass: "", confirmPass: "" });
   const [form] = Form.useForm();
 
-  form.setFieldsValue({});
-
-  const validatePasswordChange = (values) => {
-    let errors = {};
+  const validatePasswordChange = useCallback((values) => {
+    let newErrors = { newPass: "", confirmPass: "" };
 
     if (values?.currentPass === values.newPass) {
-      errors.newPassError = "The New password is similar to the old Password";
-      setNewPassError(errors.newPassError);
-    } else {
-      setNewPassError("");
+      newErrors.newPass = "The New password is similar to the old Password";
     }
-
     if (values?.newPass !== values.confirmPass) {
-      errors.conPassError = "New Password and Confirm Password Don't Match";
-      setConPassError(errors.conPassError);
-    } else {
-      setConPassError("");
+      newErrors.confirmPass = "New Password and Confirm Password Don't Match";
     }
+    setErrors(newErrors);
+    return newErrors;
+  }, []);
 
-    return errors;
-  };
-
-  const onFinish = async (values) => {
-    const errors = validatePasswordChange(values);
-
-    if (Object.keys(errors).length === 0) {
-      try {
-        await changePassword({ ...values })
-          .unwrap()
-          .then(({ status, message, token }) => {
-            if (status) {
-              toast.success(message);
-              form.resetFields();
-            }
-          });
-      } catch (error) {
-        toast.error(error);
+  const onFinish = useCallback(
+    async (values) => {
+      const validation = validatePasswordChange(values);
+      if (!validation.newPass && !validation.confirmPass) {
+        try {
+          const { status, message } = await changePassword({ ...values }).unwrap();
+          if (status) {
+            toast.success(message);
+            form.resetFields();
+          }
+        } catch (error) {
+          toast.error(error?.data?.message || "Failed to change password");
+        }
       }
-    }
-  };
+    },
+    [changePassword, form, validatePasswordChange]
+  );
 
   return (
     <div>
@@ -97,7 +86,7 @@ const ChangePassword = () => {
           label={
             <p className="text-xl font-medium text-sub_title">New Password</p>
           }
-          style={{ marginBottom: newPassError ? 0 : null }}
+          style={{ marginBottom: errors.newPass ? 0 : undefined }}
         >
           <Input.Password
             style={{
@@ -108,13 +97,13 @@ const ChangePassword = () => {
               color: "#757575",
               paddingLeft: "20px",
             }}
-            placeholder="Enter current password"
+            placeholder="Enter new password"
             className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
           />
         </Form.Item>
-        {newPassError && (
-          <label style={{ display: "block", color: "red" }} htmlFor="error">
-            {newPassError}
+        {errors.newPass && (
+          <label style={{ display: "block", color: "red" }}>
+            {errors.newPass}
           </label>
         )}
 
@@ -131,7 +120,7 @@ const ChangePassword = () => {
               message: "Please Enter Confirm Password!",
             },
           ]}
-          style={{ marginBottom: conPassError ? 0 : null }}
+          style={{ marginBottom: errors.confirmPass ? 0 : undefined }}
         >
           <Input.Password
             style={{
@@ -142,21 +131,17 @@ const ChangePassword = () => {
               color: "#757575",
               paddingLeft: "20px",
             }}
-            placeholder="Enter current password"
+            placeholder="Confirm new password"
             className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
           />
         </Form.Item>
-        {conPassError && (
-          <label style={{ display: "block", color: "red" }} htmlFor="error">
-            {conPassError}
+        {errors.confirmPass && (
+          <label style={{ display: "block", color: "red" }}>
+            {errors.confirmPass}
           </label>
         )}
 
-        <Form.Item
-          style={{
-            marginTop: 80,
-          }}
-        >
+        <Form.Item style={{ marginTop: 80 }}>
           <Button
             htmlType="submit"
             block
@@ -168,7 +153,7 @@ const ChangePassword = () => {
               fontSize: "18px",
               fontWeight: "500",
             }}
-            className="roboto-medium  text-sm leading-4"
+            className="roboto-medium text-sm leading-4"
           >
             {isLoading ? "Changing" : "Submit"}
           </Button>
