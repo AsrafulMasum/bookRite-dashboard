@@ -1,4 +1,4 @@
-import { ConfigProvider, Modal, Table } from "antd";
+import { ConfigProvider, Modal, Select, Table } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
@@ -381,6 +381,9 @@ const Users = () => {
     },
   ];
 
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+  };
   return (
     <>
       <div className="flex items-center justify-between mb-6">
@@ -515,9 +518,19 @@ const Users = () => {
               <p className="pb-[5px] text-right">
                 {moment(value?.createdAt).format("L")}
               </p>
-              <p className="text-right">
+              {/* <p className="text-right">
                 {value?.status ? value?.status : "Ongoing"}
-              </p>
+              </p> */}
+              <Select
+                defaultValue="ongoing"
+                style={{ width: 200 }}
+                onChange={handleChange}
+                options={[
+                  { value: "ongoing", label: "Ongoing" },
+                  { value: "cancel", label: "Cancel" },
+                  { value: "completed", label: "Completed" },
+                ]}
+              />
             </div>
           </div>
         </div>
