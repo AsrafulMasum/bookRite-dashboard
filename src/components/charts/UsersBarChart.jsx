@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { useState, useMemo } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import {
   BarChart,
@@ -8,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -44,8 +42,12 @@ const yearlyUserStatsData = {
 };
 
 const UsersBarChart = () => {
-  const [selectedYear, setSelectedYear] = useState("2024");
-  const userStatsData = yearlyUserStatsData[selectedYear];
+  const years = Object.keys(yearlyUserStatsData);
+  const [selectedYear, setSelectedYear] = useState(years[years.length - 1]);
+  const userStatsData = useMemo(
+    () => yearlyUserStatsData[selectedYear] || [],
+    [selectedYear]
+  );
 
   return (
     <div className="bg-[#F7F7FF] p-4 rounded-xl shadow-sm mb-6">
@@ -54,7 +56,7 @@ const UsersBarChart = () => {
           Total users statistics
         </h3>
         <div className="flex items-center space-x-4">
-          {/* Legend manually created */}
+          {/* Legend */}
           <div className="flex items-center space-x-3 text-sm">
             <div className="flex items-center space-x-1">
               <span className="w-3 h-3 rounded-full bg-sub_title" />
@@ -65,16 +67,18 @@ const UsersBarChart = () => {
               <span className="text-primary">Service Provider</span>
             </div>
           </div>
-
           {/* Dropdown */}
           <div className="relative">
+            <label htmlFor="year-select" className="sr-only">Select year</label>
             <select
+              id="year-select"
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
               className="bg-white border border-gray-300 rounded-md px-3 py-1 text-sm appearance-none pr-8 outline-none"
             >
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
+              {years.map((year) => (
+                <option key={year} value={year}>{year}</option>
+              ))}
             </select>
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
               <MdOutlineKeyboardArrowDown className="text-gray-500 text-lg" />
@@ -82,7 +86,6 @@ const UsersBarChart = () => {
           </div>
         </div>
       </div>
-
       <ResponsiveContainer width="100%" height={230}>
         <BarChart data={userStatsData} barSize={10}>
           <CartesianGrid vertical={false} stroke="#757575" />

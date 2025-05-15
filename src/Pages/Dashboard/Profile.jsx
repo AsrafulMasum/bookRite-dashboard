@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { LiaEditSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import {
@@ -25,53 +25,57 @@ const Profile = () => {
     }
   }, [user, form]);
 
-  const onChange = (e) => {
+  const onChange = useCallback((e) => {
     const file = e.target.files[0];
-    const imgUrl = URL.createObjectURL(file);
-    setImgURL(imgUrl);
-    setImage(file);
-  };
-
-  const src = user?.image?.startsWith("https")
-    ? user?.image
-    : `${imageUrl}${user?.image}`;
-
-  const handleSubmit = async (values) => {
-    const formData = new FormData();
-
-    if (image) {
-      formData.append("image", image);
+    if (file) {
+      const imgUrl = URL.createObjectURL(file);
+      setImgURL(imgUrl);
+      setImage(file);
     }
+  }, []);
 
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
-    });
+  const src =
+    user?.image && user?.image.startsWith("https")
+      ? user?.image
+      : user?.image
+      ? `${imageUrl}${user?.image}`
+      : "/default-avatar.png";
 
-    try {
-      await updateProfile(formData)
-        .unwrap()
-        .then(({ statusCode, status, message }) => {
-          if (status) {
-            toast.success(message);
-            refetch();
-          }
-        });
-    } catch ({ message }) {
-      toast.error(message);
-    }
-  };
+  const handleSubmit = useCallback(
+    async (values) => {
+      const formData = new FormData();
+      if (image) {
+        formData.append("image", image);
+      }
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+      try {
+        const { status, message } = await updateProfile(formData).unwrap();
+        if (status) {
+          toast.success(message);
+          refetch();
+          setProfileEdit(false);
+        }
+      } catch (err) {
+        toast.error(err?.message || "Update failed");
+      }
+    },
+    [image, updateProfile, refetch]
+  );
 
   return (
     <div className="px-52 pt-20">
       {!profileEdit ? (
         <Form form={form} className="grid grid-cols-12 gap-6" layout="vertical">
-          <div className="col-span-12  flex items-center justify-between pb-6 mb-10">
+          <div className="col-span-12 flex items-center justify-between pb-6 mb-10">
             <div className="flex gap-5 items-end">
               <img
                 width={140}
                 height={140}
                 style={{ borderRadius: "100%" }}
                 src={src}
+                alt="Profile"
               />
               <div>
                 <h2 className="text-2xl text-sub_title font-semibold ">
@@ -79,7 +83,6 @@ const Profile = () => {
                 </h2>
               </div>
             </div>
-
             <Button
               onClick={() => setProfileEdit(true)}
               style={{
@@ -98,7 +101,6 @@ const Profile = () => {
               Edit Profile
             </Button>
           </div>
-
           <Form.Item
             name={"name"}
             label={
@@ -119,7 +121,6 @@ const Profile = () => {
               }}
             />
           </Form.Item>
-
           <Form.Item
             name={"email"}
             label={<p className="text-xl font-medium text-sub_title">Email</p>}
@@ -138,7 +139,6 @@ const Profile = () => {
               }}
             />
           </Form.Item>
-
           <Form.Item
             name={"mobileNumber"}
             label={
@@ -180,7 +180,6 @@ const Profile = () => {
               <input
                 onChange={onChange}
                 type="file"
-                name=""
                 id="img"
                 style={{ display: "none" }}
               />
@@ -214,7 +213,6 @@ const Profile = () => {
               </label>
             </div>
           </div>
-
           <Form.Item
             name={"name"}
             label={
@@ -234,7 +232,6 @@ const Profile = () => {
               }}
             />
           </Form.Item>
-
           <Form.Item
             name={"email"}
             label={<p className="text-xl font-medium text-sub_title">Email</p>}
@@ -252,7 +249,6 @@ const Profile = () => {
               }}
             />
           </Form.Item>
-
           <Form.Item
             name={"mobileNumber"}
             label={
@@ -274,7 +270,6 @@ const Profile = () => {
               }}
             />
           </Form.Item>
-
           <Form.Item style={{ marginBottom: 0 }} className="col-span-12">
             <Button
               htmlType="submit"

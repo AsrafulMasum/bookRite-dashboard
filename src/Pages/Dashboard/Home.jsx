@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import totalUsers from "../../assets/totalUsers.svg";
 import totalServices from "../../assets/totalServices.svg";
 import earnings from "../../assets/earnings.svg";
@@ -5,7 +6,7 @@ import UsersBarChart from "../../components/charts/UsersBarChart";
 import EarningLineChart from "../../components/charts/EarningLineChart";
 
 const Home = () => {
-  const statistics = [
+  const statistics = useMemo(() => [
     {
       title: "Total Users",
       amount: "28K",
@@ -39,23 +40,20 @@ const Home = () => {
         />
       ),
     },
-  ];
+  ], []);
+
   return (
     <div>
       <div className="grid grid-cols-3 gap-6 h-[120px] mb-4">
-        {statistics?.map((statistic) => (
+        {statistics.map(({ title, amount, icon }) => (
           <div
-            key={statistic?.title}
+            key={title}
             className="bg-secondary rounded-lg p-[25px] flex items-center gap-4"
           >
-            <div>{statistic?.icon}</div>
+            <div>{icon}</div>
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-medium text-sub_title">
-                {statistic?.title}
-              </h2>
-              <h3 className="text-sub_title text-3xl font-semibold">
-                {statistic?.amount}
-              </h3>
+              <h2 className="text-xl font-medium text-sub_title">{title}</h2>
+              <h3 className="text-sub_title text-3xl font-semibold">{amount}</h3>
             </div>
           </div>
         ))}

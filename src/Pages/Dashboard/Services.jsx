@@ -1,11 +1,11 @@
 import { Button, ConfigProvider, Modal, Table } from "antd";
-import React, { useState } from "react";
+import  { useCallback, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { PlusOutlined } from "@ant-design/icons";
 import { CiEdit } from "react-icons/ci";
 import { FiPlus } from "react-icons/fi";
 
-const data = [
+const initialData = [
   {
     key: "1",
     category: "Maintenance",
@@ -172,90 +172,142 @@ const data = [
   },
 ];
 
-const Users = () => {
+const Services = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  // const { data: users } = useUsersQuery({ page: page, search: search });
+  const [data, setData] = useState(initialData);
   const [value, setValue] = useState(null);
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [image, setImage] = useState();
+  const [form, setForm] = useState({ category: "", serviceType: "", serviceImage: "" });
   const [imgURL, setImgURL] = useState();
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
 
-  const onChange = (e) => {
+  // Handle image upload
+  const onChange = useCallback((e) => {
     const file = e.target.files[0];
-    const imgUrl = URL.createObjectURL(file);
-    setImgURL(imgUrl);
-    setImage(file);
-  };
+    if (file) {
+      const imgUrl = URL.createObjectURL(file);
+      setImgURL(imgUrl);
+      setForm((prev) => ({ ...prev, serviceImage: imgUrl }));
+    }
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  // Add new service
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!form.category || !form.serviceType) return;
+      setData([
+        ...data,
+        {
+          key: Date.now().toString(),
+          ...form,
+          price: 0,
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+      setForm({ category: "", serviceType: "", serviceImage: "" });
+      setImgURL("");
+      setOpenAddModel(false);
+    },
+    [form, data]
+  );
 
-  const handleDelete = () => {
-    console.log(deleteId);
+  // Edit service
+  const handleEdit = useCallback(
+    (e) => {
+      e.preventDefault();
+      setData((prev) =>
+        prev.map((item) =>
+          item.key === value.key ? { ...item, ...form } : item
+        )
+      );
+      setValue(null);
+      setForm({ category: "", serviceType: "", serviceImage: "" });
+      setImgURL("");
+    },
+    [form, value, setData]
+  );
+
+  // Delete service
+  const handleDelete = useCallback(() => {
+    setData((prev) => prev.filter((item) => item.key !== deleteId));
     setShowDelete(false);
-  };
+    setDeleteId("");
+  }, [deleteId]);
 
-  const columns = [
-    {
-      title: "Serial ID",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record, index) => (
-        <p>{(page - 1) * itemsPerPage + index + 1}</p>
-      ),
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Service Type",
-      dataIndex: "serviceType",
-      key: "serviceType",
-    },
-    {
-      title: "Service Image",
-      dataIndex: "serviceImage",
-      key: "serviceImage",
-      render: (_, record) => (
-        <div>
-          <img
-            className="h-6 w-6 object-cover"
-            src={record?.serviceImage}
-            alt=""
-          />
-        </div>
-      ),
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
-      align: "right",
-      render: (_, record) => (
-        <div className="flex justify-end gap-8">
-          <CiEdit
-            className="cursor-pointer text-2xl text-[#F78F08]"
-            onClick={() => setValue(record)}
-          />
-          <img
-            className="cursor-pointer"
-            onClick={() => {
-              setDeleteId(record?.key);
-              setShowDelete(true);
-            }}
-            src={deleteIcon}
-            alt="Delete Icon"
-          />
-        </div>
-      ),
-    },
-  ];
+  // Open edit modal and set form values
+  const openEditModal = useCallback((record) => {
+    setValue(record);
+    setForm({
+      category: record.category,
+      serviceType: record.serviceType,
+      serviceImage: record.serviceImage,
+    });
+    setImgURL(record.serviceImage);
+  }, []);
+
+  const columns = useMemo(
+    () => [
+      {
+        title: "Serial ID",
+        dataIndex: "name",
+        key: "name",
+        render: (_, __, index) => (
+          <p>{(page - 1) * itemsPerPage + index + 1}</p>
+        ),
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+      },
+      {
+        title: "Service Type",
+        dataIndex: "serviceType",
+        key: "serviceType",
+      },
+      {
+        title: "Service Image",
+        dataIndex: "serviceImage",
+        key: "serviceImage",
+        render: (_, record) => (
+          <div>
+            <img
+              className="h-6 w-6 object-cover"
+              src={record?.serviceImage}
+              alt=""
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        key: "actions",
+        align: "right",
+        render: (_, record) => (
+          <div className="flex justify-end gap-8">
+            <CiEdit
+              className="cursor-pointer text-2xl text-[#F78F08]"
+              onClick={() => openEditModal(record)}
+            />
+            <img
+              className="cursor-pointer"
+              onClick={() => {
+                setDeleteId(record?.key);
+                setShowDelete(true);
+              }}
+              src={deleteIcon}
+              alt="Delete Icon"
+            />
+          </div>
+        ),
+      },
+    ],
+    [page, itemsPerPage, openEditModal]
+  );
 
   return (
     <>
@@ -280,7 +332,11 @@ const Users = () => {
         </h3>
         <div>
           <Button
-            onClick={() => setOpenAddModel(true)}
+            onClick={() => {
+              setOpenAddModel(true);
+              setForm({ category: "", serviceType: "", serviceImage: "" });
+              setImgURL("");
+            }}
             style={{
               width: "177px",
               height: "40px",
@@ -318,13 +374,15 @@ const Users = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            current: parseInt(page),
-            onChange: (page) => setPage(page),
+            current: page,
+            pageSize: itemsPerPage,
+            onChange: setPage,
           }}
           className="custom-table"
         />
       </ConfigProvider>
 
+      {/* Add Modal */}
       <Modal
         centered
         open={openAddModel}
@@ -333,25 +391,13 @@ const Users = () => {
         footer={false}
       >
         <div className="p-6">
-          <h1
-            className=" text-[20px] font-medium"
-            style={{ marginBottom: "12px" }}
-          >
-            Add Category
-          </h1>
+          <h1 className="text-[20px] font-medium mb-3">Add Service</h1>
           <form onSubmit={handleSubmit}>
             <div className="flex justify-center items-center gap-10 mb-10">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <div>
                 <input
                   onChange={onChange}
                   type="file"
-                  name=""
                   id="img"
                   style={{ display: "none" }}
                 />
@@ -375,16 +421,16 @@ const Users = () => {
                 </label>
               </div>
             </div>
-
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
                 Service Category
               </label>
               <input
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-                type="Text"
+                value={form.category}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, category: e.target.value }))
+                }
+                type="text"
                 placeholder="Enter Service Name"
                 style={{
                   border: "1px solid #E0E4EC",
@@ -395,19 +441,19 @@ const Users = () => {
                   outline: "none",
                   width: "100%",
                 }}
-                name="service"
+                name="category"
               />
             </div>
-
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
                 Service Type
               </label>
               <input
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-                type="Text"
+                value={form.serviceType}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, serviceType: e.target.value }))
+                }
+                type="text"
                 placeholder="Enter Service Type"
                 style={{
                   border: "1px solid #E0E4EC",
@@ -421,12 +467,8 @@ const Users = () => {
                 name="serviceType"
               />
             </div>
-
             <input
-              onClick={() => setOpenAddModel(false)}
               className="cursor-pointer"
-              htmlType="submit"
-              block
               style={{
                 border: "none",
                 width: "100%",
@@ -438,75 +480,62 @@ const Users = () => {
                 outline: "none",
                 padding: "10px 20px",
               }}
-              value={`Submit`}
+              value="Submit"
               type="submit"
             />
           </form>
         </div>
       </Modal>
 
+      {/* Edit Modal */}
       <Modal
         centered
-        open={value}
+        open={!!value}
         onCancel={() => setValue(null)}
-        onClose={() => setValue(null)}
         width={500}
         footer={false}
       >
         <div className="p-6">
-          <h1
-            className=" text-[20px] font-medium"
-            style={{ marginBottom: "12px" }}
-          >
-            Add Category
-          </h1>
-          <form onSubmit={handleSubmit}>
+          <h1 className="text-[20px] font-medium mb-3">Edit Service</h1>
+          <form onSubmit={handleEdit}>
             <div className="flex justify-center items-center gap-10 mb-10">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <div>
                 <input
                   onChange={onChange}
                   type="file"
-                  name=""
-                  id="img"
+                  id="img-edit"
                   style={{ display: "none" }}
                 />
                 <label
                   className="relative"
-                  htmlFor="img"
+                  htmlFor="img-edit"
                   style={{
                     width: "120px",
                     height: "120px",
                     cursor: "pointer",
                     borderRadius: "100%",
                     background: "#E0E0E0",
-                    backgroundImage: `url(${value?.serviceImage})`,
+                    backgroundImage: `url(${imgURL})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
                 >
-                  {!value?.serviceImage && (
+                  {!imgURL && (
                     <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                   )}
                 </label>
               </div>
             </div>
-
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
                 Service Category
               </label>
               <input
-                defaultValue={value?.category}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-                type="Text"
+                value={form.category}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, category: e.target.value }))
+                }
+                type="text"
                 placeholder="Enter Service Name"
                 style={{
                   border: "1px solid #E0E4EC",
@@ -517,20 +546,19 @@ const Users = () => {
                   outline: "none",
                   width: "100%",
                 }}
-                name="service"
+                name="category"
               />
             </div>
-
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", marginBottom: "5px" }}>
                 Service Type
               </label>
               <input
-                defaultValue={value?.serviceType}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-                type="Text"
+                value={form.serviceType}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, serviceType: e.target.value }))
+                }
+                type="text"
                 placeholder="Enter Service Type"
                 style={{
                   border: "1px solid #E0E4EC",
@@ -544,12 +572,8 @@ const Users = () => {
                 name="serviceType"
               />
             </div>
-
             <input
-              onClick={() => setValue(null)}
               className="cursor-pointer"
-              htmlType="submit"
-              block
               style={{
                 border: "none",
                 width: "100%",
@@ -561,13 +585,14 @@ const Users = () => {
                 outline: "none",
                 padding: "10px 20px",
               }}
-              value={`Submit`}
+              value="Update"
               type="submit"
             />
           </form>
         </div>
       </Modal>
 
+      {/* Delete Modal */}
       <Modal
         centered
         open={showDelete}
@@ -577,10 +602,10 @@ const Users = () => {
       >
         <div className="p-6 text-center">
           <p className="text-[#D93D04] text-center font-semibold">
-            Are you sure !
+            Are you sure!
           </p>
           <p className="pt-4 pb-12 text-center">
-            Do you want to delete this content ?
+            Do you want to delete this content?
           </p>
           <button
             onClick={handleDelete}
@@ -594,4 +619,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Services;

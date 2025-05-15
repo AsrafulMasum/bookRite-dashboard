@@ -1,10 +1,10 @@
 import { ConfigProvider, Modal, Table } from "antd";
 import moment from "moment";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { BsInfoCircle } from "react-icons/bs";
 
-const data = [
+const initialData = [
   {
     key: "1",
     firstName: "John",
@@ -187,85 +187,90 @@ const data = [
   },
 ];
 
+const itemsPerPage = 10;
+
 const Users = () => {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
-  // const { data: users } = useUsersQuery({ page: page, search: search });
+  const [data, setData] = useState(initialData);
   const [value, setValue] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
 
-  const handleDelete = () => {
-    console.log(deleteId);
+  const handleDelete = useCallback(() => {
+    setData((prev) => prev.filter((item) => item.key !== deleteId));
     setShowDelete(false);
-  };
+    setDeleteId("");
+  }, [deleteId]);
 
-  const columns = [
-    {
-      title: "Serial ID",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record, index) => (
-        <p>{(page - 1) * itemsPerPage + index + 1}</p>
-      ),
-    },
-    {
-      title: "User Name",
-      dataIndex: "userName",
-      key: "userName",
-      render: (_, record, index) => (
-        <div className="flex items-center gap-2">
-          <p>
-            {record?.firstName} {record?.lastName}
-          </p>
-        </div>
-      ),
-    },
-    {
-      title: "Service Type",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "mobileNumber",
-      key: "mobileNumber",
-    },
-    {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
-      align: "right",
-      render: (_, record) => (
-        <div className="flex justify-end gap-8">
-          <BsInfoCircle
-            className="text-lg text-[#F78F08] cursor-pointer"
-            onClick={() => setValue(record)}
-          />
-          <img
-            className="cursor-pointer"
-            onClick={() => {
-              setDeleteId(record?.key);
-              setShowDelete(true);
-            }}
-            src={deleteIcon}
-            alt="Delete Icon"
-          />
-        </div>
-      ),
-    },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        title: "Serial ID",
+        dataIndex: "name",
+        key: "name",
+        render: (_, __, index) => (
+          <p>{(page - 1) * itemsPerPage + index + 1}</p>
+        ),
+      },
+      {
+        title: "User Name",
+        dataIndex: "userName",
+        key: "userName",
+        render: (_, record) => (
+          <div className="flex items-center gap-2">
+            <p>
+              {record?.firstName || ""} {record?.lastName || ""}
+            </p>
+          </div>
+        ),
+      },
+      {
+        title: "Service Type",
+        dataIndex: "category",
+        key: "category",
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+      },
+      {
+        title: "Contact Number",
+        dataIndex: "mobileNumber",
+        key: "mobileNumber",
+      },
+      {
+        title: "Date",
+        dataIndex: "createdAt",
+        key: "createdAt",
+        render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
+      },
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        key: "actions",
+        align: "right",
+        render: (_, record) => (
+          <div className="flex justify-end gap-8">
+            <BsInfoCircle
+              className="text-lg text-[#F78F08] cursor-pointer"
+              onClick={() => setValue(record)}
+            />
+            <img
+              className="cursor-pointer"
+              onClick={() => {
+                setDeleteId(record?.key);
+                setShowDelete(true);
+              }}
+              src={deleteIcon}
+              alt="Delete Icon"
+            />
+          </div>
+        ),
+      },
+    ],
+    [page]
+  );
 
   return (
     <>
@@ -290,8 +295,9 @@ const Users = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            current: parseInt(page),
-            onChange: (page) => setPage(page),
+            current: page,
+            pageSize: itemsPerPage,
+            onChange: setPage,
           }}
           className="custom-table"
         />
@@ -299,9 +305,8 @@ const Users = () => {
 
       <Modal
         centered
-        open={value}
+        open={!!value}
         onCancel={() => setValue(null)}
-        onClose={() => setValue(null)}
         footer={false}
       >
         <div>
@@ -313,21 +318,22 @@ const Users = () => {
               <p className="pb-[5px]">Service Type</p>
               <p>Start Date</p>
             </div>
-
             <div>
               <p className="pb-[5px] text-right">
-                {value?.firstName} {value?.lastName}{" "}
+                {value?.firstName || ""} {value?.lastName || ""}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.email ? value?.email : "Not Added yet"}
+                {value?.email || "Not Added yet"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.mobileNumber ? value?.mobileNumber : "Not Added yet"}
+                {value?.mobileNumber || "Not Added yet"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.appId ? "Cloth wash" : "Home Service"}
+                {value?.category || "Home Service"}
               </p>
-              <p className="text-right">05 jun,2025</p>
+              <p className="text-right">
+                {value?.createdAt ? moment(value.createdAt).format("L") : ""}
+              </p>
             </div>
           </div>
         </div>
@@ -342,10 +348,10 @@ const Users = () => {
       >
         <div className="p-6 text-center">
           <p className="text-[#D93D04] text-center font-semibold">
-            Are you sure !
+            Are you sure!
           </p>
           <p className="pt-4 pb-12 text-center">
-            Do you want to delete this content ?
+            Do you want to delete this content?
           </p>
           <button
             onClick={handleDelete}

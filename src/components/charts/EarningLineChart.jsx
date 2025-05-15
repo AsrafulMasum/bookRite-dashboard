@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import {
   LineChart,
@@ -42,22 +42,33 @@ const yearlyEarningData = {
   ],
 };
 
+const tooltipFormatter = (value) => `$${value.toLocaleString()}`;
+const labelFormatter = (value) => `$${(value / 1000).toFixed(1)}k`;
+
 const EarningLineChart = () => {
-  const [selectedYear, setSelectedYear] = useState("2024");
-  const earningData = yearlyEarningData[selectedYear];
+  const years = Object.keys(yearlyEarningData);
+  const [selectedYear, setSelectedYear] = useState(years[years.length - 1]);
+
+  const earningData = useMemo(
+    () => yearlyEarningData[selectedYear] || [],
+    [selectedYear]
+  );
 
   return (
     <div className="bg-[#F7F7FF] p-4 rounded-xl shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-sub_title text-lg font-semibold">Monthly Earning</h3>
         <div className="relative">
+          <label htmlFor="year-select" className="sr-only">Select year</label>
           <select
+            id="year-select"
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
             className="bg-white border border-gray-300 rounded-md px-3 py-1 text-sm appearance-none pr-8 outline-none"
           >
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
+            {years.map((year) => (
+              <option key={year} value={year}>{year}</option>
+            ))}
           </select>
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
             <FaChevronDown className="text-gray-500 text-sm" />
@@ -69,7 +80,7 @@ const EarningLineChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis />
-          <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+          <Tooltip formatter={tooltipFormatter} />
           <Line
             type="monotone"
             dataKey="earning"
@@ -80,7 +91,7 @@ const EarningLineChart = () => {
             <LabelList
               dataKey="earning"
               position="top"
-              formatter={(value) => `$${(value / 1000).toFixed(1)}k`}
+              formatter={labelFormatter}
             />
           </Line>
         </LineChart>

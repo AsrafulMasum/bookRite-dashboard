@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CiLock, CiLogout, CiUser } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
@@ -21,16 +21,12 @@ const Sidebar = () => {
 
   const [openMenu, setOpenMenu] = useState(null);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem("token");
     navigate("/auth/login");
-  };
+  }, [navigate]);
 
-  const toggleMenu = (key) => {
-    setOpenMenu(openMenu === key ? null : key);
-  };
-
-  const menuItems = [
+  const menuItems = useMemo(() => [
     {
       key: "/",
       label: "Dashboard",
@@ -93,7 +89,24 @@ const Sidebar = () => {
         },
       ],
     },
-  ];
+  ], []);
+
+  const isMenuActive = useCallback(
+    (item) =>
+      path === item.key ||
+      (item.submenu && item.submenu.some((sub) => path === sub.key)),
+    [path]
+  );
+
+  const isSubActive = useCallback(
+    (sub) => path === sub.key,
+    [path]
+  );
+
+  const toggleMenu = useCallback(
+    (key) => setOpenMenu(openMenu === key ? null : key),
+    [openMenu]
+  );
 
   return (
     <div className="min-h-screen w-dvw">
@@ -104,11 +117,8 @@ const Sidebar = () => {
         <nav className="relative h-[75vh]">
           <div className="flex flex-col gap-5">
             {menuItems.map((item) => {
-              const isActive =
-                path === item.key ||
-                (item.submenu && item.submenu.some((sub) => path === sub.key));
+              const active = isMenuActive(item);
               const isSubmenuOpen = openMenu === item.key;
-
               return (
                 <div key={item.key}>
                   {item.submenu ? (
@@ -116,16 +126,14 @@ const Sidebar = () => {
                       onClick={() => toggleMenu(item.key)}
                       className={`w-full flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575] relative`}
                     >
-                      {isActive && (
+                      {active && (
                         <span className="absolute left-0 top-0 h-full w-[8px] bg-primary rounded-r-md"></span>
                       )}
                       <span className="text-[20px]">{item.icon}</span>
                       <span className="text-lg">{item.label}</span>
                       <span className="text-[20px] ml-auto">
                         <IoIosArrowDown
-                          className={`transition-transform ${
-                            isSubmenuOpen ? "rotate-180" : ""
-                          }`}
+                          className={`transition-transform ${isSubmenuOpen ? "rotate-180" : ""}`}
                         />
                       </span>
                     </button>
@@ -134,7 +142,7 @@ const Sidebar = () => {
                       to={item.key}
                       className={`flex items-center gap-4 px-[22px] py-2.5 transition-all text-[#757575] relative`}
                     >
-                      {isActive && (
+                      {active && (
                         <span className="absolute left-0 top-0 h-full w-[8px] bg-primary rounded-r-md"></span>
                       )}
                       <span className="text-[20px]">{item.icon}</span>
@@ -145,21 +153,18 @@ const Sidebar = () => {
                   {/* Submenu */}
                   {item.submenu && isSubmenuOpen && (
                     <div className="px-[22px] flex flex-col gap-2 pt-2">
-                      {item.submenu.map((sub) => {
-                        const subActive = path === sub.key;
-                        return (
-                          <Link
-                            to={sub.key}
-                            key={sub.key}
-                            className={`flex items-center gap-4 py-1 rounded transition-all ${
-                              subActive ? "text-primary" : "text-[#757575]"
-                            }`}
-                          >
-                            <span className="text-lg">{sub.icon}</span>
-                            <span>{sub.label}</span>
-                          </Link>
-                        );
-                      })}
+                      {item.submenu.map((sub) => (
+                        <Link
+                          to={sub.key}
+                          key={sub.key}
+                          className={`flex items-center gap-4 py-1 rounded transition-all ${
+                            isSubActive(sub) ? "text-primary" : "text-[#757575]"
+                          }`}
+                        >
+                          <span className="text-lg">{sub.icon}</span>
+                          <span>{sub.label}</span>
+                        </Link>
+                      ))}
                     </div>
                   )}
                 </div>

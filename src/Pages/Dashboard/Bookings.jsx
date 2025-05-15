@@ -1,6 +1,6 @@
 import { ConfigProvider, Modal, Select, Table } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
 
 const data = [
@@ -317,75 +317,87 @@ const data = [
   },
 ];
 
+const itemsPerPage = 10;
+
 const Users = () => {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
-  // const { data: users } = useUsersQuery({ page: page, search: search });
   const [value, setValue] = useState(null);
 
-  const columns = [
-    {
-      title: "Serial ID",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record, index) => (
-        <p>{(page - 1) * itemsPerPage + index + 1}</p>
-      ),
-    },
-    {
-      title: "User Name",
-      dataIndex: "userName",
-      key: "userName",
-      render: (_, record, index) => (
-        <div className="flex items-center gap-2">
-          <p>
-            {record?.firstName} {record?.lastName}
-          </p>
-        </div>
-      ),
-    },
-    {
-      title: "Provider",
-      dataIndex: "provider",
-      key: "provider",
-    },
-    {
-      title: "Service Type",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Service Location",
-      dataIndex: "serviceLocation",
-      key: "serviceLocation",
-    },
-    {
-      title: "Appt. Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
-      align: "right",
-      render: (_, record) => (
-        <div className="flex justify-end pr-4">
-          <BsInfoCircle
-            className="text-lg text-[#F78F08] cursor-pointer"
-            onClick={() => setValue(record)}
-          />
-        </div>
-      ),
-    },
-  ];
+  const handleChange = useCallback((val) => {
+    console.log(`selected ${val}`);
+  }, []);
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+  const handleInfoClick = useCallback((record) => {
+    setValue(record);
+  }, []);
+
+  const handleModalClose = useCallback(() => {
+    setValue(null);
+  }, []);
+
+  const columns = useMemo(
+    () => [
+      {
+        title: "Serial ID",
+        dataIndex: "name",
+        key: "name",
+        render: (_, __, index) => (
+          <p>{(page - 1) * itemsPerPage + index + 1}</p>
+        ),
+      },
+      {
+        title: "User Name",
+        dataIndex: "userName",
+        key: "userName",
+        render: (_, record) => (
+          <div className="flex items-center gap-2">
+            <p>
+              {record?.firstName || ""} {record?.lastName || ""}
+            </p>
+          </div>
+        ),
+      },
+      {
+        title: "Provider",
+        dataIndex: "provider",
+        key: "provider",
+      },
+      {
+        title: "Service Type",
+        dataIndex: "category",
+        key: "category",
+      },
+      {
+        title: "Service Location",
+        dataIndex: "serviceLocation",
+        key: "serviceLocation",
+      },
+      {
+        title: "Appt. Date",
+        dataIndex: "createdAt",
+        key: "createdAt",
+        render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
+      },
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        key: "actions",
+        align: "right",
+        render: (_, record) => (
+          <div className="flex justify-end pr-4">
+            <BsInfoCircle
+              className="text-lg text-[#F78F08] cursor-pointer"
+              onClick={() => handleInfoClick(record)}
+            />
+          </div>
+        ),
+      },
+    ],
+    [page, handleInfoClick]
+  );
+
   return (
-    <>
+    <div>
       <div className="flex items-center justify-between mb-6">
         <h2 style={{ fontSize: "25px", fontWeight: "normal" }}>User List</h2>
       </div>
@@ -407,21 +419,17 @@ const Users = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            current: parseInt(page),
-            onChange: (page) => setPage(page),
+            current: page,
+            pageSize: itemsPerPage,
+            onChange: setPage,
           }}
           className="custom-table"
         />
       </ConfigProvider>
 
-      <Modal
-        open={value}
-        onCancel={() => setValue(null)}
-        onClose={() => setValue(null)}
-        footer={false}
-      >
+      <Modal open={!!value} onCancel={handleModalClose} footer={false}>
         <div>
-          <h4 className="text-lg font-medium  mt-[35px]">Client Information</h4>
+          <h4 className="text-lg font-medium mt-[35px]">Client Information</h4>
           <div className="flex items-center justify-between mt-4">
             <div>
               <p className="pb-[5px]">User Name</p>
@@ -429,28 +437,25 @@ const Users = () => {
               <p className="pb-[5px]">Service Type</p>
               <p>Start Date</p>
             </div>
-
             <div>
               <p className="pb-[5px] text-right">
-                {value?.firstName} {value?.lastName}{" "}
+                {value?.firstName || ""} {value?.lastName || ""}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.userEmail
-                  ? value?.userEmail
-                  : "henry.green@example.com"}
+                {value?.userEmail || "henry.green@example.com"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.serviceType ? value?.serviceType : "Home Service"}
+                {value?.serviceType || "Home Service"}
               </p>
               <p className="text-right">
-                {moment(value?.createdAt).format("L")}
+                {value?.createdAt ? moment(value.createdAt).format("L") : ""}
               </p>
             </div>
           </div>
         </div>
 
         <div>
-          <h4 className="text-lg font-medium  mt-[35px]">
+          <h4 className="text-lg font-medium mt-[35px]">
             Service Provider Information
           </h4>
           <div className="flex items-center justify-between mt-4">
@@ -460,30 +465,23 @@ const Users = () => {
               <p className="pb-[5px]">Service Type</p>
               <p>Start Date</p>
             </div>
-
             <div>
+              <p className="pb-[5px] text-right">{value?.provider || "XYZ"}</p>
               <p className="pb-[5px] text-right">
-                {value?.provider ? value?.provider : "XYZ"}
+                {value?.providerEmail || "henry.green@example.com"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.providerEmail
-                  ? value?.providerEmail
-                  : "henry.green@example.com"}
-              </p>
-              <p className="pb-[5px] text-right">
-                {value?.serviceType ? "Cloth wash" : "Home Service"}
+                {value?.serviceType || "Home Service"}
               </p>
               <p className="text-right">
-                {moment(value?.createdAt).format("L")}
+                {value?.createdAt ? moment(value.createdAt).format("L") : ""}
               </p>
             </div>
           </div>
         </div>
 
         <div>
-          <h4 className="text-lg font-medium  mt-[35px]">
-            Service Information
-          </h4>
+          <h4 className="text-lg font-medium mt-[35px]">Service Information</h4>
           <div className="flex items-center justify-between mt-4">
             <div>
               <p className="pb-[5px]">Category</p>
@@ -493,34 +491,30 @@ const Users = () => {
               <p className="pb-[5px]">Booking Date</p>
               <p>Status</p>
             </div>
-
             <div>
               <p className="pb-[5px] text-right">
-                {value?.category ? value?.category : "Home Service"}
+                {value?.category || "Home Service"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.serviceType ? value?.serviceType : "Cleaning"}
+                {value?.serviceType || "Cleaning"}
               </p>
               <div className="pb-[5px] flex justify-end">
                 {value?.serviceImage ? (
                   <img
                     className="h-10 w-10 object-cover"
-                    src={value?.serviceImage}
-                    alt=""
+                    src={value.serviceImage}
+                    alt="Service"
                   />
                 ) : (
                   "No Image available"
                 )}
               </div>
               <p className="pb-[5px] text-right">
-                {value?.price ? `$ ${value?.price}` : "$50"}
+                {value?.price ? `$ ${value.price}` : "$50"}
               </p>
               <p className="pb-[5px] text-right">
-                {moment(value?.createdAt).format("L")}
+                {value?.createdAt ? moment(value.createdAt).format("L") : ""}
               </p>
-              {/* <p className="text-right">
-                {value?.status ? value?.status : "Ongoing"}
-              </p> */}
               <Select
                 defaultValue="ongoing"
                 style={{ width: 200 }}
@@ -535,7 +529,7 @@ const Users = () => {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 
