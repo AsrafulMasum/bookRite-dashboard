@@ -2,16 +2,33 @@ import { Form, Typography, Button } from "antd";
 import { useState, useCallback } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
+import { useOtpVerifyMutation } from "../../redux/features/authApi";
 const { Text } = Typography;
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const email = new URLSearchParams(location.search).get("email");
+  const [otpVerify] = useOtpVerifyMutation();
 
-  const onFinish = useCallback(() => {
-    // TODO: Add OTP verification API call here
-    navigate(`/auth/reset-password?email=${email}`);
+  const onFinish = useCallback(async () => {
+    console.log(otp)
+    if (otp) {
+      try {
+        const res = await otpVerify({
+          email: email,
+          oneTimeCode: parseInt(otp),
+        }).unwrap();
+        console.log(res);
+        if (res?.success) {
+          navigate(`/auth/reset-password?email=${email}`);
+        } else {
+          console.error("Failed to verify OTP");
+        }
+      } catch (error) {
+        console.error("Error verifying OTP:", error);
+      }
+    }
   }, [navigate, email]);
 
   const handleResendEmail = useCallback(() => {
@@ -25,7 +42,8 @@ const VerifyOtp = () => {
           Verify OTP
         </h1>
         <p className="text-[#757575] leading-[110%]">
-          Please check your email. We have sent a code to {email || "your email"}
+          Please check your email. We have sent a code to{" "}
+          {email || "your email"}
         </p>
       </div>
 
@@ -34,11 +52,11 @@ const VerifyOtp = () => {
           <OTPInput
             value={otp}
             onChange={setOtp}
-            numInputs={4}
+            numInputs={6}
             inputStyle={{
               backgroundColor: "transparent",
-              height: 72,
-              width: 76,
+              height: 70,
+              width: 70,
               borderRadius: "16px",
               margin: "28px",
               fontSize: "40px",
@@ -93,7 +111,7 @@ const VerifyOtp = () => {
               borderRadius: "16px",
             }}
             className="flex items-center justify-center bg-primary rounded-2xl"
-            disabled={otp.length !== 4}
+            disabled={otp.length !== 6}
           >
             Verify
           </Button>

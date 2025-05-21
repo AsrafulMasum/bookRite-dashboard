@@ -2,11 +2,23 @@ import { baseApi } from "../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    profile: builder.query({
+      query: () => {
+        return {
+          method: "GET",
+          url: "/user/profile",
+        };
+      },
+      transformResponse: ({ data }) => {
+        return data;
+      },
+    }),
+
     otpVerify: builder.mutation({
       query: (data) => {
         return {
           method: "POST",
-          url: "/auth/otp-verify",
+          url: "/auth/verify-email",
           body: data,
         };
       },
@@ -48,18 +60,13 @@ const authApi = baseApi.injectEndpoints({
         };
       },
     }),
-    
+
     changePassword: builder.mutation({
       query: (data) => {
         return {
           method: "POST",
           url: "/auth/change-password",
           body: data,
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
         };
       },
     }),
@@ -67,32 +74,10 @@ const authApi = baseApi.injectEndpoints({
     updateProfile: builder.mutation({
       query: (data) => {
         return {
-          method: "POST",
-          url: "/auth/update-profile",
+          method: "PATCH",
+          url: "/user",
           body: data,
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
         };
-      },
-    }),
-
-    profile: builder.query({
-      query: () => {
-        return {
-          method: "GET",
-          url: "/auth/get-profile",
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        };
-      },
-      transformResponse: ({ user }) => {
-        return user;
       },
     }),
   }),

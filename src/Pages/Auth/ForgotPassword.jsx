@@ -1,13 +1,26 @@
 import { Form, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { useForgotPasswordMutation } from "../../redux/features/authApi";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [forgotPassword] = useForgotPasswordMutation();
 
   const onFinish = useCallback(
-    (values) => {
-      navigate(`/auth/verify-otp?email=${values?.email}`);
+    async (values) => {
+      try {
+        const res = await forgotPassword({
+          email: values?.email,
+        }).unwrap();
+        if (res?.success) {
+          navigate(`/auth/verify-otp?email=${values?.email}`);
+        } else {
+          console.error("Failed to send OTP");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
     [navigate]
   );

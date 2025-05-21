@@ -9,13 +9,10 @@ import toast from "react-hot-toast";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const onFinish = useCallback(
     async (values) => {
-      // TODO: Replace with API call and token handling
-      // Cookies.set('token', token, { expires: 7 })
-
       try {
         const res = await login({
           email: values.email,
@@ -24,7 +21,7 @@ const Login = () => {
         }).unwrap();
 
         if (res?.data) {
-          localStorage.setItem("token", JSON.stringify(res.token));
+          localStorage.setItem("token", JSON.stringify(res.data));
           toast.success("Login successful!");
           navigate("/");
         } else {

@@ -1,23 +1,21 @@
 import { Button, Form, Input } from "antd";
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { LiaEditSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
+import { imageUrl } from "../../redux/api/baseApi";
+import { FaRegEdit } from "react-icons/fa";
 import {
   useProfileQuery,
   useUpdateProfileMutation,
-} from "../../redux/apiSlices/authSlice";
-import { imageUrl } from "../../redux/api/baseApi";
-import { useUser } from "../../provider/User";
-import { FaRegEdit } from "react-icons/fa";
+} from "../../redux/features/authApi";
 
 const Profile = () => {
   const [profileEdit, setProfileEdit] = useState(false);
   const [image, setImage] = useState();
   const [imgURL, setImgURL] = useState();
   const [form] = Form.useForm();
-  const { user } = useUser();
-  const { refetch } = useProfileQuery();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const { data: user, refetch } = useProfileQuery();
 
   useEffect(() => {
     if (user) {
@@ -35,9 +33,9 @@ const Profile = () => {
   }, []);
 
   const src =
-    user?.image && user?.image.startsWith("https")
-      ? user?.image
-      : user?.image
+    user?.profile && user?.profile.startsWith("https")
+      ? user?.profile
+      : user?.profile
       ? `${imageUrl}${user?.image}`
       : "/default-avatar.png";
 
@@ -51,8 +49,8 @@ const Profile = () => {
         formData.append(key, values[key]);
       });
       try {
-        const { status, message } = await updateProfile(formData).unwrap();
-        if (status) {
+        const { success, message } = await updateProfile(formData).unwrap();
+        if (success) {
           toast.success(message);
           refetch();
           setProfileEdit(false);
@@ -121,6 +119,7 @@ const Profile = () => {
               }}
             />
           </Form.Item>
+
           <Form.Item
             name={"email"}
             label={<p className="text-xl font-medium text-sub_title">Email</p>}
@@ -139,8 +138,9 @@ const Profile = () => {
               }}
             />
           </Form.Item>
+
           <Form.Item
-            name={"mobileNumber"}
+            name={"contact"}
             label={
               <p className="text-xl font-medium text-sub_title">
                 Contact Number
@@ -250,7 +250,7 @@ const Profile = () => {
             />
           </Form.Item>
           <Form.Item
-            name={"mobileNumber"}
+            name={"contact"}
             label={
               <p className="text-xl font-medium text-sub_title">
                 Contact Number

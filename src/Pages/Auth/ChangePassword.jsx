@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd";
 import { useState, useCallback } from "react";
 import toast from "react-hot-toast";
-import { useChangePasswordMutation } from "../../redux/apiSlices/authSlice";
+import { useChangePasswordMutation } from "../../redux/features/authApi";
 
 const ChangePassword = () => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
