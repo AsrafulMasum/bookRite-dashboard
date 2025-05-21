@@ -1,17 +1,38 @@
 import { Checkbox, Form, Input, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useLoginMutation } from "../../redux/features/authApi";
+import toast from "react-hot-toast";
 // import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const [login, { isLoading }] = useLoginMutation();
+
   const onFinish = useCallback(
     async (values) => {
       // TODO: Replace with API call and token handling
       // Cookies.set('token', token, { expires: 7 })
-      navigate("/");
+
+      try {
+        const res = await login({
+          email: values.email,
+          password: values.password,
+          role: "ADMIN",
+        }).unwrap();
+
+        if (res?.data) {
+          localStorage.setItem("token", JSON.stringify(res.token));
+          toast.success("Login successful!");
+          navigate("/");
+        } else {
+          toast.error("Login failed. Please try again.");
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
     },
     [navigate]
   );
@@ -72,9 +93,7 @@ const Login = () => {
           <Form.Item
             style={{ marginBottom: 0 }}
             name="password"
-            rules={[
-              { required: true, message: "Please input your Password!" },
-            ]}
+            rules={[{ required: true, message: "Please input your Password!" }]}
           >
             <Input.Password
               className="custom-input"
