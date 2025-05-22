@@ -51,7 +51,7 @@ const VerifyOtp = () => {
         <div className="flex items-center justify-center mb-6">
           <OTPInput
             value={otp}
-            onChange={setOtp}
+            onChange={(otp) => setOtp(otp)}
             numInputs={6}
             inputStyle={{
               backgroundColor: "transparent",

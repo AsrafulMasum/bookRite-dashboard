@@ -38,7 +38,7 @@ const AboutUs = () => {
         }}
       />
       <Button
-        onClick={aboutDataSave}
+        // onClick={aboutDataSave}
         block
         style={{
           marginTop: "60px",
@@ -51,7 +51,8 @@ const AboutUs = () => {
         }}
       >
         {" "}
-        {isLoading ? "Updating..." : "Save"}
+        {/* {isLoading ? "Updating..." : "Save"} */}
+        Save
       </Button>
     </div>
   );

@@ -125,9 +125,6 @@ const FAQ = () => {
       <div className="bg-white pb-6 px-4 rounded-md">
         {faqData.map((item) => (
           <div key={item._id} className="flex justify-between items-start gap-4">
-            <div className="mt-3">
-              <GoQuestion color="#3536FF" size={25} />
-            </div>
             <div className="w-full">
               <p className="text-base font-medium border-b rounded-xl py-2 px-4 flex items-center gap-8 bg-[#F9F9F9]">
                 <span className="flex-1 text-[#636363]">{item.question}</span>

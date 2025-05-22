@@ -41,7 +41,7 @@ const TermsAndCondition = () => {
         }}
       />
       <Button
-        onClick={aboutDataSave}
+        // onClick={aboutDataSave}
         block
         style={{
           marginTop: "60px",

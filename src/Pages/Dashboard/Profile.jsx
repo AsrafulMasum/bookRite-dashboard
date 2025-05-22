@@ -16,6 +16,7 @@ const Profile = () => {
   const [form] = Form.useForm();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const { data: user, refetch } = useProfileQuery();
+  console.log(user)
 
   useEffect(() => {
     if (user) {
@@ -36,7 +37,7 @@ const Profile = () => {
     user?.profile && user?.profile.startsWith("https")
       ? user?.profile
       : user?.profile
-      ? `${imageUrl}${user?.image}`
+      ? `${imageUrl}${user?.profile}`
       : "/default-avatar.png";
 
   const handleSubmit = useCallback(
@@ -69,9 +70,7 @@ const Profile = () => {
           <div className="col-span-12 flex items-center justify-between pb-6 mb-10">
             <div className="flex gap-5 items-end">
               <img
-                width={140}
-                height={140}
-                style={{ borderRadius: "100%" }}
+                className="w-36 h-36 object-cover rounded-full"
                 src={src}
                 alt="Profile"
               />
@@ -232,23 +231,7 @@ const Profile = () => {
               }}
             />
           </Form.Item>
-          <Form.Item
-            name={"email"}
-            label={<p className="text-xl font-medium text-sub_title">Email</p>}
-            className="col-span-12"
-            style={{ marginBottom: 0 }}
-          >
-            <Input
-              style={{
-                width: "100%",
-                height: "56px",
-                border: "none",
-                backgroundColor: "#F5F5FF66",
-                color: "#757575",
-                paddingLeft: "20px",
-              }}
-            />
-          </Form.Item>
+
           <Form.Item
             name={"contact"}
             label={
@@ -270,6 +253,7 @@ const Profile = () => {
               }}
             />
           </Form.Item>
+          
           <Form.Item style={{ marginBottom: 0 }} className="col-span-12">
             <Button
               htmlType="submit"

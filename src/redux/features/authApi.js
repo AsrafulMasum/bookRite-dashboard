@@ -57,6 +57,7 @@ const authApi = baseApi.injectEndpoints({
           method: "POST",
           url: "/auth/reset-password",
           body: value,
+          headers
         };
       },
     }),

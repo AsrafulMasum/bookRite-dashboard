@@ -39,7 +39,7 @@ const PrivacyPolicy = () => {
       />
 
       <Button
-        onClick={aboutDataSave}
+        // onClick={aboutDataSave}
         block
         style={{
           marginTop: "60px",
@@ -51,7 +51,8 @@ const PrivacyPolicy = () => {
           fontWeight: "600",
         }}
       >
-        {isLoading ? "Updating..." : "Save"}
+        {/* {isLoading ? "Updating..." : "Save"} */}
+        Save
       </Button>
     </div>
   );

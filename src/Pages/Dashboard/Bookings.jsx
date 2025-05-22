@@ -429,7 +429,9 @@ const Users = () => {
 
       <Modal open={!!value} onCancel={handleModalClose} footer={false}>
         <div>
-          <h4 className="text-lg font-medium mt-[35px]">Client Information</h4>
+          <h4 className="text-xl text-[#333] font-medium mt-[35px]">
+            Client Information
+          </h4>
           <div className="flex items-center justify-between mt-4">
             <div>
               <p className="pb-[5px]">User Name</p>
@@ -455,7 +457,7 @@ const Users = () => {
         </div>
 
         <div>
-          <h4 className="text-lg font-medium mt-[35px]">
+          <h4 className="text-xl text-[#333] font-medium mt-[35px]">
             Service Provider Information
           </h4>
           <div className="flex items-center justify-between mt-4">
@@ -481,7 +483,9 @@ const Users = () => {
         </div>
 
         <div>
-          <h4 className="text-lg font-medium mt-[35px]">Service Information</h4>
+          <h4 className="text-xl text-[#333] font-medium mt-[35px]">
+            Service Information
+          </h4>
           <div className="flex items-center justify-between mt-4">
             <div>
               <p className="pb-[5px]">Category</p>
