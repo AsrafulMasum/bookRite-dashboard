@@ -9,12 +9,12 @@ const ChangePassword = () => {
   const [form] = Form.useForm();
 
   const validatePasswordChange = useCallback((values) => {
-    let newErrors = { newPass: "", confirmPass: "" };
+    let newErrors = { newPassword: "", confirmPassword: "" };
 
-    if (values?.currentPass === values.newPass) {
+    if (values?.currentPassword === values.newPassword) {
       newErrors.newPass = "The New password is similar to the old Password";
     }
-    if (values?.newPass !== values.confirmPass) {
+    if (values?.newPassword !== values.confirmPassword) {
       newErrors.confirmPass = "New Password and Confirm Password Don't Match";
     }
     setErrors(newErrors);
@@ -24,10 +24,10 @@ const ChangePassword = () => {
   const onFinish = useCallback(
     async (values) => {
       const validation = validatePasswordChange(values);
-      if (!validation.newPass && !validation.confirmPass) {
+      if (!validation.newPassword && !validation.confirmPassword) {
         try {
-          const { status, message } = await changePassword({ ...values }).unwrap();
-          if (status) {
+          const { success, message } = await changePassword({ ...values }).unwrap();
+          if (success) {
             toast.success(message);
             form.resetFields();
           }
@@ -48,7 +48,7 @@ const ChangePassword = () => {
         className="w-[70%] mx-auto mt-40"
       >
         <Form.Item
-          name="currentPass"
+          name="currentPassword"
           label={
             <p className="text-xl font-medium text-sub_title">
               Current Password
@@ -76,7 +76,7 @@ const ChangePassword = () => {
         </Form.Item>
 
         <Form.Item
-          name="newPass"
+          name="newPassword"
           rules={[
             {
               required: true,
@@ -113,7 +113,7 @@ const ChangePassword = () => {
               Confirm Password
             </p>
           }
-          name="confirmPass"
+          name="confirmPassword"
           rules={[
             {
               required: true,
