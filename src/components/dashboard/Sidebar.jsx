@@ -39,7 +39,7 @@ const Sidebar = () => {
     },
     {
       key: "/services",
-      label: "Services",
+      label: "Category",
       icon: <img src={services} className="h-6" alt="services icon" />,
     },
     {

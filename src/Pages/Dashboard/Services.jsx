@@ -1,5 +1,5 @@
 import { Button, ConfigProvider, Modal, Table } from "antd";
-import  { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { PlusOutlined } from "@ant-design/icons";
 import { CiEdit } from "react-icons/ci";
@@ -29,7 +29,8 @@ const initialData = [
     category: "Maintenance",
     serviceType: "Tile Fixing",
     price: 197,
-    serviceImage: "https://via.placeholder.com/100x60?text=Tile+Fixing",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-14T00:00:00",
   },
   {
@@ -37,7 +38,8 @@ const initialData = [
     category: "HVAC",
     serviceType: "Heater Repair",
     price: 162,
-    serviceImage: "https://via.placeholder.com/100x60?text=Heater+Repair",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-24T00:00:00",
   },
   {
@@ -45,7 +47,8 @@ const initialData = [
     category: "Cleaning",
     serviceType: "Window Cleaning",
     price: 172,
-    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-13T00:00:00",
   },
   {
@@ -53,7 +56,8 @@ const initialData = [
     category: "Cleaning",
     serviceType: "Window Cleaning",
     price: 193,
-    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-07T00:00:00",
   },
   {
@@ -61,7 +65,8 @@ const initialData = [
     category: "Maintenance",
     serviceType: "Faucet Installation",
     price: 170,
-    serviceImage: "https://via.placeholder.com/100x60?text=Faucet+Installation",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-31T00:00:00",
   },
   {
@@ -70,7 +75,7 @@ const initialData = [
     serviceType: "Ceiling Fan Installation",
     price: 117,
     serviceImage:
-      "https://via.placeholder.com/100x60?text=Ceiling+Fan+Installation",
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-29T00:00:00",
   },
   {
@@ -78,7 +83,8 @@ const initialData = [
     category: "Gardening",
     serviceType: "Tree Trimming",
     price: 160,
-    serviceImage: "https://via.placeholder.com/100x60?text=Tree+Trimming",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-30T00:00:00",
   },
   {
@@ -86,7 +92,8 @@ const initialData = [
     category: "Cleaning",
     serviceType: "Window Cleaning",
     price: 95,
-    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
+    serviceImage:
+      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
     createdAt: "2024-07-08T00:00:00",
   },
   {
@@ -178,7 +185,11 @@ const Services = () => {
   const [data, setData] = useState(initialData);
   const [value, setValue] = useState(null);
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [form, setForm] = useState({ category: "", serviceType: "", serviceImage: "" });
+  const [form, setForm] = useState({
+    category: "",
+    serviceType: "",
+    serviceImage: "",
+  });
   const [imgURL, setImgURL] = useState();
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
@@ -262,11 +273,6 @@ const Services = () => {
         title: "Category",
         dataIndex: "category",
         key: "category",
-      },
-      {
-        title: "Service Type",
-        dataIndex: "serviceType",
-        key: "serviceType",
       },
       {
         title: "Service Image",
@@ -394,31 +400,22 @@ const Services = () => {
           <h1 className="text-[20px] font-medium mb-3">Add Service</h1>
           <form onSubmit={handleSubmit}>
             <div className="flex justify-center items-center gap-10 mb-10">
-              <div>
+              <div className="h-32 w-32 flex items-center justify-center bg-gray-300 rounded-full relative">
+                {imgURL ? (
+                  <img
+                    className="w-full h-full z-10 rounded-full object-cover"
+                    src={imgURL}
+                    alt="preview img"
+                  />
+                ) : (
+                  <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                )}
                 <input
                   onChange={onChange}
                   type="file"
                   id="img"
-                  style={{ display: "none" }}
+                  className="display-none absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
                 />
-                <label
-                  className="relative"
-                  htmlFor="img"
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    cursor: "pointer",
-                    borderRadius: "100%",
-                    background: "#E0E0E0",
-                    backgroundImage: `url(${imgURL})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  {!imgURL && (
-                    <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-                  )}
-                </label>
               </div>
             </div>
             <div style={{ marginBottom: "16px" }}>
@@ -499,31 +496,18 @@ const Services = () => {
           <h1 className="text-[20px] font-medium mb-3">Edit Service</h1>
           <form onSubmit={handleEdit}>
             <div className="flex justify-center items-center gap-10 mb-10">
-              <div>
+              <div className="h-32 w-32 flex items-center justify-center bg-gray-300 rounded-full relative">
+                <img
+                  className="w-full h-full z-10 rounded-full object-cover"
+                  src={imgURL ? imgURL : value?.serviceImage}
+                  alt="preview img"
+                />
                 <input
                   onChange={onChange}
                   type="file"
-                  id="img-edit"
-                  style={{ display: "none" }}
+                  id="img"
+                  className="display-none absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
                 />
-                <label
-                  className="relative"
-                  htmlFor="img-edit"
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    cursor: "pointer",
-                    borderRadius: "100%",
-                    background: "#E0E0E0",
-                    backgroundImage: `url(${imgURL})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  {!imgURL && (
-                    <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-                  )}
-                </label>
               </div>
             </div>
             <div style={{ marginBottom: "16px" }}>
