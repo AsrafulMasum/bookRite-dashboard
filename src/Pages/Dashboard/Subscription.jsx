@@ -4,6 +4,7 @@ import { Button, Modal } from "antd";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import AddInputFrom from "../../components/dashboard/AddInputForm";
 import EditInputFrom from "../../components/dashboard/EditInputForm";
+import { useGetSubscriptionsQuery } from "../../redux/features/subscriptionApi";
 
 const initialPackages = [
   {
@@ -52,6 +53,8 @@ const Subscription = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [packages, setPackages] = useState(initialPackages);
   const [editPackage, setEditPackage] = useState(null);
+  const { data } = useGetSubscriptionsQuery();
+  console.log(data);
 
   // Open edit modal for a specific package
   const handleEditClick = (pkg) => {

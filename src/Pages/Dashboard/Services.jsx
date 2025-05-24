@@ -3,6 +3,8 @@ import { useCallback, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { PlusOutlined } from "@ant-design/icons";
 import { CiEdit, CiImageOn } from "react-icons/ci";
+import { useGetCategoriesQuery } from "../../redux/features/categoryApi";
+import { da } from "date-fns/locale";
 
 const initialData = [
   {
@@ -192,6 +194,8 @@ const Services = () => {
   const [imgURL, setImgURL] = useState();
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const { data: categories } = useGetCategoriesQuery();
+  console.log(categories);
 
   // Handle image upload
   const onChange = useCallback((e) => {

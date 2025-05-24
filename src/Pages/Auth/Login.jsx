@@ -20,15 +20,16 @@ const Login = () => {
           role: "ADMIN",
         }).unwrap();
 
-        if (res?.data) {
+        if (res?.success) {
           localStorage.setItem("token", JSON.stringify(res.data));
           toast.success("Login successful!");
           navigate("/");
         } else {
-          toast.error("Login failed. Please try again.");
+          toast.error("Login failed.", res?.message || "Please try again.");
         }
       } catch (error) {
         console.error("Login failed:", error);
+        toast.error("Login failed. Check your credentials.");
       }
     },
     [navigate]

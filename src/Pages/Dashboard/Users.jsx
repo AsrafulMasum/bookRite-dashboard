@@ -197,6 +197,7 @@ const Users = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const { data: users } = useGetUsersQuery();
+  console.log(users)
 
   const handleDelete = useCallback(() => {
     setData((prev) => prev.filter((item) => item.key !== deleteId));
