@@ -3,6 +3,7 @@ import moment from "moment";
 import { useCallback, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { BsInfoCircle } from "react-icons/bs";
+import { useGetUsersQuery } from "../../redux/features/usersApi";
 
 const initialData = [
   {
@@ -195,6 +196,7 @@ const Users = () => {
   const [value, setValue] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const { data: users } = useGetUsersQuery();
 
   const handleDelete = useCallback(() => {
     setData((prev) => prev.filter((item) => item.key !== deleteId));
@@ -225,11 +227,6 @@ const Users = () => {
         ),
       },
       {
-        title: "Service Type",
-        dataIndex: "category",
-        key: "category",
-      },
-      {
         title: "Email",
         dataIndex: "email",
         key: "email",
@@ -240,7 +237,7 @@ const Users = () => {
         key: "mobileNumber",
       },
       {
-        title: "Date",
+        title: "Start Date",
         dataIndex: "createdAt",
         key: "createdAt",
         render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,

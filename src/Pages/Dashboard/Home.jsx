@@ -4,12 +4,15 @@ import totalServices from "../../assets/totalServices.svg";
 import earnings from "../../assets/earnings.svg";
 import UsersBarChart from "../../components/charts/UsersBarChart";
 import EarningLineChart from "../../components/charts/EarningLineChart";
+import { useStatisticsQuery } from "../../redux/features/bannerApi";
 
 const Home = () => {
-  const statistics = useMemo(() => [
+  const { data } = useStatisticsQuery();
+
+  const statistics = [
     {
       title: "Total Users",
-      amount: "28K",
+      amount: data?.totalUsers || "0",
       icon: (
         <img
           className="bg-primary p-[15px] rounded-full"
@@ -20,7 +23,7 @@ const Home = () => {
     },
     {
       title: "Total Services",
-      amount: "88K",
+      amount: data?.totalBookings || "0",
       icon: (
         <img
           className="bg-primary p-[15px] rounded-full"
@@ -31,7 +34,7 @@ const Home = () => {
     },
     {
       title: "Earnings",
-      amount: "$457.89K",
+      amount: data?.totalEarnings || "0",
       icon: (
         <img
           className="bg-primary p-[15px] rounded-full"
@@ -40,7 +43,7 @@ const Home = () => {
         />
       ),
     },
-  ], []);
+  ];
 
   return (
     <div>
@@ -53,7 +56,9 @@ const Home = () => {
             <div>{icon}</div>
             <div className="flex flex-col gap-1">
               <h2 className="text-xl font-medium text-sub_title">{title}</h2>
-              <h3 className="text-sub_title text-3xl font-semibold">{amount}</h3>
+              <h3 className="text-sub_title text-3xl font-semibold">
+                {amount}
+              </h3>
             </div>
           </div>
         ))}

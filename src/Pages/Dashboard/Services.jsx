@@ -2,8 +2,7 @@ import { Button, ConfigProvider, Modal, Table } from "antd";
 import { useCallback, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { PlusOutlined } from "@ant-design/icons";
-import { CiEdit } from "react-icons/ci";
-import { FiPlus } from "react-icons/fi";
+import { CiEdit, CiImageOn } from "react-icons/ci";
 
 const initialData = [
   {
@@ -408,7 +407,7 @@ const Services = () => {
                     alt="preview img"
                   />
                 ) : (
-                  <FiPlus className="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                  <CiImageOn className="text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                 )}
                 <input
                   onChange={onChange}
@@ -531,29 +530,6 @@ const Services = () => {
                   width: "100%",
                 }}
                 name="category"
-              />
-            </div>
-            <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", marginBottom: "5px" }}>
-                Service Type
-              </label>
-              <input
-                value={form.serviceType}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, serviceType: e.target.value }))
-                }
-                type="text"
-                placeholder="Enter Service Type"
-                style={{
-                  border: "1px solid #E0E4EC",
-                  padding: "10px",
-                  height: "52px",
-                  background: "white",
-                  borderRadius: "8px",
-                  outline: "none",
-                  width: "100%",
-                }}
-                name="serviceType"
               />
             </div>
             <input

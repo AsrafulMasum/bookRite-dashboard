@@ -1,69 +1,32 @@
 import { baseApi } from "../api/baseApi";
 
-const bannerSlice = baseApi.injectEndpoints({
+const bannerApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createBanner: builder.mutation({
-      query: (bannerData) => {
-        return {
-          url: "/banner/create-banner",
-          method: "POST",
-          body: bannerData,
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        };
-      },
-    }),
-    deleteBanner: builder.mutation({
-      query: (id) => {
-        return {
-          url: `/banner/delete-banner/${id}`,
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        };
-      },
-    }),
-    banners: builder.query({
+
+    statistics: builder.query({
       query: () => {
         return {
-          url: "/banner/get-banner",
+          url: "/booking/total-service",
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
         };
       },
       transformResponse: ({ data }) => {
         return data;
       },
     }),
-    updateStatus: builder.mutation({
-      query: (id) => {
+
+    userStatistics: builder.query({
+      query: () => {
         return {
-          url: `/banner/${id}`,
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
+          url: "/user",
+          method: "GET",
         };
+      },
+      transformResponse: ({ data }) => {
+        return data;
       },
     }),
   }),
 });
 
-export const {
-  useCreateBannerMutation,
-  useDeleteBannerMutation,
-  useBannersQuery,
-  useUpdateStatusMutation,
-} = bannerSlice;
+export const { useStatisticsQuery } = bannerApi;

@@ -1,35 +1,34 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ConfigProvider, Pagination } from "antd";
 import toast from "react-hot-toast";
-import bell from "../../assets/bell.svg";
-import { useProfileQuery } from "../../redux/features/authApi";
+import { formatDistanceToNow } from "date-fns";
+import {
+  useGetNotificationsQuery,
+  useReadNotificationMutation,
+} from "../../redux/features/notificationApi";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 const Notifications = () => {
   const [page, setPage] = useState(1);
-  // const { data: notifications } = useNotificationQuery();
-  // const [read] = useReadMutation();
+  const pageSize = 8;
+  const { data: notifications } = useGetNotificationsQuery();
+  const [readNotification] = useReadNotificationMutation();
+  console.log(notifications);
+  const paginatedData = notifications?.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
 
-  // const handleRead = useCallback(async () => {
-  //   try {
-  //     const { status, message } = await read().unwrap();
-  //     if (status) toast.success(message);
-  //   } catch (error) {
-  //     toast.error(error?.data?.message);
-  //   }
-  // }, [read]);
+  const handleRead = useCallback(async () => {
+    try {
+      const { success, message } = await readNotification().unwrap();
+      if (success) toast.success(message);
+    } catch (error) {
+      toast.error(error?.data?.message);
+    }
+  }, [readNotification]);
 
   const handlePageChange = useCallback((page) => setPage(page), []);
-
-  // Use API data if available, otherwise fallback to mock
-  // const notificationList = notifications?.data?.length
-  //   ? notifications.data
-  //   : [...Array(8).keys()].map((_, idx) => ({
-  //       id: idx,
-  //       user: "Sanchez haro manuel",
-  //       message:
-  //         "start a new trip at 5pm. Trip No.56. Trip started from Mexico city",
-  //       time: "1hr ago",
-  //     }));
 
   return (
     <div>
@@ -44,28 +43,22 @@ const Notifications = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-5">
-        {notificationList.map((notification, index) => (
+        {paginatedData?.map((notification) => (
           <div
-            key={notification.id ?? index}
-            className="border-b-[1px] pb-2 border-[#d9d9d9] flex items-center gap-3"
+            key={notification?._id}
+            className={`border-b-[1px] pb-2 border-[#d9d9d9] flex items-center gap-3 ${
+              notification?.read === false && "bg-[#F5F5F5]"
+            }`}
           >
-            <img
-              className="object-cover"
-              style={{
-                backgroundColor: "#E7F0EF",
-                padding: "8px",
-                borderRadius: "100%",
-                objectFit: "cover",
-              }}
-              src={bell}
-              alt="Notification"
-            />
+            <div className="p-2 rounded-full bg-secondary">
+              <IoIosNotificationsOutline className="text-2xl text-primary" />
+            </div>
             <div>
-              <p>
-                <span>{notification.user}</span> {notification.message}
-              </p>
+              <p>{notification?.text}</p>
               <p style={{ color: "gray", marginTop: "4px" }}>
-                {notification.time}
+                {formatDistanceToNow(new Date(notification?.createdAt), {
+                  addSuffix: true,
+                })}
               </p>
             </div>
           </div>
@@ -88,7 +81,7 @@ const Notifications = () => {
         >
           <Pagination
             current={page}
-            total={50}
+            total={notifications?.length}
             onChange={handlePageChange}
             showQuickJumper={false}
             showSizeChanger={false}
