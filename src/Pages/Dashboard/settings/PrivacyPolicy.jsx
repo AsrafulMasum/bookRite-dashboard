@@ -2,31 +2,35 @@ import React, { useState, useRef, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import { Button } from "antd";
 import toast from "react-hot-toast";
+import {
+  useGetPrivacyPolicyQuery,
+  useUpdatePrivacyPolicyMutation,
+} from "../../../redux/features/rulesApi";
 
 const PrivacyPolicy = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
-  // const { data: privacyPolicy, refetch } = usePrivacyPolicyQuery();
-  // const [updatePricyPolicy, { isLoading }] = useUpdatePricyPolicyMutation();
+  const { data: privacyPolicy, refetch } = useGetPrivacyPolicyQuery();
+  const [updatePrivacyPolicy, { isLoading }] = useUpdatePrivacyPolicyMutation();
 
-  // const aboutDataSave = async () => {
-  //   try {
-  //     await updatePricyPolicy({ id: privacyPolicy?._id, description: content })
-  //       .unwrap()
-  //       .then(({ statusCode, status, message }) => {
-  //         if (status) {
-  //           toast.success(message);
-  //           refetch();
-  //         }
-  //       });
-  //   } catch ({ message }) {
-  //     toast.error(message || "Something Wrong");
-  //   }
-  // };
+  const privacyDataSave = async () => {
+    try {
+      const response = await updatePrivacyPolicy({ content }).unwrap();
+      const { success, message } = response;
 
-  // useEffect(() => {
-  //   setContent(privacyPolicy?.description);
-  // }, [privacyPolicy]);
+      if (success) {
+        toast.success(message);
+        refetch();
+      }
+    } catch (error) {
+      console.error("Mutation error:", error);
+      toast.error(error?.data?.message || "Something went wrong");
+    }
+  };
+
+  useEffect(() => {
+    setContent(privacyPolicy?.content);
+  }, [privacyPolicy]);
 
   return (
     <div>
@@ -39,7 +43,7 @@ const PrivacyPolicy = () => {
       />
 
       <Button
-        // onClick={aboutDataSave}
+        onClick={privacyDataSave}
         block
         style={{
           marginTop: "60px",
@@ -51,8 +55,7 @@ const PrivacyPolicy = () => {
           fontWeight: "600",
         }}
       >
-        {/* {isLoading ? "Updating..." : "Save"} */}
-        Save
+        {isLoading ? "Updating..." : "Save"}
       </Button>
     </div>
   );

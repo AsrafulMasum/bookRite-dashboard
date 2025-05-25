@@ -1,9 +1,15 @@
 import { Modal, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import React, { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
-import { GoQuestion } from "react-icons/go";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import {
+  useCreateFAQMutation,
+  useDeleteFAQMutation,
+  useGetFAQQuery,
+  useUpdateFAQMutation,
+} from "../../redux/features/faqApi";
+import toast from "react-hot-toast";
 
 const initialData = [
   {
@@ -39,51 +45,83 @@ const initialData = [
 ];
 
 const FAQ = () => {
-  const [faqData, setFaqData] = useState(initialData);
+  const { data, refetch } = useGetFAQQuery();
+  const [createFAQ] = useCreateFAQMutation();
+  const [updateFAQ] = useUpdateFAQMutation();
+  const [deleteFAQ] = useDeleteFAQMutation();
+
+  const [faqData, setFaqData] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [currentId, setCurrentId] = useState("");
   const [form, setForm] = useState({ question: "", ans: "" });
 
+  useEffect(() => {
+    setFaqData(data);
+  }, [data]);
+
   // Add FAQ
-  const handleAdd = useCallback((e) => {
-    e.preventDefault();
-    if (!form.question || !form.ans) return;
-    setFaqData([
-      ...faqData,
-      { _id: Date.now().toString(), question: form.question, ans: form.ans },
-    ]);
-    setForm({ question: "", ans: "" });
-    setOpenAddModal(false);
-  }, [form, faqData]);
+  const handleAdd = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!form.question || !form.ans) return;
+      const payload = {
+        questions: form.question,
+        answers: form.ans,
+      };
+      try {
+        await createFAQ(payload).unwrap();
+        refetch();
+        setForm({ question: "", ans: "" });
+        setOpenAddModal(false);
+        toast.success("FAQ Created Successfully.");
+      } catch (error) {
+        console.error("Create FAQ failed:", error);
+      }
+    },
+    [form, createFAQ, refetch]
+  );
 
   // Edit FAQ
-  const handleEdit = useCallback((e) => {
-    e.preventDefault();
-    if (!form.question || !form.ans) return;
-    setFaqData((prev) =>
-      prev.map((item) =>
-        item._id === currentId
-          ? { ...item, question: form.question, ans: form.ans }
-          : item
-      )
-    );
-    setForm({ question: "", ans: "" });
-    setCurrentId("");
-    setOpenEditModal(false);
-  }, [form, currentId]);
+  const handleEdit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!form.question || !form.ans) return;
+      const payload = {
+        questions: form.question,
+        answers: form.ans,
+      };
+      try {
+        await updateFAQ({ id: currentId, faq: payload }).unwrap();
+        refetch();
+        setForm({ question: "", ans: "" });
+        setCurrentId("");
+        setOpenEditModal(false);
+        toast.success("FAQ updated successfully.");
+      } catch (err) {
+        console.error("Update FAQ failed:", err);
+      }
+    },
+    [form, currentId, updateFAQ, refetch]
+  );
 
   // Delete FAQ
-  const handleDelete = useCallback(() => {
-    setFaqData((prev) => prev.filter((item) => item._id !== currentId));
+  const handleDelete = useCallback(async () => {
+    try {
+      await deleteFAQ(currentId).unwrap();
+      refetch();
+      toast.success("FAQ deleted successfully.");
+    } catch (err) {
+      console.error("Delete FAQ failed:", err);
+    }
     setShowDelete(false);
     setCurrentId("");
-  }, [currentId]);
+  }, [currentId, deleteFAQ, refetch]);
 
   // Open Edit Modal
   const openEdit = useCallback((item) => {
-    setForm({ question: item.question, ans: item.ans });
+    setForm({ question: item.questions, ans: item.answers });
     setCurrentId(item._id);
     setOpenEditModal(true);
   }, []);
@@ -98,7 +136,10 @@ const FAQ = () => {
     <div className="bg-white px-3 py-2 rounded-lg">
       <div style={{ margin: "24px 16px" }}>
         <div className="flex items-center justify-between w-full">
-          <h3 className="text-[#333333]" style={{ fontSize: 24, fontWeight: 500, lineHeight: "24px" }}>
+          <h3
+            className="text-[#333333]"
+            style={{ fontSize: 24, fontWeight: 500, lineHeight: "24px" }}
+          >
             FAQ
           </h3>
           <Button
@@ -122,15 +163,20 @@ const FAQ = () => {
         </div>
       </div>
 
-      <div className="bg-white pb-6 px-4 rounded-md">
-        {faqData.map((item) => (
-          <div key={item._id} className="flex justify-between items-start gap-4">
+      <div className="bg-white pb-6 px-4 rounded-md space-y-4">
+        {faqData?.map((item) => (
+          <div
+            key={item._id}
+            className="flex justify-between items-start gap-4"
+          >
             <div className="w-full">
               <p className="text-base font-medium border-b rounded-xl py-2 px-4 flex items-center gap-8 bg-[#F9F9F9]">
-                <span className="flex-1 text-[#636363]">{item.question}</span>
+                <span className="flex-1 text-[#636363]">{item.questions}</span>
               </p>
               <div className="flex justify-start items-start gap-2 border-b py-2 px-4 rounded-xl my-4 bg-[#F9F9F9]">
-                <p className="text-[#818181] leading-[24px] mb-6">{item.ans}</p>
+                <p className="text-[#818181] leading-[24px] mb-6">
+                  {item.answers}
+                </p>
               </div>
             </div>
             <div className="flex flex-col justify-start items-center gap-2">
@@ -159,9 +205,13 @@ const FAQ = () => {
           <h1 className="text-[20px] font-medium mb-3">Add FAQ</h1>
           <form onSubmit={handleAdd}>
             <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", marginBottom: "5px" }}>Question</label>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Question
+              </label>
               <input
-                onChange={(e) => setForm((f) => ({ ...f, question: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, question: e.target.value }))
+                }
                 type="text"
                 placeholder="Enter Question"
                 style={{
@@ -178,9 +228,13 @@ const FAQ = () => {
               />
             </div>
             <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", marginBottom: "5px" }}>Answer</label>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Answer
+              </label>
               <textarea
-                onChange={(e) => setForm((f) => ({ ...f, ans: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, ans: e.target.value }))
+                }
                 placeholder="Enter answer"
                 style={{
                   border: "1px solid #E0E4EC",
@@ -227,9 +281,13 @@ const FAQ = () => {
           <h1 className="text-[20px] font-medium mb-3">Update FAQ</h1>
           <form onSubmit={handleEdit}>
             <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", marginBottom: "5px" }}>Question</label>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Question
+              </label>
               <input
-                onChange={(e) => setForm((f) => ({ ...f, question: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, question: e.target.value }))
+                }
                 type="text"
                 placeholder="Enter Question"
                 style={{
@@ -246,9 +304,13 @@ const FAQ = () => {
               />
             </div>
             <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", marginBottom: "5px" }}>Answer</label>
+              <label style={{ display: "block", marginBottom: "5px" }}>
+                Answer
+              </label>
               <textarea
-                onChange={(e) => setForm((f) => ({ ...f, ans: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, ans: e.target.value }))
+                }
                 placeholder="Enter answer"
                 style={{
                   border: "1px solid #E0E4EC",

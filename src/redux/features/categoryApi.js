@@ -19,7 +19,7 @@ const categoryApi = baseApi.injectEndpoints({
         return {
           method: "PATCH",
           url: `/service/${data.id}`,
-          body: data,
+          body: data?.body,
         };
       },
       transformResponse: ({ data }) => {

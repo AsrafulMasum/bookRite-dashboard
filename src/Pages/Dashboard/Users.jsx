@@ -5,205 +5,17 @@ import deleteIcon from "../../assets/delete.svg";
 import { BsInfoCircle } from "react-icons/bs";
 import { useGetUsersQuery } from "../../redux/features/usersApi";
 
-const initialData = [
-  {
-    key: "1",
-    firstName: "John",
-    lastName: "Doe",
-    category: "Home Service",
-    email: "john.doe@example.com",
-    mobileNumber: "+1234567890",
-    createdAt: "2024-05-01T10:00:00Z",
-  },
-  {
-    key: "2",
-    firstName: "Jane",
-    lastName: "Smith",
-    category: "Home Service",
-    email: "jane.smith@example.com",
-    mobileNumber: "+1987654321",
-    createdAt: "2024-06-15T08:30:00Z",
-  },
-  {
-    key: "3",
-    firstName: "Alice",
-    lastName: "Johnson",
-    category: "Home Service",
-    email: "alice.johnson@example.com",
-    mobileNumber: "+1112233445",
-    createdAt: "2024-07-20T12:45:00Z",
-  },
-  {
-    key: "4",
-    firstName: "Bob",
-    lastName: "Williams",
-    category: "Home Service",
-    email: "bob.williams@example.com",
-    mobileNumber: "+1123456789",
-    createdAt: "2024-03-18T14:00:00Z",
-  },
-  {
-    key: "5",
-    firstName: "Emma",
-    lastName: "Brown",
-    category: "Home Service",
-    email: "emma.brown@example.com",
-    mobileNumber: "+9988776655",
-    createdAt: "2024-04-10T09:15:00Z",
-  },
-  {
-    key: "6",
-    firstName: "Liam",
-    lastName: "Davis",
-    category: "Home Service",
-    email: "liam.davis@example.com",
-    mobileNumber: "+5566778899",
-    createdAt: "2024-01-25T17:30:00Z",
-  },
-  {
-    key: "7",
-    firstName: "Olivia",
-    lastName: "Garcia",
-    category: "Home Service",
-    email: "olivia.garcia@example.com",
-    mobileNumber: "+1234987654",
-    createdAt: "2024-02-10T10:20:00Z",
-  },
-  {
-    key: "8",
-    firstName: "Noah",
-    lastName: "Martinez",
-    category: "Home Service",
-    email: "noah.martinez@example.com",
-    mobileNumber: "+7865432190",
-    createdAt: "2024-08-08T11:00:00Z",
-  },
-  {
-    key: "9",
-    firstName: "Sophia",
-    lastName: "Rodriguez",
-    category: "Home Service",
-    email: "sophia.rodriguez@example.com",
-    mobileNumber: "+2223334444",
-    createdAt: "2024-06-03T16:15:00Z",
-  },
-  {
-    key: "10",
-    firstName: "James",
-    lastName: "Lee",
-    category: "Home Service",
-    email: "james.lee@example.com",
-    mobileNumber: "+3216549870",
-    createdAt: "2024-05-21T13:10:00Z",
-  },
-  {
-    key: "11",
-    firstName: "Isabella",
-    lastName: "Walker",
-    category: "Home Service",
-    email: "isabella.walker@example.com",
-    mobileNumber: "+6543219870",
-    createdAt: "2024-01-05T15:00:00Z",
-  },
-  {
-    key: "12",
-    firstName: "Ethan",
-    lastName: "Hall",
-    category: "Home Service",
-    email: "ethan.hall@example.com",
-    mobileNumber: "+3456789012",
-    createdAt: "2024-03-12T08:25:00Z",
-  },
-  {
-    key: "13",
-    firstName: "Mia",
-    lastName: "Allen",
-    category: "Home Service",
-    email: "mia.allen@example.com",
-    mobileNumber: "+4343434343",
-    createdAt: "2024-09-01T09:45:00Z",
-  },
-  {
-    key: "14",
-    firstName: "Alexander",
-    lastName: "Young",
-    category: "Home Service",
-    email: "alex.young@example.com",
-    mobileNumber: "+6565656565",
-    createdAt: "2024-02-22T07:30:00Z",
-  },
-  {
-    key: "15",
-    firstName: "Charlotte",
-    lastName: "Hernandez",
-    category: "Home Service",
-    email: "charlotte.hernandez@example.com",
-    mobileNumber: "+7778889990",
-    createdAt: "2024-04-30T13:50:00Z",
-  },
-  {
-    key: "16",
-    firstName: "Benjamin",
-    lastName: "King",
-    category: "Home Service",
-    email: "ben.king@example.com",
-    mobileNumber: "+9090909090",
-    createdAt: "2024-07-11T14:35:00Z",
-  },
-  {
-    key: "17",
-    firstName: "Amelia",
-    lastName: "Wright",
-    category: "Home Service",
-    email: "amelia.wright@example.com",
-    mobileNumber: "+8181818181",
-    createdAt: "2024-10-09T10:05:00Z",
-  },
-  {
-    key: "18",
-    firstName: "Lucas",
-    lastName: "Lopez",
-    category: "Home Service",
-    email: "lucas.lopez@example.com",
-    mobileNumber: "+2323232323",
-    createdAt: "2024-11-13T11:40:00Z",
-  },
-  {
-    key: "19",
-    firstName: "Harper",
-    lastName: "Scott",
-    category: "Home Service",
-    email: "harper.scott@example.com",
-    mobileNumber: "+5656565656",
-    createdAt: "2024-12-01T09:30:00Z",
-  },
-  {
-    key: "20",
-    firstName: "Henry",
-    lastName: "Green",
-    category: "Home Service",
-    email: "henry.green@example.com",
-    mobileNumber: "+7878787878",
-    createdAt: "2024-08-25T12:10:00Z",
-  },
-];
-
 const itemsPerPage = 10;
 
 const Users = () => {
-  const [page, setPage] = useState(1);
-  const [data, setData] = useState(initialData);
-  const [value, setValue] = useState(null);
-  const [showDelete, setShowDelete] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
   const { data: users } = useGetUsersQuery();
-  console.log(users)
+  const [page, setPage] = useState(1);
+  const [value, setValue] = useState(null);
 
-  const handleDelete = useCallback(() => {
-    setData((prev) => prev.filter((item) => item.key !== deleteId));
-    setShowDelete(false);
-    setDeleteId("");
-  }, [deleteId]);
+  const paginatedUsers = users?.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   const columns = useMemo(
     () => [
@@ -221,9 +33,7 @@ const Users = () => {
         key: "userName",
         render: (_, record) => (
           <div className="flex items-center gap-2">
-            <p>
-              {record?.firstName || ""} {record?.lastName || ""}
-            </p>
+            <p>{record?.name}</p>
           </div>
         ),
       },
@@ -234,8 +44,8 @@ const Users = () => {
       },
       {
         title: "Contact Number",
-        dataIndex: "mobileNumber",
-        key: "mobileNumber",
+        dataIndex: "contact",
+        key: "contact",
       },
       {
         title: "Start Date",
@@ -253,15 +63,6 @@ const Users = () => {
             <BsInfoCircle
               className="text-lg text-[#F78F08] cursor-pointer"
               onClick={() => setValue(record)}
-            />
-            <img
-              className="cursor-pointer"
-              onClick={() => {
-                setDeleteId(record?.key);
-                setShowDelete(true);
-              }}
-              src={deleteIcon}
-              alt="Delete Icon"
             />
           </div>
         ),
@@ -291,7 +92,8 @@ const Users = () => {
       >
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={paginatedUsers}
+          rowKey="_id"
           pagination={{
             current: page,
             pageSize: itemsPerPage,
@@ -334,29 +136,6 @@ const Users = () => {
               </p>
             </div>
           </div>
-        </div>
-      </Modal>
-
-      <Modal
-        centered
-        open={showDelete}
-        onCancel={() => setShowDelete(false)}
-        width={400}
-        footer={false}
-      >
-        <div className="p-6 text-center">
-          <p className="text-[#D93D04] text-center font-semibold">
-            Are you sure!
-          </p>
-          <p className="pt-4 pb-12 text-center">
-            Do you want to delete this content?
-          </p>
-          <button
-            onClick={handleDelete}
-            className="bg-[#3536FF] py-2 px-5 text-white rounded-md"
-          >
-            Confirm
-          </button>
         </div>
       </Modal>
     </>

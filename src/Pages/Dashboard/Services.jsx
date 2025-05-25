@@ -1,265 +1,159 @@
 import { Button, ConfigProvider, Modal, Table } from "antd";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { PlusOutlined } from "@ant-design/icons";
 import { CiEdit, CiImageOn } from "react-icons/ci";
-import { useGetCategoriesQuery } from "../../redux/features/categoryApi";
-import { da } from "date-fns/locale";
-
-const initialData = [
-  {
-    key: "1",
-    category: "Maintenance",
-    serviceType: "Plumbing Repair",
-    price: 135,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-22T00:00:00",
-  },
-  {
-    key: "2",
-    category: "Cleaning",
-    serviceType: "Window Cleaning",
-    price: 75,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-15T00:00:00",
-  },
-  {
-    key: "3",
-    category: "Maintenance",
-    serviceType: "Tile Fixing",
-    price: 197,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-14T00:00:00",
-  },
-  {
-    key: "4",
-    category: "HVAC",
-    serviceType: "Heater Repair",
-    price: 162,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-24T00:00:00",
-  },
-  {
-    key: "5",
-    category: "Cleaning",
-    serviceType: "Window Cleaning",
-    price: 172,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-13T00:00:00",
-  },
-  {
-    key: "6",
-    category: "Cleaning",
-    serviceType: "Window Cleaning",
-    price: 193,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-07T00:00:00",
-  },
-  {
-    key: "7",
-    category: "Maintenance",
-    serviceType: "Faucet Installation",
-    price: 170,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-31T00:00:00",
-  },
-  {
-    key: "8",
-    category: "Electrical",
-    serviceType: "Ceiling Fan Installation",
-    price: 117,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-29T00:00:00",
-  },
-  {
-    key: "9",
-    category: "Gardening",
-    serviceType: "Tree Trimming",
-    price: 160,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-30T00:00:00",
-  },
-  {
-    key: "10",
-    category: "Cleaning",
-    serviceType: "Window Cleaning",
-    price: 95,
-    serviceImage:
-      "https://i.ibb.co.com/TxDMxFpF/8a93140310fbd10e3adba404ff4c8d0fee3446ba.png",
-    createdAt: "2024-07-08T00:00:00",
-  },
-  {
-    key: "11",
-    category: "Maintenance",
-    serviceType: "Tile Fixing",
-    price: 165,
-    serviceImage: "https://via.placeholder.com/100x60?text=Tile+Fixing",
-    createdAt: "2024-07-24T00:00:00",
-  },
-  {
-    key: "12",
-    category: "Electrical",
-    serviceType: "Ceiling Fan Installation",
-    price: 163,
-    serviceImage:
-      "https://via.placeholder.com/100x60?text=Ceiling+Fan+Installation",
-    createdAt: "2024-07-05T00:00:00",
-  },
-  {
-    key: "13",
-    category: "Gardening",
-    serviceType: "Tree Trimming",
-    price: 97,
-    serviceImage: "https://via.placeholder.com/100x60?text=Tree+Trimming",
-    createdAt: "2024-07-13T00:00:00",
-  },
-  {
-    key: "14",
-    category: "HVAC",
-    serviceType: "AC Servicing",
-    price: 162,
-    serviceImage: "https://via.placeholder.com/100x60?text=AC+Servicing",
-    createdAt: "2024-07-10T00:00:00",
-  },
-  {
-    key: "15",
-    category: "Maintenance",
-    serviceType: "Faucet Installation",
-    price: 145,
-    serviceImage: "https://via.placeholder.com/100x60?text=Faucet+Installation",
-    createdAt: "2024-07-07T00:00:00",
-  },
-  {
-    key: "16",
-    category: "HVAC",
-    serviceType: "Heater Repair",
-    price: 110,
-    serviceImage: "https://via.placeholder.com/100x60?text=Heater+Repair",
-    createdAt: "2024-07-12T00:00:00",
-  },
-  {
-    key: "17",
-    category: "Maintenance",
-    serviceType: "Faucet Installation",
-    price: 193,
-    serviceImage: "https://via.placeholder.com/100x60?text=Faucet+Installation",
-    createdAt: "2024-07-10T00:00:00",
-  },
-  {
-    key: "18",
-    category: "Electrical",
-    serviceType: "Wiring Inspection",
-    price: 116,
-    serviceImage: "https://via.placeholder.com/100x60?text=Wiring+Inspection",
-    createdAt: "2024-07-08T00:00:00",
-  },
-  {
-    key: "19",
-    category: "Cleaning",
-    serviceType: "Window Cleaning",
-    price: 71,
-    serviceImage: "https://via.placeholder.com/100x60?text=Window+Cleaning",
-    createdAt: "2024-07-15T00:00:00",
-  },
-  {
-    key: "20",
-    category: "Gardening",
-    serviceType: "Tree Trimming",
-    price: 172,
-    serviceImage: "https://via.placeholder.com/100x60?text=Tree+Trimming",
-    createdAt: "2024-07-21T00:00:00",
-  },
-];
+import {
+  useCreateCategoryMutation,
+  useGetCategoriesQuery,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} from "../../redux/features/categoryApi";
+import { imageUrl } from "../../redux/api/baseApi";
+import toast from "react-hot-toast";
 
 const Services = () => {
+  const { data: categories, refetch } = useGetCategoriesQuery();
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(null);
   const [value, setValue] = useState(null);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [form, setForm] = useState({
-    category: "",
-    serviceType: "",
-    serviceImage: "",
+    categoryName: "",
+    image: "",
   });
   const [imgURL, setImgURL] = useState();
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  const { data: categories } = useGetCategoriesQuery();
-  console.log(categories);
+  const [imageFile, setImageFile] = useState(null);
+  const [editImageFile, setEditImageFile] = useState(null);
+  const [imgEditURL, setImgEditURL] = useState("");
+  const [createCategory] = useCreateCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  useEffect(() => {
+    setData(categories);
+  }, [categories]);
 
   // Handle image upload
   const onChange = useCallback((e) => {
-    const file = e.target.files[0];
-    if (file) {
+    const { name, value, files } = e.target;
+    if (name === "categoryName") {
+      setForm((prev) => ({ ...prev, categoryName: value }));
+    } else if (name === "image" && files && files[0]) {
+      const file = files[0];
       const imgUrl = URL.createObjectURL(file);
       setImgURL(imgUrl);
+      setImageFile(file); // Store the file for FormData
       setForm((prev) => ({ ...prev, serviceImage: imgUrl }));
     }
   }, []);
 
+  const paginatedCategories = data?.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
   // Add new service
   const handleSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
-      if (!form.category || !form.serviceType) return;
-      setData([
-        ...data,
-        {
-          key: Date.now().toString(),
-          ...form,
-          price: 0,
-          createdAt: new Date().toISOString(),
-        },
-      ]);
-      setForm({ category: "", serviceType: "", serviceImage: "" });
-      setImgURL("");
-      setOpenAddModel(false);
+      try {
+        const formData = new FormData();
+        formData.append("CategoryName", form.categoryName);
+        if (imageFile) {
+          formData.append("image", imageFile);
+        }
+        console.log(formData);
+        await createCategory(formData).unwrap();
+        setOpenAddModel(false);
+        setForm({ categoryName: "", image: "" });
+        setImgURL("");
+        setImageFile(null);
+        refetch();
+        toast.success("Service added successfully");
+      } catch (err) {
+        console.error("Add category failed", err);
+      }
     },
-    [form, data]
+    [form, createCategory, imageFile, refetch]
   );
 
   // Edit service
   const handleEdit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
-      setData((prev) =>
-        prev.map((item) =>
-          item.key === value.key ? { ...item, ...form } : item
-        )
-      );
-      setValue(null);
-      setForm({ category: "", serviceType: "", serviceImage: "" });
-      setImgURL("");
+      try {
+        const formData = new FormData();
+        formData.append("CategoryName", form.categoryName);
+        if (editImageFile) {
+          formData.append("image", editImageFile);
+        }
+
+        await updateCategory({
+          id: value._id,
+          body: formData,
+        }).unwrap();
+        setValue(null);
+        setForm({ categoryName: "", image: "" });
+        setImgEditURL("");
+        setEditImageFile(null);
+        refetch();
+        toast.success("Service updated successfully");
+      } catch (err) {
+        console.error("Edit category failed", err);
+      }
     },
-    [form, value, setData]
+    [form, value, updateCategory, editImageFile, refetch]
   );
 
   // Delete service
-  const handleDelete = useCallback(() => {
-    setData((prev) => prev.filter((item) => item.key !== deleteId));
-    setShowDelete(false);
-    setDeleteId("");
-  }, [deleteId]);
+  const handleDelete = useCallback(async () => {
+    try {
+      await deleteCategory(deleteId).unwrap();
+      setShowDelete(false);
+      setDeleteId("");
+      refetch();
+      toast.success("Service deleted successfully");
+    } catch (err) {
+      console.error("Delete category failed", err);
+    }
+  }, [deleteId, deleteCategory, refetch]);
 
   // Open edit modal and set form values
   const openEditModal = useCallback((record) => {
     setValue(record);
     setForm({
-      category: record.category,
-      serviceType: record.serviceType,
-      serviceImage: record.serviceImage,
+      categoryName: record.CategoryName || "",
+      image: record.image || "",
     });
-    setImgURL(record.serviceImage);
+    setImgEditURL(
+      record.image
+        ? record.image.startsWith("http")
+          ? record.image
+          : `${imageUrl}${record.image}`
+        : ""
+    );
+    setEditImageFile(null);
+  }, []);
+
+  const onEditImageChange = useCallback((e) => {
+    const { files } = e.target;
+    if (files && files[0]) {
+      const file = files[0];
+      const imgUrl = URL.createObjectURL(file);
+      setImgEditURL(imgUrl);
+      setEditImageFile(file);
+    }
+  }, []);
+
+  const onEditInputChange = useCallback((e) => {
+    const { name, value } = e.target;
+    if (name === "categoryName") {
+      setForm((prev) => ({ ...prev, categoryName: value }));
+    }
   }, []);
 
   const columns = useMemo(
@@ -274,18 +168,24 @@ const Services = () => {
       },
       {
         title: "Category",
-        dataIndex: "category",
-        key: "category",
+        dataIndex: "CategoryName",
+        key: "CategoryName",
       },
       {
-        title: "Service Image",
-        dataIndex: "serviceImage",
-        key: "serviceImage",
+        title: "Category Image",
+        dataIndex: "image",
+        key: "image",
         render: (_, record) => (
           <div>
             <img
               className="h-6 w-6 object-cover"
-              src={record?.serviceImage}
+              src={
+                record?.image && record?.image.startsWith("https")
+                  ? record?.image
+                  : record?.image
+                  ? `${imageUrl}${record?.image}`
+                  : "/default-avatar.png"
+              }
               alt=""
             />
           </div>
@@ -305,7 +205,7 @@ const Services = () => {
             <img
               className="cursor-pointer"
               onClick={() => {
-                setDeleteId(record?.key);
+                setDeleteId(record?._id); // <-- use _id for delete
                 setShowDelete(true);
               }}
               src={deleteIcon}
@@ -381,7 +281,8 @@ const Services = () => {
       >
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={paginatedCategories}
+          rowKey="_id"
           pagination={{
             current: page,
             pageSize: itemsPerPage,
@@ -417,6 +318,7 @@ const Services = () => {
                   onChange={onChange}
                   type="file"
                   id="img"
+                  name="image"
                   className="display-none absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
                 />
               </div>
@@ -426,10 +328,8 @@ const Services = () => {
                 Service Category
               </label>
               <input
-                value={form.category}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, category: e.target.value }))
-                }
+                value={form.categoryName}
+                onChange={onChange}
                 type="text"
                 placeholder="Enter Service Name"
                 style={{
@@ -441,30 +341,7 @@ const Services = () => {
                   outline: "none",
                   width: "100%",
                 }}
-                name="category"
-              />
-            </div>
-            <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", marginBottom: "5px" }}>
-                Service Type
-              </label>
-              <input
-                value={form.serviceType}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, serviceType: e.target.value }))
-                }
-                type="text"
-                placeholder="Enter Service Type"
-                style={{
-                  border: "1px solid #E0E4EC",
-                  padding: "10px",
-                  height: "52px",
-                  background: "white",
-                  borderRadius: "8px",
-                  outline: "none",
-                  width: "100%",
-                }}
-                name="serviceType"
+                name="categoryName"
               />
             </div>
             <input
@@ -491,7 +368,11 @@ const Services = () => {
       <Modal
         centered
         open={!!value}
-        onCancel={() => setValue(null)}
+        onCancel={() => {
+          setValue(null);
+          setImgEditURL("");
+          setEditImageFile(null);
+        }}
         width={500}
         footer={false}
       >
@@ -500,15 +381,20 @@ const Services = () => {
           <form onSubmit={handleEdit}>
             <div className="flex justify-center items-center gap-10 mb-10">
               <div className="h-32 w-32 flex items-center justify-center bg-gray-300 rounded-full relative">
-                <img
-                  className="w-full h-full z-10 rounded-full object-cover"
-                  src={imgURL ? imgURL : value?.serviceImage}
-                  alt="preview img"
-                />
+                {imgEditURL ? (
+                  <img
+                    className="w-full h-full z-10 rounded-full object-cover"
+                    src={imgEditURL}
+                    alt="preview img"
+                  />
+                ) : (
+                  <CiImageOn className="text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                )}
                 <input
-                  onChange={onChange}
+                  onChange={onEditImageChange}
                   type="file"
-                  id="img"
+                  id="img-edit"
+                  name="image"
                   className="display-none absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
                 />
               </div>
@@ -518,10 +404,8 @@ const Services = () => {
                 Service Category
               </label>
               <input
-                value={form.category}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, category: e.target.value }))
-                }
+                value={form.categoryName}
+                onChange={onEditInputChange}
                 type="text"
                 placeholder="Enter Service Name"
                 style={{
@@ -533,7 +417,7 @@ const Services = () => {
                   outline: "none",
                   width: "100%",
                 }}
-                name="category"
+                name="categoryName"
               />
             </div>
             <input
