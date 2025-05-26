@@ -148,7 +148,7 @@ const FAQ = () => {
           {faqData?.map((item) => (
             <Panel
               header={
-                <div className="flex justify-between items-center text-[#333] font-medium text-lg">
+                <div className="flex justify-between items-center text-[#333] font-medium text-base">
                   {item.questions}
                 </div>
               }
