@@ -1,5 +1,5 @@
 import { Modal, Button, Collapse } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, RightOutlined } from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -133,16 +133,27 @@ const FAQ = () => {
       </div>
 
       <div className="bg-white pb-6 px-4 rounded-md">
-        <Collapse expandIconPosition="end" accordion ghost className="space-y-4">
+        <Collapse
+          expandIconPosition="end"
+          expandIcon={({ isActive }) => (
+            <RightOutlined
+              rotate={isActive ? 90 : 0}
+              style={{ fontSize: 18 }}
+            />
+          )}
+          accordion
+          ghost
+          className="space-y-4"
+        >
           {faqData?.map((item) => (
             <Panel
               header={
-                <div className="flex justify-between items-center text-[#333] font-medium">
+                <div className="flex justify-between items-center text-[#333] font-medium text-lg">
                   {item.questions}
                 </div>
               }
               key={item._id}
-              className="bg-secondary rounded-xl px-4 py-3"
+              className="bg-secondary rounded-xl px-4 py-1"
             >
               <div className="flex justify-between gap-4">
                 <p className="text-[#555] leading-[24px]">{item.answers}</p>
