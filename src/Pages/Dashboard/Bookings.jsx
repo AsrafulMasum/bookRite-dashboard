@@ -4,6 +4,7 @@ import { use } from "react";
 import { useCallback, useMemo, useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
 import { useGetBookingsQuery } from "../../redux/features/bookingsApi";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const data = [
   {
@@ -345,8 +346,7 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
   const { data: bookingsData } = useGetBookingsQuery();
-  console.log(bookingsData); 
-
+  console.log(bookingsData);
   const handleInfoClick = useCallback((record) => {
     setValue(record);
   }, []);
@@ -371,9 +371,7 @@ const Users = () => {
         key: "userName",
         render: (_, record) => (
           <div className="flex items-center gap-2">
-            <p>
-              {record?.firstName || ""} {record?.lastName || ""}
-            </p>
+            <p>{record?.userId?.name}</p>
           </div>
         ),
       },
@@ -381,22 +379,37 @@ const Users = () => {
         title: "Provider",
         dataIndex: "provider",
         key: "provider",
+        render: (_, record) => (
+          <div className="flex items-center gap-2">
+            <p>{record?.serviceProviderId?.name}</p>
+          </div>
+        ),
       },
       {
-        title: "Service Type",
+        title: "Category",
         dataIndex: "category",
         key: "category",
+        render: (_, record) => (
+          <div className="flex items-center gap-2">
+            <p>{record?.serviceType}</p>
+          </div>
+        ),
       },
       {
         title: "Service Location",
         dataIndex: "serviceLocation",
         key: "serviceLocation",
+        render: (_, record) => (
+          <div className="flex items-center gap-2">
+            <p>{record?.location}</p>
+          </div>
+        ),
       },
       {
         title: "Appt. Date",
         dataIndex: "createdAt",
         key: "createdAt",
-        render: (_, record) => <p>{moment(record?.createdAt).format("L")}</p>,
+        render: (_, record) => <p>{moment(record?.bookingDate).format("L")}</p>,
       },
       {
         title: "Actions",
@@ -437,7 +450,8 @@ const Users = () => {
       >
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={bookingsData}
+          rowKey="_id"
           pagination={{
             current: page,
             pageSize: itemsPerPage,
@@ -462,16 +476,17 @@ const Users = () => {
               </div>
               <div>
                 <p className="pb-[5px] text-right">
-                  {value?.firstName || ""} {value?.lastName || ""}
+                  {value?.userId?.name || "No name available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.userEmail || "henry.green@example.com"}
+                  {value?.userId?.email || "No email available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.serviceType || "Home Service"}
+                  {value?.serviceType || "No service available"}
                 </p>
                 <p className="text-right">
-                  {value?.createdAt ? moment(value.createdAt).format("L") : ""}
+                  {moment(value?.userId?.createdAt).format("L") ||
+                    "No date available"}
                 </p>
               </div>
             </div>
@@ -490,16 +505,17 @@ const Users = () => {
               </div>
               <div>
                 <p className="pb-[5px] text-right">
-                  {value?.provider || "XYZ"}
+                  {value?.serviceProviderId?.name || "No name available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.providerEmail || "henry.green@example.com"}
+                  {value?.serviceProviderId?.email || "No email available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.serviceType || "Home Service"}
+                  {value?.serviceType || "No service available"}
                 </p>
                 <p className="text-right">
-                  {value?.createdAt ? moment(value.createdAt).format("L") : ""}
+                  {moment(value?.serviceProviderId?.createdAt).format("L") ||
+                    "No date available"}
                 </p>
               </div>
             </div>
@@ -520,16 +536,22 @@ const Users = () => {
               </div>
               <div>
                 <p className="pb-[5px] text-right">
-                  {value?.category || "Home Service"}
+                  {value?.serviceType || "No service available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.serviceType || "Cleaning"}
+                  {value?.serviceId?.serviceName || "No service name available"}
                 </p>
-                <div className="pb-[5px] flex justify-end">
+                <div className="pb-[5px] flex justify-end h-10">
                   {value?.serviceImage ? (
                     <img
                       className="h-10 w-10 object-cover"
-                      src={value.serviceImage}
+                      src={
+                        value?.serviceId?.image && value?.serviceId?.image.startsWith("https")
+                          ? value?.serviceId?.image
+                          : value?.serviceId?.image
+                          ? `${imageUrl}${value?.serviceId?.image}`
+                          : "/default-avatar.png"
+                      }
                       alt="Service"
                     />
                   ) : (
@@ -537,10 +559,10 @@ const Users = () => {
                   )}
                 </div>
                 <p className="pb-[5px] text-right">
-                  {value?.price ? `$ ${value.price}` : "$50"}
+                  $ {value?.serviceId?.price}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.createdAt ? moment(value.createdAt).format("L") : ""}
+                  {moment(value?.bookingDate).format("L") || ""}
                 </p>
                 <Select
                   disabled
