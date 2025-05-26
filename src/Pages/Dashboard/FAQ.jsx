@@ -1,48 +1,17 @@
-import { Modal, Button } from "antd";
+import { Modal, Button, Collapse } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import toast from "react-hot-toast";
 import {
   useCreateFAQMutation,
   useDeleteFAQMutation,
   useGetFAQQuery,
   useUpdateFAQMutation,
 } from "../../redux/features/faqApi";
-import toast from "react-hot-toast";
 
-const initialData = [
-  {
-    _id: "1",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    _id: "2",
-    question: "What is an affiliate e-commerce website?2",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    _id: "3",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    _id: "4",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    _id: "5",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    _id: "6",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-];
+const { Panel } = Collapse;
 
 const FAQ = () => {
   const { data, refetch } = useGetFAQQuery();
@@ -163,34 +132,34 @@ const FAQ = () => {
         </div>
       </div>
 
-      <div className="bg-white pb-6 px-4 rounded-md space-y-4">
-        {faqData?.map((item) => (
-          <div
-            key={item._id}
-            className="flex justify-between items-start gap-4"
-          >
-            <div className="w-full">
-              <p className="text-base font-medium border-b rounded-xl py-2 px-4 flex items-center gap-8 bg-[#F9F9F9]">
-                <span className="flex-1 text-[#636363]">{item.questions}</span>
-              </p>
-              <div className="flex justify-start items-start gap-2 border-b py-2 px-4 rounded-xl my-4 bg-[#F9F9F9]">
-                <p className="text-[#818181] leading-[24px] mb-6">
-                  {item.answers}
-                </p>
+      <div className="bg-white pb-6 px-4 rounded-md">
+        <Collapse expandIconPosition="end" accordion ghost className="space-y-4">
+          {faqData?.map((item) => (
+            <Panel
+              header={
+                <div className="flex justify-between items-center text-[#333] font-medium">
+                  {item.questions}
+                </div>
+              }
+              key={item._id}
+              className="bg-secondary rounded-xl px-4 py-3"
+            >
+              <div className="flex justify-between gap-4">
+                <p className="text-[#555] leading-[24px]">{item.answers}</p>
+                <div className="flex flex-col items-center gap-4">
+                  <CiEdit
+                    onClick={() => openEdit(item)}
+                    className="text-2xl cursor-pointer text-[#F78F08]"
+                  />
+                  <RiDeleteBin6Line
+                    onClick={() => openDelete(item._id)}
+                    className="text-2xl cursor-pointer text-[#D93D04]"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col justify-start items-center gap-2">
-              <CiEdit
-                onClick={() => openEdit(item)}
-                className="text-3xl font-semibold cursor-pointer text-[#F78F08]"
-              />
-              <RiDeleteBin6Line
-                onClick={() => openDelete(item._id)}
-                className="text-2xl cursor-pointer text-[#D93D04]"
-              />
-            </div>
-          </div>
-        ))}
+            </Panel>
+          ))}
+        </Collapse>
       </div>
 
       {/* Add Modal */}
