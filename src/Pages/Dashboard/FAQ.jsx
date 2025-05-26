@@ -153,7 +153,7 @@ const FAQ = () => {
                 </div>
               }
               key={item._id}
-              className="bg-secondary rounded-xl px-4 py-1"
+              className="bg-secondary !rounded-xl px-4 py-1"
             >
               <div className="flex justify-between gap-4">
                 <p className="text-[#555] leading-[24px]">{item.answers}</p>
