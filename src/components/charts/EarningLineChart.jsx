@@ -10,9 +10,10 @@ import {
   ResponsiveContainer,
   LabelList,
 } from "recharts";
+import { useEarningsGraphStatisticsQuery } from "../../redux/features/bannerApi";
 
 const yearlyEarningData = {
-  "2023": [
+  2023: [
     { month: "Jan", earning: 15000 },
     { month: "Feb", earning: 12000 },
     { month: "Mar", earning: 18000 },
@@ -26,7 +27,7 @@ const yearlyEarningData = {
     { month: "Nov", earning: 55000 },
     { month: "Dec", earning: 60000 },
   ],
-  "2024": [
+  2024: [
     { month: "Jan", earning: 10000 },
     { month: "Feb", earning: 8000 },
     { month: "Mar", earning: 7000 },
@@ -54,12 +55,21 @@ const EarningLineChart = () => {
     [selectedYear]
   );
 
+  const { data: earningsStatistics } = useEarningsGraphStatisticsQuery(
+    parseInt(selectedYear)
+  );
+  console.log(earningsStatistics);
+
   return (
     <div className="bg-[#F7F7FF] p-4 rounded-xl shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-sub_title text-lg font-semibold">Monthly Earning</h3>
+        <h3 className="text-sub_title text-lg font-semibold">
+          Monthly Earning
+        </h3>
         <div className="relative">
-          <label htmlFor="year-select" className="sr-only">Select year</label>
+          <label htmlFor="year-select" className="sr-only">
+            Select year
+          </label>
           <select
             id="year-select"
             value={selectedYear}
@@ -67,7 +77,9 @@ const EarningLineChart = () => {
             className="bg-white border border-gray-300 rounded-md px-3 py-1 text-sm appearance-none pr-8 outline-none"
           >
             {years.map((year) => (
-              <option key={year} value={year}>{year}</option>
+              <option key={year} value={year}>
+                {year}
+              </option>
             ))}
           </select>
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">

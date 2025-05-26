@@ -9,6 +9,7 @@ const itemsPerPage = 10;
 
 const Users = () => {
   const { data: users } = useGetUsersQuery();
+  console.log(users)
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
 
@@ -120,16 +121,16 @@ const Users = () => {
             </div>
             <div>
               <p className="pb-[5px] text-right">
-                {value?.firstName || ""} {value?.lastName || ""}
+                {value?.name || "No name available"}
               </p>
               <p className="pb-[5px] text-right">
                 {value?.email || "Not Added yet"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.mobileNumber || "Not Added yet"}
+                {value?.contact || "Not Added yet"}
               </p>
               <p className="pb-[5px] text-right">
-                {value?.category || "Home Service"}
+                {value?.category || "Not Added yet"}
               </p>
               <p className="text-right">
                 {value?.createdAt ? moment(value.createdAt).format("L") : ""}

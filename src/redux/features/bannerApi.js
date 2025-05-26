@@ -2,7 +2,6 @@ import { baseApi } from "../api/baseApi";
 
 const bannerApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-
     statistics: builder.query({
       query: () => {
         return {
@@ -15,10 +14,22 @@ const bannerApi = baseApi.injectEndpoints({
       },
     }),
 
-    userStatistics: builder.query({
-      query: () => {
+    userGraphStatistics: builder.query({
+      query: (year) => {
         return {
-          url: "/user",
+          url: `/booking/userstate?year=${year}`,
+          method: "GET",
+        };
+      },
+      transformResponse: ({ data }) => {
+        return data;
+      },
+    }),
+
+    earningsGraphStatistics: builder.query({
+      query: (year) => {
+        return {
+          url: `/booking/monthlyEarning?year=${year}`,
           method: "GET",
         };
       },
@@ -29,4 +40,8 @@ const bannerApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useStatisticsQuery } = bannerApi;
+export const {
+  useStatisticsQuery,
+  useUserGraphStatisticsQuery,
+  useEarningsGraphStatisticsQuery,
+} = bannerApi;
