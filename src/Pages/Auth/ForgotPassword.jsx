@@ -28,7 +28,7 @@ const ForgotPassword = () => {
   return (
     <div className="w-full">
       <div className="mb-7">
-        <h1 className="text-[28px] font-semibold mb-3 leading-[110%] text-[#333333]">
+        <h1 className="text-2xl font-semibold mb-3 leading-[110%] text-[#333333]">
           Forget password
         </h1>
         <p className="text-[#757575] leading-[110%]">
@@ -59,7 +59,7 @@ const ForgotPassword = () => {
               type="email"
               style={{
                 border: "1px solid #757575",
-                height: "72px",
+                height: "52px",
                 padding: "23px 16px",
                 background: "#E6E6FF80",
                 borderRadius: "16px",
@@ -76,10 +76,10 @@ const ForgotPassword = () => {
             block
             style={{
               width: "100%",
-              height: 72,
+              height: 52,
               color: "#FEFEFE",
               fontWeight: "600",
-              fontSize: "28px",
+              fontSize: "24px",
               marginTop: 36,
               background: "#3536FF",
               border: "none",

@@ -1,4 +1,4 @@
-import { Form, Typography, Button } from "antd";
+import { Form, Typography, Button, Input, ConfigProvider } from "antd";
 import { useState, useCallback } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
@@ -11,62 +11,62 @@ const VerifyOtp = () => {
   const email = new URLSearchParams(location.search).get("email");
   const [otpVerify] = useOtpVerifyMutation();
 
-  const onFinish = useCallback(async () => {
-    console.log(otp)
-    if (otp) {
-      try {
-        const res = await otpVerify({
-          email: email,
-          oneTimeCode: parseInt(otp),
-        }).unwrap();
-        console.log(res);
-        if (res?.success) {
-          navigate(`/auth/reset-password?email=${email}`);
-        } else {
-          console.error("Failed to verify OTP");
-        }
-      } catch (error) {
-        console.error("Error verifying OTP:", error);
-      }
+  const onFinish = async (values) => {
+    const data = {
+      oneTimeCode: Number(values.otp),
+      email: email,
     }
-  }, [navigate, email]);
+
+    await otpVerify(data)
+  };
 
   const handleResendEmail = useCallback(() => {
     // TODO: Add resend OTP API call here
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full px-10">
       <div className="mb-6">
-        <h1 className="text-[28px] font-semibold mb-3 leading-[110%] text-[#333333]">
+        <h1 className="text-2xl font-semibold mb-3 leading-[110%] text-[#333333]">
           Verify OTP
         </h1>
-        <p className="text-[#757575] leading-[110%]">
-          Please check your email. We have sent a code to{" "}
-          {email || "your email"}
+        <p className="text-[#757575] leading-[110%] flex text-nowrap">
+          Please check your email. We have sent a code to <span>{email || "your email"}</span>
         </p>
       </div>
 
       <Form layout="vertical" onFinish={onFinish}>
-        <div className="flex items-center justify-center mb-6">
-          <OTPInput
-            value={otp}
-            onChange={(otp) => setOtp(otp)}
-            numInputs={6}
-            inputStyle={{
-              backgroundColor: "transparent",
-              height: 70,
-              width: 70,
-              borderRadius: "16px",
-              margin: "28px",
-              fontSize: "40px",
-              border: "1px solid #757575",
-              color: "#757575",
-              outline: "none",
-              marginBottom: 12,
+        <div className="flex justify-center">
+          <ConfigProvider
+            theme={{
+              token: {
+                controlHeight: 30,
+                colorBgContainer: "transparent",
+              },
+              components: {
+                Input: {
+                  fontSize: "24px",
+                  colorText: "#757575",
+                },
+              },
             }}
-            renderInput={(props) => <input {...props} />}
-          />
+          >
+            <Form.Item
+              name="otp"
+              rules={[{ required: true, message: "Please input your OTP!" }]}
+            >
+              <Input.OTP
+                size="large"
+                length={6}
+                style={{
+                  gap: 28,
+                  fontWeight: "500",
+                  // width:"160px"
+                 
+                }}
+              />
+            </Form.Item>
+          </ConfigProvider>
         </div>
 
         <div className="flex items-center justify-between mb-[60px]">
@@ -101,17 +101,16 @@ const VerifyOtp = () => {
             block
             style={{
               width: "100%",
-              height: 72,
+              height: 52,
               color: "#FEFEFE",
               fontWeight: "600",
-              fontSize: "28px",
+              fontSize: "24px",
               marginTop: 36,
               background: "#3536FF",
               border: "none",
               borderRadius: "16px",
             }}
             className="flex items-center justify-center bg-primary rounded-2xl"
-            disabled={otp.length !== 6}
           >
             Verify
           </Button>

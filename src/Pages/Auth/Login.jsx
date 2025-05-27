@@ -50,7 +50,7 @@ const Login = () => {
         <div style={{ marginBottom: "24px" }}>
           <label
             htmlFor="email"
-            className="text-2xl font-medium leading-6 text-[#636363]"
+            className="text-xl font-medium leading-6 text-[#636363]"
             style={{ display: "block", marginBottom: "12px" }}
           >
             Email
@@ -70,7 +70,7 @@ const Login = () => {
               type="email"
               style={{
                 border: "1px solid #757575",
-                height: "72px",
+                height: "52px",
                 padding: "23px 16px",
                 background: "#E6E6FF80",
                 borderRadius: "16px",
@@ -84,7 +84,7 @@ const Login = () => {
           <label
             style={{ display: "block", marginBottom: "12px" }}
             htmlFor="password"
-            className="text-2xl font-medium leading-6 text-[#636363]"
+            className="text-xl font-medium leading-6 text-[#636363]"
           >
             Password
           </label>
@@ -106,8 +106,7 @@ const Login = () => {
               }
               style={{
                 border: "1px solid #757575",
-                height: "72px",
-                padding: "23px 16px",
+                height: "52px",
                 background: "#E6E6FF80",
                 borderRadius: "16px",
                 outline: "none",
@@ -142,7 +141,7 @@ const Login = () => {
             block
             style={{
               width: "100%",
-              height: 72,
+              height: 52,
               color: "#FEFEFE",
               fontWeight: "600",
               fontSize: "24px",

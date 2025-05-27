@@ -18,7 +18,7 @@ const ResetPassword = () => {
   return (
     <div className="w-full">
       <div className="mb-6">
-        <h1 className="text-[#333333] text-[28px] font-semibold leading-[110%] mb-6">
+        <h1 className="text-[#333333] text-2xl font-semibold leading-[110%] mb-6">
           Set new password
         </h1>
       </div>
@@ -55,8 +55,7 @@ const ResetPassword = () => {
               }
               style={{
                 border: "1px solid #757575",
-                height: "72px",
-                padding: "23px 16px",
+                height: "52px",
                 background: "#E6E6FF80",
                 borderRadius: "16px",
                 outline: "none",
@@ -107,8 +106,7 @@ const ResetPassword = () => {
               }
               style={{
                 border: "1px solid #757575",
-                height: "72px",
-                padding: "23px 16px",
+                height: "52px",
                 background: "#E6E6FF80",
                 borderRadius: "16px",
                 outline: "none",
@@ -124,10 +122,10 @@ const ResetPassword = () => {
             block
             style={{
               width: "100%",
-              height: 72,
+              height: 52,
               color: "#FEFEFE",
               fontWeight: "600",
-              fontSize: "28px",
+              fontSize: "24px",
               marginTop: 36,
               background: "#3536FF",
               border: "none",

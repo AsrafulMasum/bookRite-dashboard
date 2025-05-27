@@ -15,7 +15,7 @@ const Auth = () => {
           padding: "0 55px",
           borderRadius: 10,
           width: 800,
-          height: 620,
+          height: 520,
           position: "relative",
           zIndex: 2,
         }}
