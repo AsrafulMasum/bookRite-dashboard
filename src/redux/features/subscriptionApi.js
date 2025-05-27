@@ -16,13 +16,14 @@ const subscriptionApi = baseApi.injectEndpoints({
 
     createSubscription: builder.mutation({
       query: (data) => {
+        console.log(data);
         return {
           method: "POST",
           url: "/package",
           body: data,
         };
       },
-      transformResponse: ({ data }) => {
+      transformResponse: (data) => {
         return data;
       },
     }),
@@ -32,10 +33,10 @@ const subscriptionApi = baseApi.injectEndpoints({
         return {
           method: "PUT",
           url: `/package/${data.id}`,
-          body: data,
+          body: data?.body,
         };
       },
-      transformResponse: ({ data }) => {
+      transformResponse: (data) => {
         return data;
       },
     }),

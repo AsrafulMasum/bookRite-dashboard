@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import AddInputFrom from "../../components/dashboard/AddInputForm";
 import EditInputFrom from "../../components/dashboard/EditInputForm";
-import { useGetSubscriptionsQuery } from "../../redux/features/subscriptionApi";
+import {
+  useDeleteSubscriptionMutation,
+  useGetSubscriptionsQuery,
+} from "../../redux/features/subscriptionApi";
+import deleteIcon from "../../assets/delete.svg";
+import toast from "react-hot-toast";
 
 const initialPackages = [
   {
@@ -51,10 +56,12 @@ const initialPackages = [
 const Subscription = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [packages, setPackages] = useState(initialPackages);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [packages, setPackages] = useState([]);
   const [editPackage, setEditPackage] = useState(null);
-  const { data } = useGetSubscriptionsQuery();
-  console.log(data);
+  const { data: packageData, refetch } = useGetSubscriptionsQuery();
+  const [deleteSubscription] = useDeleteSubscriptionMutation();
 
   // Open edit modal for a specific package
   const handleEditClick = (pkg) => {
@@ -67,6 +74,31 @@ const Subscription = () => {
     setOpenEditModal(false);
     setEditPackage(null);
   };
+
+  const handleDelete = async () => {
+    try {
+      const res = await deleteSubscription(deleteId);
+      if (res?.data) {
+        toast.success("Subscription deleted successfully");
+        setShowDelete(false);
+        setDeleteId("");
+        refetch();
+      } else {
+        console.error("Failed to delete subscription:", res.error);
+      }
+    } catch (error) {
+      console.error("Error deleting subscription:", error);
+      setShowDelete(false);
+    }
+  };
+
+  useEffect(() => {
+    if (Array.isArray(packageData)) {
+      setPackages(packageData);
+    } else {
+      setPackages([]);
+    }
+  }, [packageData]);
 
   return (
     <div>
@@ -94,53 +126,66 @@ const Subscription = () => {
         </Button>
       </div>
 
-      <div className="flex justify-center items-center gap-10 mt-10">
-        {packages.map((singleData) => (
-          <div
-            key={singleData.id}
-            className="max-w-[320px] bg-[#F4F4F4] py-4 px-6 border border-[#B1B1FF] rounded-lg"
-          >
-            <h4 className="text-text text-xl font-medium text-center pb-2.5">
-              Get {singleData.packageName} Package
-            </h4>
-            <p className="text-sub_title text-sm leading-[148%] text-center pb-4">
-              {singleData.packageFees} % Service Fee Per Booking
-            </p>
-            <h4 className="text-text text-center pb-3">
-              <span className="text-4xl font-semibold">
-                $ {singleData.packagePrice}
-              </span>{" "}
-              / per year
-            </h4>
-            <div className="space-y-4">
-              {singleData.packageDetails.map((details, idx) => (
-                <div className="flex gap-2" key={idx}>
-                  <IoCheckmarkCircle className="min-w-[24px] text-[#00BA00]" />
-                  <p className="text-xs text-sub_title leading-[148%]">
-                    {details}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <Button
-              onClick={() => handleEditClick(singleData)}
-              style={{
-                width: "100%",
-                height: 40,
-                marginTop: "24px",
-                backgroundColor: "#3536FF",
-                color: "white",
-                fontSize: "16px",
-                fontWeight: "500",
-                borderRadius: "8px",
-              }}
+      <div className="flex flex-wrap justify-center items-center gap-10 mt-10">
+        {Array.isArray(packages) &&
+          packages?.map((singleData) => (
+            <div
+              key={singleData?._id}
+              className="max-w-[320px] bg-[#F4F4F4] py-4 px-6 border border-[#B1B1FF] rounded-lg"
             >
-              Edit Package
-            </Button>
-          </div>
-        ))}
+              <div className="flex justify-end items-center py-2">
+                <div
+                  onClick={() => {
+                    setDeleteId(singleData?._id);
+                    setShowDelete(true);
+                  }}
+                  className="cursor-pointer bg-[#0304FF1A] rounded-full p-2"
+                >
+                  <img className="w-5 h-5" src={deleteIcon} alt="Delete Icon" />
+                </div>
+              </div>
+              <h4 className="text-text text-xl font-medium text-center pb-2.5">
+                Get {singleData?.title} Package
+              </h4>
+              <p className="text-sub_title text-sm leading-[148%] text-center pb-4">
+                {singleData?.credit} % Service Fee Per Booking
+              </p>
+              <h4 className="text-text text-center pb-3">
+                <span className="text-4xl font-semibold">
+                  $ {singleData?.price}
+                </span>{" "}
+                / per {singleData?.duration?.split(" ")[1]}
+              </h4>
+              <div className="space-y-4">
+                {singleData?.description?.map((details, idx) => (
+                  <div className="flex gap-2" key={idx}>
+                    <IoCheckmarkCircle className="min-w-[24px] text-[#00BA00]" />
+                    <p className="text-xs text-sub_title leading-[148%]">
+                      {details}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <Button
+                onClick={() => handleEditClick(singleData)}
+                style={{
+                  width: "100%",
+                  height: 40,
+                  marginTop: "24px",
+                  backgroundColor: "#3536FF",
+                  color: "white",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  borderRadius: "8px",
+                }}
+              >
+                Edit Package
+              </Button>
+            </div>
+          ))}
       </div>
 
+      {/* edit modal */}
       <Modal
         centered
         open={openEditModal}
@@ -155,10 +200,15 @@ const Subscription = () => {
           >
             Edit Package
           </h1>
-          <EditInputFrom packageData={editPackage} />
+          <EditInputFrom
+            packageData={editPackage}
+            refetch={refetch}
+            setOpenEditModal={setOpenEditModal}
+          />
         </div>
       </Modal>
 
+      {/* add modal */}
       <Modal
         centered
         open={openAddModel}
@@ -173,7 +223,34 @@ const Subscription = () => {
           >
             Add Package
           </h1>
-          <AddInputFrom />
+          <AddInputFrom
+            refetch={refetch}
+            setOpenAddModel={setOpenAddModel}
+          />
+        </div>
+      </Modal>
+
+      {/* delete modal */}
+      <Modal
+        centered
+        open={showDelete}
+        onCancel={() => setShowDelete(false)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure!
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#3536FF] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
         </div>
       </Modal>
     </div>

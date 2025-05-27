@@ -205,7 +205,7 @@ const Services = () => {
             <img
               className="cursor-pointer"
               onClick={() => {
-                setDeleteId(record?._id); // <-- use _id for delete
+                setDeleteId(record?._id);
                 setShowDelete(true);
               }}
               src={deleteIcon}

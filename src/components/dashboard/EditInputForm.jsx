@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
+import { useUpdateSubscriptionMutation } from "../../redux/features/subscriptionApi";
+import toast from "react-hot-toast";
 
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
@@ -9,28 +11,29 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-const initialData = {
-  packageName: "Basic",
-  packageFees: 5,
-  packagePrice: 30,
-  packageDetails: [
-    "10 days free trail",
-    "It is a long established fact that a reader will be distracted by the readable content",
-    "It is a long established fact that a reader will be distracted by the readable content",
-    "It is a long established fact that a reader will be distracted by the readable content",
-    "It is a long established fact that a reader will be distracted by the readable content",
-  ],
-};
-
-const EditInputFrom = () => {
+const EditInputFrom = ({ packageData, refetch, setOpenEditModal }) => {
   const [form] = Form.useForm();
+  const [updateSubscription] = useUpdateSubscriptionMutation();
 
-  const onFinish = (values) => {
-    console.log("Received values of form:", values);
+  const onFinish = async (values) => {
+    const res = await updateSubscription({
+      id: packageData._id,
+      body: values,
+    })
+      .unwrap()
+      .catch((error) => {
+        console.error("Failed to update package:", error);
+        toast.error("Failed to update package. Please try again.");
+      });
+    if (res?.success) {
+      refetch();
+      setOpenEditModal(false);
+      toast.success("Package updated successfully!");
+    }
   };
 
   useEffect(() => {
-    form.setFieldsValue(initialData);
+    form.setFieldsValue(packageData);
   }, []);
 
   return (
@@ -43,7 +46,7 @@ const EditInputFrom = () => {
     >
       {/* Static Fields */}
       <Form.Item
-        name="packageName"
+        name="title"
         rules={[{ required: true, message: "Please input package name!" }]}
       >
         <Input
@@ -53,7 +56,7 @@ const EditInputFrom = () => {
       </Form.Item>
 
       <Form.Item
-        name="packageFees"
+        name="credit"
         rules={[{ required: true, message: "Please input package fees!" }]}
       >
         <Input
@@ -63,7 +66,7 @@ const EditInputFrom = () => {
       </Form.Item>
 
       <Form.Item
-        name="packagePrice"
+        name="price"
         rules={[{ required: true, message: "Please input package price!" }]}
       >
         <Input
@@ -74,7 +77,7 @@ const EditInputFrom = () => {
 
       {/* Dynamic Package Details Fields */}
       <Form.List
-        name="packageDetails"
+        name="description"
         rules={[
           {
             validator: async (_, packageDetails) => {

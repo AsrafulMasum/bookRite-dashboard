@@ -1,6 +1,8 @@
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
+import { useCreateSubscriptionMutation } from "../../redux/features/subscriptionApi";
+import toast from "react-hot-toast";
 
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
@@ -9,11 +11,37 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-const AddInputFrom = () => {
+const AddInputFrom = ({ refetch, setOpenAddModel }) => {
   const [form] = Form.useForm();
+  const [createSubscription] = useCreateSubscriptionMutation();
 
-  const onFinish = (values) => {
-    console.log("Received values of form:", values);
+  const onFinish = async (values) => {
+    const { title, credit, price, description } = values;
+    const packageData = {
+      title,
+      credit,
+      price,
+      description,
+      duration: "1 year",
+      paymentType: "Yearly",
+    };
+    try {
+      const res = await createSubscription(packageData).unwrap();
+      if (res?.success) {
+        refetch();
+        setOpenAddModel(false);
+        form.resetFields();
+        toast.success("Package created successfully!");
+      } else {
+        console.error("Failed to create package:", res?.message);
+        setOpenAddModel(false);
+        toast.error("Failed to create package. Please try again.");
+      }
+    } catch (error) {
+      console.error("Failed to create package:", error);
+      setOpenAddModel(false);
+      toast.error("Failed to create package. Please try again.");
+    }
   };
 
   return (
@@ -27,7 +55,7 @@ const AddInputFrom = () => {
     >
       {/* Static Fields */}
       <Form.Item
-        name="packageName"
+        name="title"
         rules={[{ required: true, message: "Please input package name!" }]}
       >
         <Input
@@ -37,7 +65,7 @@ const AddInputFrom = () => {
       </Form.Item>
 
       <Form.Item
-        name="packageFees"
+        name="credit"
         rules={[{ required: true, message: "Please input package fees!" }]}
       >
         <Input
@@ -47,7 +75,7 @@ const AddInputFrom = () => {
       </Form.Item>
 
       <Form.Item
-        name="packagePrice"
+        name="price"
         rules={[{ required: true, message: "Please input package price!" }]}
       >
         <Input
@@ -58,7 +86,7 @@ const AddInputFrom = () => {
 
       {/* Dynamic Passenger Fields */}
       <Form.List
-        name="packageDetails"
+        name="description"
         rules={[
           {
             validator: async (_, packageDetails) => {

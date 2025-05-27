@@ -55,9 +55,7 @@ const EarningLineChart = () => {
     [selectedYear]
   );
 
-  const { data: earningsStatistics } = useEarningsGraphStatisticsQuery(
-    parseInt(selectedYear)
-  );
+  const { data: earningsStatistics } = useEarningsGraphStatisticsQuery();
   console.log(earningsStatistics);
 
   return (
@@ -88,7 +86,7 @@ const EarningLineChart = () => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={240}>
-        <LineChart data={earningData}>
+        <LineChart data={earningsStatistics || earningData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis />

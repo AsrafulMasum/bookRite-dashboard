@@ -43,6 +43,9 @@ const yearlyUserStatsData = {
 };
 
 const UsersBarChart = () => {
+  const { data: userStatistics } = useUserGraphStatisticsQuery();
+  console.log(userStatistics);
+
   const years = Object.keys(yearlyUserStatsData);
   const [selectedYear, setSelectedYear] = useState(years[years.length - 1]);
   console.log(selectedYear);
@@ -50,11 +53,6 @@ const UsersBarChart = () => {
     () => yearlyUserStatsData[selectedYear] || [],
     [selectedYear]
   );
-
-  const { data: userStatistics } = useUserGraphStatisticsQuery(
-    parseInt(selectedYear)
-  );
-  console.log(userStatistics);
 
   return (
     <div className="bg-[#F7F7FF] p-4 rounded-xl shadow-sm mb-6">
@@ -98,7 +96,7 @@ const UsersBarChart = () => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={230}>
-        <BarChart data={userStatsData} barSize={10}>
+        <BarChart data={userStatistics} barSize={10}>
           <CartesianGrid vertical={false} stroke="#757575" />
           <XAxis dataKey="month" axisLine={false} tickLine={false} />
           <YAxis axisLine={false} tickLine={false} />

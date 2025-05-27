@@ -17,7 +17,7 @@ const Login = () => {
         const res = await login({
           email: values.email,
           password: values.password,
-          role: "ADMIN",
+          role: "SUPER_ADMIN",
         }).unwrap();
 
         if (res?.success) {
