@@ -2,7 +2,8 @@ import { Form, Typography, Button, Input, ConfigProvider } from "antd";
 import { useState, useCallback } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
-import { useOtpVerifyMutation } from "../../redux/features/authApi";
+import toast from "react-hot-toast";
+import { useOtpVerifyMutation, useResendOTPMutation } from "../../redux/features/authApi";
 const { Text } = Typography;
 
 const VerifyOtp = () => {
@@ -10,19 +11,34 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState("");
   const email = new URLSearchParams(location.search).get("email");
   const [otpVerify] = useOtpVerifyMutation();
+  const [resendOTP] = useResendOTPMutation();
 
   const onFinish = async (values) => {
     const data = {
       oneTimeCode: Number(values.otp),
       email: email,
-    }
+    };
 
-    await otpVerify(data)
+    try {
+      const res = await otpVerify(data).unwrap();
+      if (res?.success) {
+        navigate(`/auth/reset-password?token=${res?.data}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleResendEmail = useCallback(() => {
-    // TODO: Add resend OTP API call here
-  }, []);
+  const handleResendEmail = async () => {
+    try {
+      const res = await resendOTP({ email }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full px-10">
@@ -30,8 +46,9 @@ const VerifyOtp = () => {
         <h1 className="text-2xl font-semibold mb-3 leading-[110%] text-[#333333]">
           Verify OTP
         </h1>
-        <p className="text-[#757575] leading-[110%] flex text-nowrap">
-          Please check your email. We have sent a code to <span>{email || "your email"}</span>
+        <p className="text-[#757575] leading-[110%] flex">
+          Please check your email. We have sent a code to{" "}
+          {email || "your email"}
         </p>
       </div>
 
@@ -40,7 +57,7 @@ const VerifyOtp = () => {
           <ConfigProvider
             theme={{
               token: {
-                controlHeight: 30,
+                controlHeight: 36,
                 colorBgContainer: "transparent",
               },
               components: {
@@ -57,12 +74,11 @@ const VerifyOtp = () => {
             >
               <Input.OTP
                 size="large"
-                length={6}
+                length={4}
                 style={{
                   gap: 28,
                   fontWeight: "500",
                   // width:"160px"
-                 
                 }}
               />
             </Form.Item>

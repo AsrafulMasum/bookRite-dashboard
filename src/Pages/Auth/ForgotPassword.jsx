@@ -7,23 +7,20 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [forgotPassword] = useForgotPasswordMutation();
 
-  const onFinish = useCallback(
-    async (values) => {
-      try {
-        const res = await forgotPassword({
-          email: values?.email,
-        }).unwrap();
-        if (res?.success) {
-          navigate(`/auth/verify-otp?email=${values?.email}`);
-        } else {
-          console.error("Failed to send OTP");
-        }
-      } catch (error) {
-        console.error("Error:", error);
+  const onFinish = async (values) => {
+    try {
+      const res = await forgotPassword({
+        email: values?.email,
+      }).unwrap();
+      if (res?.success) {
+        navigate(`/auth/verify-otp?email=${values?.email}`);
+      } else {
+        console.error("Failed to send OTP");
       }
-    },
-    [navigate]
-  );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <div className="w-full">

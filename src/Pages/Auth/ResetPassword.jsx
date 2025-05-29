@@ -2,18 +2,40 @@ import { Form, Input, Button } from "antd";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { useResetPasswordMutation } from "../../redux/features/authApi";
+import toast from "react-hot-toast";
 
 const ResetPassword = () => {
-  const email = new URLSearchParams(location.search).get("email");
   const navigate = useNavigate();
+  const [resetPassword] = useResetPasswordMutation();
 
-  const onFinish = useCallback(
-    (values) => {
-      // TODO: Add API call to reset password using values and email
-      navigate(`/auth/login`);
-    },
-    [navigate]
-  );
+  const onFinish = async (values) => {
+    if (values) {
+      const token = new URLSearchParams(window.location.search).get("token");
+      if (!token) {
+        console.error("Reset token is missing!");
+        return;
+      }
+
+      try {
+        const res = await resetPassword({
+          payload: {
+            newPassword: values?.newPassword,
+            confirmPassword: values?.confirmPassword,
+          },
+          token,
+        }).unwrap();
+
+        if (res?.success) {
+          navigate("/auth/login");
+          toast.success(res?.message);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error(error?.data?.message)
+      }
+    }
+  };
 
   return (
     <div className="w-full">
@@ -34,7 +56,7 @@ const ResetPassword = () => {
           </label>
           <Form.Item
             style={{ marginBottom: 0 }}
-            name="password"
+            name="newPassword"
             rules={[
               {
                 required: true,
@@ -67,15 +89,15 @@ const ResetPassword = () => {
         <div style={{ marginBottom: "60px" }}>
           <label
             style={{ display: "block", marginBottom: "12px" }}
-            htmlFor="confirm-password"
+            htmlFor="confirmPassword"
             className="text-2xl font-medium leading-6 text-[#333333]"
           >
             Confirm New Password
           </label>
           <Form.Item
             style={{ marginBottom: 0 }}
-            name="confirm-password"
-            dependencies={["password"]}
+            name="confirmPassword"
+            dependencies={["newPassword"]}
             rules={[
               {
                 required: true,
@@ -83,7 +105,7 @@ const ResetPassword = () => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue("newPassword") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
