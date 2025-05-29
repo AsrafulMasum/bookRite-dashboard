@@ -18,12 +18,12 @@ import Login from "../Pages/Auth/Login";
 import FAQ from "../Pages/Dashboard/FAQ";
 import Services from "../Pages/Dashboard/Services";
 import Bookings from "../Pages/Dashboard/Bookings";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: <ProtectedRoute><Main /></ProtectedRoute> ,
-    element: <Main />,
+    element: <ProtectedRoute><Main /></ProtectedRoute> ,
     children: [
       {
         path: "/",

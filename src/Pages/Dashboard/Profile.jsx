@@ -112,7 +112,7 @@ const Profile = () => {
                 width: "100%",
                 height: "56px",
                 border: "none",
-                backgroundColor: "#F5F5FF66",
+                backgroundColor: "#E6E6FF80",
                 color: "#757575",
                 paddingLeft: "20px",
               }}
@@ -131,7 +131,7 @@ const Profile = () => {
                 width: "100%",
                 height: "56px",
                 border: "none",
-                backgroundColor: "#F5F5FF66",
+                backgroundColor: "#E6E6FF80",
                 color: "#757575",
                 paddingLeft: "20px",
               }}
@@ -154,7 +154,7 @@ const Profile = () => {
                 width: "100%",
                 height: "56px",
                 border: "none",
-                backgroundColor: "#F5F5FF66",
+                backgroundColor: "#E6E6FF80",
                 color: "#757575",
                 paddingLeft: "20px",
               }}
@@ -225,7 +225,7 @@ const Profile = () => {
                 width: "100%",
                 height: "56px",
                 border: "none",
-                backgroundColor: "#F5F5FF66",
+                backgroundColor: "#E6E6FF80",
                 color: "#757575",
                 paddingLeft: "20px",
               }}
@@ -247,7 +247,7 @@ const Profile = () => {
                 width: "100%",
                 height: "56px",
                 border: "none",
-                backgroundColor: "#F5F5FF66",
+                backgroundColor: "#E6E6FF80",
                 color: "#757575",
                 paddingLeft: "20px",
               }}

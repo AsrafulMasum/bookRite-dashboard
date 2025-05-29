@@ -25,7 +25,7 @@ const Header = () => {
     <div className="flex items-center gap-8 justify-end bg-secondary h-20 mt-8 ml-14 mr-6 rounded-lg p-5">
       <Link to="/notification" className="h-fit mt-[10px]">
         <Badge count={unReadNotifications? unReadNotifications : 0}>
-          <FaRegBell color="#757575" size={20} />
+          <FaRegBell color="#757575" size={24} />
         </Badge>
       </Link>
 

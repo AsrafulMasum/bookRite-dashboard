@@ -9,7 +9,7 @@ const itemsPerPage = 10;
 
 const Users = () => {
   const { data: users } = useGetUsersQuery();
-  console.log(users)
+  console.log(users);
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
 
@@ -111,6 +111,18 @@ const Users = () => {
         footer={false}
       >
         <div>
+          <div className="flex justify-center">
+            <img className="h-36 w-36"
+              src={
+                value?.profile && value?.profile.startsWith("https")
+                  ? value?.profile
+                  : value?.profile
+                  ? `${imageUrl}${value?.profile}`
+                  : "/default-avatar.png"
+              }
+              alt=""
+            />
+          </div>
           <div className="flex items-center justify-between mt-[35px]">
             <div>
               <p className="pb-[5px]">User Name</p>
