@@ -31,52 +31,46 @@ const FAQ = () => {
   }, [data]);
 
   // Add FAQ
-  const handleAdd = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!form.question || !form.ans) return;
-      const payload = {
-        questions: form.question,
-        answers: form.ans,
-      };
-      try {
-        await createFAQ(payload).unwrap();
-        refetch();
-        setForm({ question: "", ans: "" });
-        setOpenAddModal(false);
-        toast.success("FAQ Created Successfully.");
-      } catch (error) {
-        console.error("Create FAQ failed:", error);
-      }
-    },
-    [form, createFAQ, refetch]
-  );
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    if (!form.question || !form.ans) return;
+    const payload = {
+      questions: form.question,
+      answers: form.ans,
+    };
+    try {
+      await createFAQ(payload).unwrap();
+      refetch();
+      setForm({ question: "", ans: "" });
+      setOpenAddModal(false);
+      toast.success("FAQ Created Successfully.");
+    } catch (error) {
+      console.error("Create FAQ failed:", error);
+    }
+  };
 
   // Edit FAQ
-  const handleEdit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!form.question || !form.ans) return;
-      const payload = {
-        questions: form.question,
-        answers: form.ans,
-      };
-      try {
-        await updateFAQ({ id: currentId, faq: payload }).unwrap();
-        refetch();
-        setForm({ question: "", ans: "" });
-        setCurrentId("");
-        setOpenEditModal(false);
-        toast.success("FAQ updated successfully.");
-      } catch (err) {
-        console.error("Update FAQ failed:", err);
-      }
-    },
-    [form, currentId, updateFAQ, refetch]
-  );
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    if (!form.question || !form.ans) return;
+    const payload = {
+      questions: form.question,
+      answers: form.ans,
+    };
+    try {
+      await updateFAQ({ id: currentId, faq: payload }).unwrap();
+      refetch();
+      setForm({ question: "", ans: "" });
+      setCurrentId("");
+      setOpenEditModal(false);
+      toast.success("FAQ updated successfully.");
+    } catch (err) {
+      console.error("Update FAQ failed:", err);
+    }
+  };
 
   // Delete FAQ
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     try {
       await deleteFAQ(currentId).unwrap();
       refetch();
@@ -86,20 +80,20 @@ const FAQ = () => {
     }
     setShowDelete(false);
     setCurrentId("");
-  }, [currentId, deleteFAQ, refetch]);
+  };
 
   // Open Edit Modal
-  const openEdit = useCallback((item) => {
+  const openEdit = (item) => {
     setForm({ question: item.questions, ans: item.answers });
     setCurrentId(item._id);
     setOpenEditModal(true);
-  }, []);
+  };
 
   // Open Delete Modal
-  const openDelete = useCallback((id) => {
+  const openDelete = (id) => {
     setCurrentId(id);
     setShowDelete(true);
-  }, []);
+  };
 
   return (
     <div className="bg-white px-3 py-2 rounded-lg">

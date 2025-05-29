@@ -8,7 +8,7 @@ const ChangePassword = () => {
   const [errors, setErrors] = useState({ newPass: "", confirmPass: "" });
   const [form] = Form.useForm();
 
-  const validatePasswordChange = useCallback((values) => {
+  const validatePasswordChange = (values) => {
     let newErrors = { newPassword: "", confirmPassword: "" };
 
     if (values?.currentPassword === values.newPassword) {
@@ -19,25 +19,24 @@ const ChangePassword = () => {
     }
     setErrors(newErrors);
     return newErrors;
-  }, []);
+  };
 
-  const onFinish = useCallback(
-    async (values) => {
-      const validation = validatePasswordChange(values);
-      if (!validation.newPassword && !validation.confirmPassword) {
-        try {
-          const { success, message } = await changePassword({ ...values }).unwrap();
-          if (success) {
-            toast.success(message);
-            form.resetFields();
-          }
-        } catch (error) {
-          toast.error(error?.data?.message || "Failed to change password");
+  const onFinish = async (values) => {
+    const validation = validatePasswordChange(values);
+    if (!validation.newPassword && !validation.confirmPassword) {
+      try {
+        const { success, message } = await changePassword({
+          ...values,
+        }).unwrap();
+        if (success) {
+          toast.success(message);
+          form.resetFields();
         }
+      } catch (error) {
+        toast.error(error?.data?.message || "Failed to change password");
       }
-    },
-    [changePassword, form, validatePasswordChange]
-  );
+    }
+  };
 
   return (
     <div>
@@ -45,8 +44,11 @@ const ChangePassword = () => {
         layout="vertical"
         form={form}
         onFinish={onFinish}
-        className="w-[70%] mx-auto mt-40"
+        className="w-[70%] mx-auto mt-24"
       >
+        <div className="flex items-center mb-20">
+          <h2 className="text-2xl font-medium">Change Password</h2>
+        </div>
         <Form.Item
           name="currentPassword"
           label={

@@ -1,39 +1,34 @@
-import { Checkbox, Form, Input, Button } from "antd";
+import { Form, Input, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
-import { useCallback, useState } from "react";
 import { useLoginMutation } from "../../redux/features/authApi";
 import toast from "react-hot-toast";
-// import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [login] = useLoginMutation();
 
-  const onFinish = useCallback(
-    async (values) => {
-      try {
-        const res = await login({
-          email: values.email,
-          password: values.password,
-          role: "SUPER_ADMIN",
-        }).unwrap();
+  const onFinish = async (values) => {
+    try {
+      const res = await login({
+        email: values.email,
+        password: values.password,
+        role: "SUPER_ADMIN",
+      }).unwrap();
 
-        if (res?.success) {
-          localStorage.setItem("token", JSON.stringify(res?.data?.Token));
-          toast.success("Login successful!");
-          navigate("/");
-        } else {
-          toast.error("Login failed.", res?.message || "Please try again.");
-        }
-      } catch (error) {
-        console.error("Login failed:", error);
-        toast.error("Login failed. Check your credentials.");
+      if (res?.success) {
+        localStorage.setItem("token", JSON.stringify(res?.data?.Token));
+        toast.success("Login successful!");
+        navigate("/");
+      } else {
+        toast.error("Login failed.", res?.message || "Please try again.");
       }
-    },
-    [navigate]
-  );
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed. Check your credentials.");
+    }
+  };
 
   return (
     <div className="w-full">
@@ -115,17 +110,7 @@ const Login = () => {
           </Form.Item>
         </div>
 
-        <div className="flex items-center justify-between">
-          <Form.Item
-            style={{ marginBottom: 0 }}
-            name="remember"
-            valuePropName="checked"
-          >
-            <Checkbox className="text-lg text-[#757575]">
-              Remember password
-            </Checkbox>
-          </Form.Item>
-
+        <div className="flex items-center justify-end">
           <Link
             className="text-[#F78F08] text-lg font-semibold underline leading-[150%]"
             to="/auth/forgot-password"

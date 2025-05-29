@@ -1,7 +1,6 @@
 import { ConfigProvider, Modal, Table } from "antd";
 import moment from "moment";
-import { useCallback, useMemo, useState } from "react";
-import deleteIcon from "../../assets/delete.svg";
+import { useMemo, useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
 import { useGetUsersQuery } from "../../redux/features/usersApi";
 
@@ -9,14 +8,8 @@ const itemsPerPage = 10;
 
 const Users = () => {
   const { data: users } = useGetUsersQuery();
-  console.log(users);
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
-
-  const paginatedUsers = users?.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
 
   const columns = useMemo(
     () => [
@@ -93,7 +86,7 @@ const Users = () => {
       >
         <Table
           columns={columns}
-          dataSource={paginatedUsers}
+          dataSource={users}
           rowKey="_id"
           pagination={{
             current: page,
@@ -112,7 +105,7 @@ const Users = () => {
       >
         <div>
           <div className="flex justify-center">
-            <img className="h-36 w-36"
+            <img className="h-36 w-36 rounded-full object-cover"
               src={
                 value?.profile && value?.profile.startsWith("https")
                   ? value?.profile

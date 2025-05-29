@@ -346,14 +346,13 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
   const { data: bookingsData } = useGetBookingsQuery();
-  console.log(bookingsData);
   const handleInfoClick = useCallback((record) => {
     setValue(record);
   }, []);
 
-  const handleModalClose = useCallback(() => {
+  const handleModalClose = () => {
     setValue(null);
-  }, []);
+  }
 
   const columns = useMemo(
     () => [

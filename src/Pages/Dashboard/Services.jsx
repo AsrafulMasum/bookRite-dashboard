@@ -1,5 +1,5 @@
 import { Button, ConfigProvider, Modal, Table } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import deleteIcon from "../../assets/delete.svg";
 import { PlusOutlined } from "@ant-design/icons";
 import { CiEdit, CiImageOn } from "react-icons/ci";
@@ -11,11 +11,12 @@ import {
 } from "../../redux/features/categoryApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import toast from "react-hot-toast";
+import { FaRegEdit } from "react-icons/fa";
 
 const Services = () => {
   const { data: categories, refetch } = useGetCategoriesQuery();
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 6;
   const [data, setData] = useState(null);
   const [value, setValue] = useState(null);
   const [openAddModel, setOpenAddModel] = useState(false);
@@ -38,7 +39,7 @@ const Services = () => {
   }, [categories]);
 
   // Handle image upload
-  const onChange = useCallback((e) => {
+  const onChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "categoryName") {
       setForm((prev) => ({ ...prev, categoryName: value }));
@@ -49,68 +50,57 @@ const Services = () => {
       setImageFile(file); // Store the file for FormData
       setForm((prev) => ({ ...prev, serviceImage: imgUrl }));
     }
-  }, []);
-
-  const paginatedCategories = data?.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  };
 
   // Add new service
-  const handleSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        const formData = new FormData();
-        formData.append("CategoryName", form.categoryName);
-        if (imageFile) {
-          formData.append("image", imageFile);
-        }
-        console.log(formData);
-        await createCategory(formData).unwrap();
-        setOpenAddModel(false);
-        setForm({ categoryName: "", image: "" });
-        setImgURL("");
-        setImageFile(null);
-        refetch();
-        toast.success("Service added successfully");
-      } catch (err) {
-        console.error("Add category failed", err);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("CategoryName", form.categoryName);
+      if (imageFile) {
+        formData.append("image", imageFile);
       }
-    },
-    [form, createCategory, imageFile, refetch]
-  );
+      console.log(formData);
+      await createCategory(formData).unwrap();
+      setOpenAddModel(false);
+      setForm({ categoryName: "", image: "" });
+      setImgURL("");
+      setImageFile(null);
+      refetch();
+      toast.success("Service added successfully");
+    } catch (err) {
+      console.error("Add category failed", err);
+    }
+  };
 
   // Edit service
-  const handleEdit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        const formData = new FormData();
-        formData.append("CategoryName", form.categoryName);
-        if (editImageFile) {
-          formData.append("image", editImageFile);
-        }
-
-        await updateCategory({
-          id: value._id,
-          body: formData,
-        }).unwrap();
-        setValue(null);
-        setForm({ categoryName: "", image: "" });
-        setImgEditURL("");
-        setEditImageFile(null);
-        refetch();
-        toast.success("Service updated successfully");
-      } catch (err) {
-        console.error("Edit category failed", err);
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("CategoryName", form.categoryName);
+      if (editImageFile) {
+        formData.append("image", editImageFile);
       }
-    },
-    [form, value, updateCategory, editImageFile, refetch]
-  );
+
+      await updateCategory({
+        id: value._id,
+        body: formData,
+      }).unwrap();
+      setValue(null);
+      setForm({ categoryName: "", image: "" });
+      setImgEditURL("");
+      setEditImageFile(null);
+      refetch();
+      toast.success("Service updated successfully");
+    } catch (err) {
+      console.error("Edit category failed", err);
+    }
+  };
 
   // Delete service
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     try {
       await deleteCategory(deleteId).unwrap();
       setShowDelete(false);
@@ -120,10 +110,10 @@ const Services = () => {
     } catch (err) {
       console.error("Delete category failed", err);
     }
-  }, [deleteId, deleteCategory, refetch]);
+  };
 
   // Open edit modal and set form values
-  const openEditModal = useCallback((record) => {
+  const openEditModal = (record) => {
     setValue(record);
     setForm({
       categoryName: record.CategoryName || "",
@@ -137,9 +127,9 @@ const Services = () => {
         : ""
     );
     setEditImageFile(null);
-  }, []);
+  };
 
-  const onEditImageChange = useCallback((e) => {
+  const onEditImageChange = (e) => {
     const { files } = e.target;
     if (files && files[0]) {
       const file = files[0];
@@ -147,14 +137,14 @@ const Services = () => {
       setImgEditURL(imgUrl);
       setEditImageFile(file);
     }
-  }, []);
+  };
 
-  const onEditInputChange = useCallback((e) => {
+  const onEditInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "categoryName") {
       setForm((prev) => ({ ...prev, categoryName: value }));
     }
-  }, []);
+  };
 
   const columns = useMemo(
     () => [
@@ -178,7 +168,7 @@ const Services = () => {
         render: (_, record) => (
           <div>
             <img
-              className="h-6 w-6 object-cover"
+              className="h-16 w-16 object-cover"
               src={
                 record?.image && record?.image.startsWith("https")
                   ? record?.image
@@ -281,7 +271,7 @@ const Services = () => {
       >
         <Table
           columns={columns}
-          dataSource={paginatedCategories}
+          dataSource={data}
           rowKey="_id"
           pagination={{
             current: page,
@@ -380,7 +370,7 @@ const Services = () => {
           <h1 className="text-[20px] font-medium mb-3">Edit Service</h1>
           <form onSubmit={handleEdit}>
             <div className="flex justify-center items-center gap-10 mb-10">
-              <div className="h-32 w-32 flex items-center justify-center bg-gray-300 rounded-full relative">
+              <div className="h-32 w-32 flex items-center justify-center bg-gray-300 rounded-full relative border-2 border-[#3F857B]">
                 {imgEditURL ? (
                   <img
                     className="w-full h-full z-10 rounded-full object-cover"
@@ -397,6 +387,9 @@ const Services = () => {
                   name="image"
                   className="display-none absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
                 />
+                <div className="absolute bottom-2 right-1 z-10">
+                  <FaRegEdit size={22} color="#FED12F" />
+                </div>
               </div>
             </div>
             <div style={{ marginBottom: "16px" }}>

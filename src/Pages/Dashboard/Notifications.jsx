@@ -19,16 +19,16 @@ const Notifications = () => {
     page * pageSize
   );
 
-  const handleRead = useCallback(async () => {
+  const handleRead = async () => {
     try {
       const { success, message } = await readNotification().unwrap();
       if (success) toast.success(message);
     } catch (error) {
       toast.error(error?.data?.message);
     }
-  }, [readNotification]);
+  };
 
-  const handlePageChange = useCallback((page) => setPage(page), []);
+  const handlePageChange = (page) => setPage(page);
 
   return (
     <div>

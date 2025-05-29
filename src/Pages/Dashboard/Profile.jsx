@@ -16,7 +16,6 @@ const Profile = () => {
   const [form] = Form.useForm();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const { data: user, refetch } = useProfileQuery();
-  console.log(user)
 
   useEffect(() => {
     if (user) {
@@ -24,14 +23,14 @@ const Profile = () => {
     }
   }, [user, form]);
 
-  const onChange = useCallback((e) => {
+  const onChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const imgUrl = URL.createObjectURL(file);
       setImgURL(imgUrl);
       setImage(file);
     }
-  }, []);
+  }
 
   const src =
     user?.profile && user?.profile.startsWith("https")
@@ -40,8 +39,7 @@ const Profile = () => {
       ? `${imageUrl}${user?.profile}`
       : "/default-avatar.png";
 
-  const handleSubmit = useCallback(
-    async (values) => {
+  const handleSubmit = async (values) => {
       const formData = new FormData();
       if (image) {
         formData.append("image", image);
@@ -59,9 +57,7 @@ const Profile = () => {
       } catch (err) {
         toast.error(err?.message || "Update failed");
       }
-    },
-    [image, updateProfile, refetch]
-  );
+    }
 
   return (
     <div className="px-52 pt-20">
