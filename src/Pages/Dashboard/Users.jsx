@@ -12,7 +12,7 @@ const Users = () => {
   const { data: usersData } = useGetUsersQuery(srcText);
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
-  const users = usersData?.data?.data
+  const users = usersData?.data?.data;
 
   const columns = useMemo(
     () => [
@@ -84,18 +84,26 @@ const Users = () => {
             borderRadius: "8px",
           }}
         >
-          <Input
-            placeholder="Search..."
-            onChange={handleSearchChange}
-            prefix={<FiSearch size={14} color="#868FA0" />}
-            style={{
-              width: "100%",
-              height: "100%",
-              fontSize: "14px",
-              backgroundColor: "#FAFAFA",
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#3536FF",
+              },
             }}
-            size="middle"
-          />
+          >
+            <Input
+              placeholder="Search..."
+              onChange={handleSearchChange}
+              prefix={<FiSearch size={14} color="#868FA0" />}
+              style={{
+                width: "100%",
+                height: "100%",
+                fontSize: "14px",
+                backgroundColor: "#FAFAFA",
+              }}
+              size="middle"
+            />
+          </ConfigProvider>
         </div>
       </div>
 

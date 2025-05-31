@@ -115,7 +115,7 @@ const Sidebar = () => {
           <img src={logo} alt="Logo" />
         </div>
         <nav className="relative h-[75vh]">
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4">
             {menuItems.map((item) => {
               const active = isMenuActive(item);
               const isSubmenuOpen = openMenu === item.key;
