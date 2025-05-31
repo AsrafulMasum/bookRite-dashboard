@@ -1,15 +1,18 @@
-import { ConfigProvider, Modal, Table } from "antd";
+import { ConfigProvider, Input, Modal, Table } from "antd";
 import moment from "moment";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
 import { useGetUsersQuery } from "../../redux/features/usersApi";
+import { FiSearch } from "react-icons/fi";
 
 const itemsPerPage = 10;
 
 const Users = () => {
-  const { data: users } = useGetUsersQuery();
+  const [srcText, setSrcText] = useState("");
+  const { data: usersData } = useGetUsersQuery(srcText);
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
+  const users = usersData?.data?.data
 
   const columns = useMemo(
     () => [
@@ -65,10 +68,35 @@ const Users = () => {
     [page]
   );
 
+  const handleSearchChange = (e) => {
+    e.preventDefault();
+    setSrcText(e.target.value);
+  };
+
   return (
     <>
       <div className="flex items-center justify-between mb-6">
         <h2 style={{ fontSize: "25px", fontWeight: "normal" }}>User List</h2>
+        <div
+          style={{
+            width: "353px",
+            height: "40px",
+            borderRadius: "8px",
+          }}
+        >
+          <Input
+            placeholder="Search..."
+            onChange={handleSearchChange}
+            prefix={<FiSearch size={14} color="#868FA0" />}
+            style={{
+              width: "100%",
+              height: "100%",
+              fontSize: "14px",
+              backgroundColor: "#FAFAFA",
+            }}
+            size="middle"
+          />
+        </div>
       </div>
 
       <ConfigProvider
@@ -105,7 +133,8 @@ const Users = () => {
       >
         <div>
           <div className="flex justify-center">
-            <img className="h-36 w-36 rounded-full object-cover"
+            <img
+              className="h-36 w-36 rounded-full object-cover"
               src={
                 value?.profile && value?.profile.startsWith("https")
                   ? value?.profile

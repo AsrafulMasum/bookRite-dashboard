@@ -41,7 +41,7 @@ const Header = () => {
           alt="User avatar"
         />
         <p>
-          {role} {name || "User"}
+          {name || "User"}
         </p>
       </Link>
     </div>

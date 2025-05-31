@@ -138,33 +138,33 @@ const FAQ = () => {
           accordion
           ghost
           className="space-y-4"
-        >
-          {faqData?.map((item) => (
-            <Panel
-              header={
+          items={
+            faqData?.map((item) => ({
+              key: item._id,
+              label: (
                 <div className="flex justify-between items-center text-[#333] font-medium text-base">
                   {item.questions}
                 </div>
-              }
-              key={item._id}
-              className="bg-secondary !rounded-xl px-4 py-1"
-            >
-              <div className="flex justify-between gap-4">
-                <p className="text-[#555] leading-[24px]">{item.answers}</p>
-                <div className="flex flex-col items-center gap-4">
-                  <CiEdit
-                    onClick={() => openEdit(item)}
-                    className="text-2xl cursor-pointer text-[#F78F08]"
-                  />
-                  <RiDeleteBin6Line
-                    onClick={() => openDelete(item._id)}
-                    className="text-2xl cursor-pointer text-[#D93D04]"
-                  />
+              ),
+              children: (
+                <div className="flex justify-between gap-4">
+                  <p className="text-[#555] leading-[24px]">{item.answers}</p>
+                  <div className="flex flex-col items-center gap-4">
+                    <CiEdit
+                      onClick={() => openEdit(item)}
+                      className="text-2xl cursor-pointer text-[#F78F08]"
+                    />
+                    <RiDeleteBin6Line
+                      onClick={() => openDelete(item._id)}
+                      className="text-2xl cursor-pointer text-[#D93D04]"
+                    />
+                  </div>
                 </div>
-              </div>
-            </Panel>
-          ))}
-        </Collapse>
+              ),
+              className: "bg-secondary !rounded-xl px-4 py-1",
+            })) || []
+          }
+        />
       </div>
 
       {/* Add Modal */}

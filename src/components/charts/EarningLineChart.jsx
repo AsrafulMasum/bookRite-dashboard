@@ -21,7 +21,6 @@ const EarningLineChart = () => {
 
   const { data: earningsStatistics } =
     useEarningsGraphStatisticsQuery(selectedYear);
-  console.log(earningsStatistics);
 
   return (
     <div className="bg-[#F7F7FF] p-4 rounded-xl shadow-sm">

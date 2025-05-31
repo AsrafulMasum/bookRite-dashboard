@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { ConfigProvider, Pagination } from "antd";
 import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
@@ -10,10 +10,9 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 
 const Notifications = () => {
   const [page, setPage] = useState(1);
-  const pageSize = 8;
-  const { data: notifications } = useGetNotificationsQuery();
+  const pageSize = 7;
+  const { data: notifications, refetch } = useGetNotificationsQuery();
   const [readNotification] = useReadNotificationMutation();
-  console.log(notifications);
   const paginatedData = notifications?.slice(
     (page - 1) * pageSize,
     page * pageSize
@@ -22,7 +21,10 @@ const Notifications = () => {
   const handleRead = async () => {
     try {
       const { success, message } = await readNotification().unwrap();
-      if (success) toast.success(message);
+      if (success) {
+        toast.success(message);
+        refetch();
+      }
     } catch (error) {
       toast.error(error?.data?.message);
     }
@@ -46,8 +48,8 @@ const Notifications = () => {
         {paginatedData?.map((notification) => (
           <div
             key={notification?._id}
-            className={`border-b-[1px] pb-2 border-[#d9d9d9] flex items-center gap-3 ${
-              notification?.read === false && "bg-[#F5F5F5]"
+            className={`flex items-center gap-3 p-2 rounded-md ${
+              notification?.read === false ? "bg-secondary" : "bg-gray-50"
             }`}
           >
             <div className="p-2 rounded-full bg-secondary">

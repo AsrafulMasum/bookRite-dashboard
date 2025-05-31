@@ -14,10 +14,7 @@ import { FaChevronDown } from "react-icons/fa6";
 
 const UsersBarChart = () => {
   const [selectedYear, setSelectedYear] = useState("");
-  console.log(selectedYear);
-
   const { data: userStatistics } = useUserGraphStatisticsQuery(selectedYear);
-  console.log(userStatistics);
 
   return (
     <div className="bg-[#F7F7FF] p-4 rounded-xl shadow-sm mb-6">

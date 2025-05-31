@@ -346,13 +346,14 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
   const { data: bookingsData } = useGetBookingsQuery();
+  
   const handleInfoClick = useCallback((record) => {
     setValue(record);
   }, []);
 
   const handleModalClose = () => {
     setValue(null);
-  }
+  };
 
   const columns = useMemo(
     () => [
@@ -431,7 +432,9 @@ const Users = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 style={{ fontSize: "25px", fontWeight: "normal" }}>Bookings List</h2>
+        <h2 style={{ fontSize: "25px", fontWeight: "normal" }}>
+          Bookings List
+        </h2>
       </div>
 
       <ConfigProvider
@@ -541,11 +544,12 @@ const Users = () => {
                   {value?.serviceId?.serviceName || "No service name available"}
                 </p>
                 <div className="pb-[5px] flex justify-end h-10">
-                  {value?.serviceImage ? (
+                  {value?.serviceId?.image ? (
                     <img
                       className="h-10 w-10 object-cover"
                       src={
-                        value?.serviceId?.image && value?.serviceId?.image.startsWith("https")
+                        value?.serviceId?.image &&
+                        value?.serviceId?.image.startsWith("https")
                           ? value?.serviceId?.image
                           : value?.serviceId?.image
                           ? `${imageUrl}${value?.serviceId?.image}`
