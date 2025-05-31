@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ConfigProvider, Pagination } from "antd";
 import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
@@ -13,9 +13,10 @@ const Notifications = () => {
   const pageSize = 7;
   const { data: notifications, refetch } = useGetNotificationsQuery();
   const [readNotification] = useReadNotificationMutation();
+  const total = notifications?.length || 0;
   const paginatedData = notifications?.slice(
     (page - 1) * pageSize,
-    page * pageSize
+    (page - 1) * pageSize + pageSize
   );
 
   const handleRead = async () => {
@@ -83,7 +84,8 @@ const Notifications = () => {
         >
           <Pagination
             current={page}
-            total={notifications?.length}
+            total={total}
+            pageSize={pageSize}
             onChange={handlePageChange}
             showQuickJumper={false}
             showSizeChanger={false}
