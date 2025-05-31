@@ -1,6 +1,6 @@
 import { Modal, Button, Collapse } from "antd";
 import { PlusOutlined, RightOutlined } from "@ant-design/icons";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
@@ -10,8 +10,6 @@ import {
   useGetFAQQuery,
   useUpdateFAQMutation,
 } from "../../redux/features/faqApi";
-
-const { Panel } = Collapse;
 
 const FAQ = () => {
   const { data, refetch } = useGetFAQQuery();

@@ -15,4 +15,4 @@ export const baseApi = createApi({
   endpoints: () => ({}),
 });
 
-export const imageUrl = "http://10.0.70.208:3005/uploads";
+export const imageUrl = "http://10.0.70.208:3005";
