@@ -47,7 +47,7 @@ const Services = () => {
       const file = files[0];
       const imgUrl = URL.createObjectURL(file);
       setImgURL(imgUrl);
-      setImageFile(file); // Store the file for FormData
+      setImageFile(file);
       setForm((prev) => ({ ...prev, serviceImage: imgUrl }));
     }
   };
@@ -61,7 +61,6 @@ const Services = () => {
       if (imageFile) {
         formData.append("image", imageFile);
       }
-      console.log(formData);
       await createCategory(formData).unwrap();
       setOpenAddModel(false);
       setForm({ categoryName: "", image: "" });

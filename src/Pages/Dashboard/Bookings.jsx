@@ -10,10 +10,9 @@ import { FiSearch } from "react-icons/fi";
 const itemsPerPage = 10;
 
 const Users = () => {
-  const [srcText, setSrcText] = useState("");
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
-  const { data } = useGetBookingsQuery(srcText);
+  const { data } = useGetBookingsQuery();
   const bookingsData = data?.data;
 
   const handleInfoClick = (record) => {
@@ -22,11 +21,6 @@ const Users = () => {
 
   const handleModalClose = () => {
     setValue(null);
-  };
-
-  const handleSearchChange = (e) => {
-    e.preventDefault();
-    setSrcText(e.target.value);
   };
 
   const columns = useMemo(
@@ -109,34 +103,6 @@ const Users = () => {
         <h2 style={{ fontSize: "25px", fontWeight: "normal" }}>
           Bookings List
         </h2>
-        <div
-          style={{
-            width: "353px",
-            height: "40px",
-            borderRadius: "8px",
-          }}
-        >
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#3536FF",
-              },
-            }}
-          >
-            <Input
-              placeholder="Search..."
-              onChange={handleSearchChange}
-              prefix={<FiSearch size={14} color="#868FA0" />}
-              style={{
-                width: "100%",
-                height: "100%",
-                fontSize: "14px",
-                backgroundColor: "#FAFAFA",
-              }}
-              size="middle"
-            />
-          </ConfigProvider>
-        </div>
       </div>
 
       <ConfigProvider
