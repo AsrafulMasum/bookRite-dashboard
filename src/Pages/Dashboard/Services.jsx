@@ -226,7 +226,7 @@ const Services = () => {
             lineHeight: "24px",
           }}
         >
-          Services
+          Categories
         </h3>
         <div>
           <Button

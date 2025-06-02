@@ -13,7 +13,7 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const [value, setValue] = useState(null);
   const users = usersData?.data?.data;
-
+console.log(usersData)
   const columns = useMemo(
     () => [
       {
@@ -43,6 +43,7 @@ const Users = () => {
         title: "Contact Number",
         dataIndex: "contact",
         key: "contact",
+        render: (_, record) => <p>{!record?.contact || record?.contact.trim() === "" ? "Contact No. not added" : record?.contact}</p>
       },
       {
         title: "Start Date",
