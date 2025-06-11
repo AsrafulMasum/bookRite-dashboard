@@ -14,7 +14,7 @@ import {
 } from "../../../redux/features/bannerApi";
 
 const AddBanner = () => {
-  const { data: bannerData } = useGetBannerQuery();
+  const { data: bannerData, refetch } = useGetBannerQuery();
   console.log(bannerData);
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
@@ -163,7 +163,7 @@ const AddBanner = () => {
         render: (_, record) => (
           <div>
             <img
-              className="h-16 w-16 object-cover"
+              className="h-8 w-16 object-cover"
               src={
                 record?.image && record?.image.startsWith("https")
                   ? record?.image

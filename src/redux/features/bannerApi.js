@@ -15,7 +15,7 @@ const bannerApi = baseApi.injectEndpoints({
       query: (data) => {
         return {
           method: "PATCH",
-          url: `/service/${data.id}`,
+          url: `/banner/${data.id}`,
           body: data?.body,
         };
       },
@@ -35,7 +35,7 @@ const bannerApi = baseApi.injectEndpoints({
       query: (id) => {
         return {
           method: "DELETE",
-          url: `/service/${id}`,
+          url: `/banner/${id}`,
         };
       },
     }),
