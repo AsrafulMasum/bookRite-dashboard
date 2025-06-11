@@ -9,9 +9,9 @@ import {
   Tooltip,
   ResponsiveContainer,
   LabelList,
-} from "recharts";
-import { useEarningsGraphStatisticsQuery } from "../../redux/features/bannerApi";
+} from "recharts"
 import { ConfigProvider, DatePicker } from "antd";
+import { useEarningsGraphStatisticsQuery } from "../../redux/features/statisticsApi";
 
 const tooltipFormatter = (value) => `$${value.toLocaleString()}`;
 const labelFormatter = (value) => `$${(value / 1000).toFixed(1)}k`;

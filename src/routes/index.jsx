@@ -19,6 +19,7 @@ import FAQ from "../Pages/Dashboard/FAQ";
 import Services from "../Pages/Dashboard/Services";
 import Bookings from "../Pages/Dashboard/Bookings";
 import ProtectedRoute from "./ProtectedRoute";
+import AddBanner from "../Pages/Dashboard/settings/AddBanner";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: "/settings/profile",
         element: <Profile />,
+      },
+      {
+        path: "/settings/banner",
+        element: <AddBanner />,
       },
       {
         path: "/notification",

@@ -13,6 +13,7 @@ import dashboard from "../../assets/dashboard.svg";
 import privacy from "../../assets/privacy.svg";
 import terms from "../../assets/terms.svg";
 import subscription from "../../assets/subscription.svg";
+import banner from "../../assets/banner.svg";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -26,70 +27,80 @@ const Sidebar = () => {
     navigate("/auth/login");
   }, [navigate]);
 
-  const menuItems = useMemo(() => [
-    {
-      key: "/",
-      label: "Dashboard",
-      icon: <img src={dashboard} className="h-5" alt="dashboard icon" />,
-    },
-    {
-      key: "/users",
-      label: "Users",
-      icon: <img src={users} className="h-6" alt="users icon" />,
-    },
-    {
-      key: "/services",
-      label: "Category",
-      icon: <img src={services} className="h-6" alt="services icon" />,
-    },
-    {
-      key: "/bookings",
-      label: "Booking List",
-      icon: <img src={booking} className="h-6" alt="booking icon" />,
-    },
-    {
-      key: "/subscriptions",
-      label: "Subscriptions",
-      icon: <img src={subscription} className="h-6" alt="subscription icon" />,
-    },
-    {
-      key: "/faq",
-      label: "FAQ",
-      icon: <img src={faq} className="h-6" alt="faq icon" />,
-    },
-    {
-      key: "settings",
-      label: "Settings",
-      icon: <img src={setting} className="h-6" alt="settings icon" />,
-      submenu: [
-        {
-          key: "/settings/change-password",
-          label: "Change Password",
-          icon: <CiLock className="text-2xl" />,
-        },
-        {
-          key: "/settings/profile",
-          label: "Profile",
-          icon: <CiUser className="text-2xl" />,
-        },
-        {
-          key: "/settings/about-us",
-          label: "About Us",
-          icon: <PiInfoThin className="text-2xl" />,
-        },
-        {
-          key: "/settings/privacy-policy",
-          label: "Privacy Policy",
-          icon: <img src={privacy} className="h-[22px] pl-1" alt="icon" />,
-        },
-        {
-          key: "/settings/terms-and-conditions",
-          label: "Terms of Services",
-          icon: <img src={terms} className="h-6" alt="icon" />,
-        },
-      ],
-    },
-  ], []);
+  const menuItems = useMemo(
+    () => [
+      {
+        key: "/",
+        label: "Dashboard",
+        icon: <img src={dashboard} className="h-5" alt="dashboard icon" />,
+      },
+      {
+        key: "/users",
+        label: "Users",
+        icon: <img src={users} className="h-6" alt="users icon" />,
+      },
+      {
+        key: "/services",
+        label: "Category",
+        icon: <img src={services} className="h-6" alt="services icon" />,
+      },
+      {
+        key: "/bookings",
+        label: "Booking List",
+        icon: <img src={booking} className="h-6" alt="booking icon" />,
+      },
+      {
+        key: "/subscriptions",
+        label: "Subscriptions",
+        icon: (
+          <img src={subscription} className="h-6" alt="subscription icon" />
+        ),
+      },
+      {
+        key: "/faq",
+        label: "FAQ",
+        icon: <img src={faq} className="h-6" alt="faq icon" />,
+      },
+      {
+        key: "settings",
+        label: "Settings",
+        icon: <img src={setting} className="h-6" alt="settings icon" />,
+        submenu: [
+          {
+            key: "/settings/change-password",
+            label: "Change Password",
+            icon: <CiLock className="text-2xl" />,
+          },
+          {
+            key: "/settings/profile",
+            label: "Profile",
+            icon: <CiUser className="text-2xl" />,
+          },
+          {
+            key: "/settings/banner",
+            label: "Add Banner",
+            icon: <img src={banner} className="h-6" alt="icon" />,
+          },
+          {
+            key: "/settings/about-us",
+            label: "About Us",
+            icon: <PiInfoThin className="text-2xl" />,
+          },
+          {
+            key: "/settings/privacy-policy",
+            label: "Privacy Policy",
+            icon: <img src={privacy} className="h-[22px] pl-1" alt="icon" />,
+          },
+          {
+            key: "/settings/terms-and-conditions",
+            label: "Terms of Services",
+            icon: <img src={terms} className="h-6" alt="icon" />,
+          },
+        ],
+      },
+    ],
+    []
+  );
 
   const isMenuActive = useCallback(
     (item) =>
@@ -98,10 +109,7 @@ const Sidebar = () => {
     [path]
   );
 
-  const isSubActive = useCallback(
-    (sub) => path === sub.key,
-    [path]
-  );
+  const isSubActive = useCallback((sub) => path === sub.key, [path]);
 
   const toggleMenu = useCallback(
     (key) => setOpenMenu(openMenu === key ? null : key),
@@ -114,7 +122,7 @@ const Sidebar = () => {
         <div className="flex justify-center mb-6">
           <img src={logo} alt="Logo" />
         </div>
-        <nav className="relative h-[75vh]">
+        <nav className="h-[75vh]">
           <div className="flex flex-col gap-4">
             {menuItems.map((item) => {
               const active = isMenuActive(item);
@@ -133,7 +141,9 @@ const Sidebar = () => {
                       <span className="text-lg">{item.label}</span>
                       <span className="text-[20px] ml-auto">
                         <IoIosArrowDown
-                          className={`transition-transform ${isSubmenuOpen ? "rotate-180" : ""}`}
+                          className={`transition-transform ${
+                            isSubmenuOpen ? "rotate-180" : ""
+                          }`}
                         />
                       </span>
                     </button>
@@ -170,15 +180,14 @@ const Sidebar = () => {
                 </div>
               );
             })}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-4 px-5 my-2 rounded-xl text-red-500 mt-4"
+            >
+              <CiLogout size={24} />
+              <span className="text-lg">Log Out</span>
+            </button>
           </div>
-
-          <button
-            onClick={handleLogout}
-            className="absolute bottom-0 flex items-center gap-4 px-5 py-3 rounded-xl text-red-500 mt-4"
-          >
-            <CiLogout size={24} />
-            <span className="text-lg">Log Out</span>
-          </button>
         </nav>
       </aside>
     </div>

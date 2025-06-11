@@ -8,9 +8,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useUserGraphStatisticsQuery } from "../../redux/features/bannerApi";
 import { ConfigProvider, DatePicker } from "antd";
 import { FaChevronDown } from "react-icons/fa6";
+import { useUserGraphStatisticsQuery } from "../../redux/features/statisticsApi";
 
 const UsersBarChart = () => {
   const [selectedYear, setSelectedYear] = useState("");

@@ -4,7 +4,7 @@ import totalServices from "../../assets/totalServices.svg";
 import earnings from "../../assets/earnings.svg";
 import UsersBarChart from "../../components/charts/UsersBarChart";
 import EarningLineChart from "../../components/charts/EarningLineChart";
-import { useStatisticsQuery } from "../../redux/features/bannerApi";
+import { useStatisticsQuery } from "../../redux/features/statisticsApi";
 
 const Home = () => {
   const { data } = useStatisticsQuery();

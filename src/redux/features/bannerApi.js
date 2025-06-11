@@ -2,46 +2,49 @@ import { baseApi } from "../api/baseApi";
 
 const bannerApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    statistics: builder.query({
+    getBanner: builder.query({
       query: () => {
         return {
-          url: "/booking/total-service",
+          url: "/banner",
           method: "GET",
         };
-      },
-      transformResponse: ({ data }) => {
-        return data;
       },
     }),
 
-    userGraphStatistics: builder.query({
-      query: (year) => {
+    updateBanner: builder.mutation({
+      query: (data) => {
         return {
-          url: `/booking/userstate?year=${year}`,
-          method: "GET",
+          method: "PATCH",
+          url: `/service/${data.id}`,
+          body: data?.body,
         };
-      },
-      transformResponse: ({ data }) => {
-        return data;
       },
     }),
 
-    earningsGraphStatistics: builder.query({
-      query: (year) => {
+    createBanner: builder.mutation({
+      query: (data) => {
         return {
-          url: `/booking/monthlyEarning?year=${year}`,
-          method: "GET",
+          method: "POST",
+          url: "/banner",
+          body: data,
         };
       },
-      transformResponse: ({ data }) => {
-        return data;
+    }),
+
+    deleteBanner: builder.mutation({
+      query: (id) => {
+        return {
+          method: "DELETE",
+          url: `/service/${id}`,
+        };
       },
     }),
   }),
 });
 
 export const {
-  useStatisticsQuery,
-  useUserGraphStatisticsQuery,
-  useEarningsGraphStatisticsQuery,
+  useGetBannerQuery,
+  useCreateBannerMutation,
+  useDeleteBannerMutation,
+  useUpdateBannerMutation,
 } = bannerApi;
