@@ -70,6 +70,7 @@ const AddBanner = () => {
       toast.success("Banner added successfully");
     } catch (err) {
       console.error("Add banner failed", err);
+      toast.error("Add banner failed");
     }
   };
 
@@ -107,7 +108,8 @@ const AddBanner = () => {
       refetch();
       toast.success("Banner deleted successfully");
     } catch (err) {
-      console.error("Delete banner failed", err);
+      console.error("Delete banner failed.", err);
+      toast.error("Deletion banner failed.");
     }
   };
 
