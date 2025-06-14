@@ -182,7 +182,7 @@ const Sidebar = () => {
             })}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-4 px-5 my-2 rounded-xl text-red-500 mt-4"
+              className="flex items-center gap-4 px-5 rounded-xl text-red-500 mt-4"
             >
               <CiLogout size={24} />
               <span className="text-lg">Log Out</span>

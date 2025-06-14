@@ -15,7 +15,6 @@ import {
 
 const AddBanner = () => {
   const { data: bannerData, refetch } = useGetBannerQuery();
-  console.log(bannerData);
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
   const [data, setData] = useState(null);
@@ -102,13 +101,13 @@ const AddBanner = () => {
   // Delete service
   const handleDelete = async () => {
     try {
-      await deleteCategory(deleteId).unwrap();
+      await deleteBanner(deleteId).unwrap();
       setShowDelete(false);
       setDeleteId("");
       refetch();
-      toast.success("Service deleted successfully");
+      toast.success("Banner deleted successfully");
     } catch (err) {
-      console.error("Delete category failed", err);
+      console.error("Delete banner failed", err);
     }
   };
 
