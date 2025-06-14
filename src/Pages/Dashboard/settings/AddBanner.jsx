@@ -79,7 +79,7 @@ const AddBanner = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("CategoryName", form.categoryName);
+      formData.append("name", form.categoryName);
       if (editImageFile) {
         formData.append("image", editImageFile);
       }
