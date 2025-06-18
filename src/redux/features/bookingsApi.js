@@ -6,7 +6,7 @@ const bookingsApi = baseApi.injectEndpoints({
       query: () => {
         return {
           method: "GET",
-          url: "/booking/getAllBookings",
+          url: "/admin/get-bookings",
         };
       },
     }),

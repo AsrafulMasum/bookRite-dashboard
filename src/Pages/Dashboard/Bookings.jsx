@@ -6,6 +6,8 @@ import { BsInfoCircle } from "react-icons/bs";
 import { useGetBookingsQuery } from "../../redux/features/bookingsApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { FiSearch } from "react-icons/fi";
+import useReverseGeocode from "../../hooks/useReverseGeocode";
+import LocationCell from "../../components/dashboard/LocationCell";
 
 const itemsPerPage = 10;
 
@@ -59,7 +61,7 @@ const Users = () => {
         key: "category",
         render: (_, record) => (
           <div className="flex items-center gap-2">
-            <p>{record?.serviceType}</p>
+            <p>{record?.serviceId?.serviceName}</p>
           </div>
         ),
       },
@@ -67,11 +69,7 @@ const Users = () => {
         title: "Service Location",
         dataIndex: "serviceLocation",
         key: "serviceLocation",
-        render: (_, record) => (
-          <div className="flex items-center gap-2">
-            <p>{record?.location}</p>
-          </div>
-        ),
+        render: (_, record) => <LocationCell location={record?.location} />,
       },
       {
         title: "Appt. Date",
@@ -152,7 +150,7 @@ const Users = () => {
                   {value?.userId?.email || "No email available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.serviceType || "No service available"}
+                  {value?.serviceId?.serviceName || "No service available"}
                 </p>
                 <p className="text-right">
                   {moment(value?.userId?.createdAt).format("L") ||
@@ -181,7 +179,7 @@ const Users = () => {
                   {value?.serviceProviderId?.email || "No email available"}
                 </p>
                 <p className="pb-[5px] text-right">
-                  {value?.serviceType || "No service available"}
+                  {value?.serviceId?.serviceName || "No service available"}
                 </p>
                 <p className="text-right">
                   {moment(value?.serviceProviderId?.createdAt).format("L") ||
@@ -206,7 +204,7 @@ const Users = () => {
               </div>
               <div>
                 <p className="pb-[5px] text-right">
-                  {value?.serviceType || "No service available"}
+                  {value?.serviceId?.serviceName || "No service available"}
                 </p>
                 <p className="pb-[5px] text-right">
                   {value?.serviceId?.serviceName || "No service name available"}
