@@ -20,6 +20,9 @@ import Services from "../Pages/Dashboard/Services";
 import Bookings from "../Pages/Dashboard/Bookings";
 import ProtectedRoute from "./ProtectedRoute";
 import AddBanner from "../Pages/Dashboard/settings/AddBanner";
+import PaymentSuccess from "../Pages/AppPages/PaymentSuccess";
+import Privacy from "../Pages/AppPages/Privacy";
+import Terms from "../Pages/AppPages/terms";
 
 const router = createBrowserRouter([
   {
@@ -113,6 +116,21 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />,
+  },
+
+  {
+    path: "/payment-success",
+    element: <PaymentSuccess />,
+  },
+
+  {
+    path: "/privacy-and-policy",
+    element: <Privacy />,
+  },
+
+  {
+    path: "/terms-and-condition",
+    element: <Terms />,
   },
 ]);
 
