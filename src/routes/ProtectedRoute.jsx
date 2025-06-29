@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (isLoading || isFetching) {
     return (
-      <div>
+      <div className="flex justify-center items-center">
         {" "}
         <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
       </div>

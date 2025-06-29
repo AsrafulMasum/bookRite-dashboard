@@ -27,7 +27,8 @@ import Terms from "../Pages/AppPages/terms";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute><Main /></ProtectedRoute> ,
+    element: <Main /> ,
+    // element: <ProtectedRoute><Main /></ProtectedRoute> ,
     children: [
       {
         path: "/",
