@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://195.35.9.21:3001/api/v1",
+    baseUrl: "https://api.flxbookonline.com/api/v1",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token && token !== "undefined") {
@@ -15,4 +15,4 @@ export const baseApi = createApi({
   endpoints: () => ({}),
 });
 
-export const imageUrl = "http://195.35.9.21:3001";
+export const imageUrl = "https://api.flxbookonline.com";

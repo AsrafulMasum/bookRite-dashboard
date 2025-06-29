@@ -22,7 +22,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AddBanner from "../Pages/Dashboard/settings/AddBanner";
 import PaymentSuccess from "../Pages/AppPages/PaymentSuccess";
 import Privacy from "../Pages/AppPages/Privacy";
-import Terms from "../Pages/AppPages/terms";
+import Terms from "../Pages/AppPages/Terms";
 
 const router = createBrowserRouter([
   {
