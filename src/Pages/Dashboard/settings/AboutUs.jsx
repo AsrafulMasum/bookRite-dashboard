@@ -2,23 +2,39 @@ import React, { useState, useRef, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import { Button } from "antd";
 import toast from "react-hot-toast";
-import { useGetAboutUsQuery, useUpdateAboutUsMutation } from "../../../redux/features/rulesApi";
-
+import {
+  useCreateAboutUsMutation,
+  useGetAboutUsQuery,
+  useUpdateAboutUsMutation,
+} from "../../../redux/features/rulesApi";
 
 const AboutUs = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const { data: aboutUs, refetch } = useGetAboutUsQuery({});
   const [updateAboutUs, { isLoading }] = useUpdateAboutUsMutation();
+  const [createAboutUs, { isLoading: isCreationLoading }] =
+    useCreateAboutUsMutation();
 
   const aboutDataSave = async () => {
     try {
-      const response = await updateAboutUs({content}).unwrap();
-      const { success, message } = response;
+      if (aboutUs) {
+        const response = await updateAboutUs({ content }).unwrap();
+        const { success, message } = response;
 
-      if (success) {
-        toast.success(message);
-        refetch();
+        if (success) {
+          toast.success(message);
+          refetch();
+        }
+      }
+      if (!aboutUs) {
+        const response = await createAboutUs({ content }).unwrap();
+        const { success, message } = response;
+
+        if (success) {
+          toast.success(message);
+          refetch();
+        }
       }
     } catch (error) {
       console.error("Mutation error:", error);
@@ -54,7 +70,7 @@ const AboutUs = () => {
         }}
       >
         {" "}
-        {isLoading ? "Updating..." : "Save"}
+        {isLoading || isCreationLoading ? "Updating..." : "Save"}
       </Button>
     </div>
   );

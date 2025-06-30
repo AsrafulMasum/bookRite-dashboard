@@ -14,6 +14,19 @@ const rulesApi = baseApi.injectEndpoints({
       },
     }),
 
+    createAboutUs: builder.mutation({
+      query: (data) => {
+        return {
+          method: "POST",
+          url: "/rule/about",
+          body: data,
+        };
+      },
+      transformResponse: (data) => {
+        return data;
+      },
+    }),
+
     updateAboutUs: builder.mutation({
       query: (data) => {
         return {
@@ -22,7 +35,7 @@ const rulesApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      transformResponse: ( data ) => {
+      transformResponse: (data) => {
         return data;
       },
     }),
@@ -39,6 +52,19 @@ const rulesApi = baseApi.injectEndpoints({
       },
     }),
 
+    createPrivacyPolicy: builder.mutation({
+      query: (data) => {
+        return {
+          method: "POST",
+          url: "/rule/privacy-policy",
+          body: data,
+        };
+      },
+      transformResponse: (data) => {
+        return data;
+      },
+    }),
+
     updatePrivacyPolicy: builder.mutation({
       query: (data) => {
         return {
@@ -47,7 +73,7 @@ const rulesApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      transformResponse: ( data ) => {
+      transformResponse: (data) => {
         return data;
       },
     }),
@@ -64,6 +90,19 @@ const rulesApi = baseApi.injectEndpoints({
       },
     }),
 
+    createTermsCondition: builder.mutation({
+      query: (data) => {
+        return {
+          method: "POST",
+          url: "/rule/terms-and-conditions",
+          body: data,
+        };
+      },
+      transformResponse: (data) => {
+        return data;
+      },
+    }),
+
     updateTermsCondition: builder.mutation({
       query: (data) => {
         return {
@@ -72,7 +111,7 @@ const rulesApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      transformResponse: ( data ) => {
+      transformResponse: (data) => {
         return data;
       },
     }),
@@ -81,9 +120,12 @@ const rulesApi = baseApi.injectEndpoints({
 
 export const {
   useGetAboutUsQuery,
+  useCreateAboutUsMutation,
   useUpdateAboutUsMutation,
   useGetPrivacyPolicyQuery,
+  useCreatePrivacyPolicyMutation,
   useUpdatePrivacyPolicyMutation,
   useGetTermsConditionQuery,
+  useCreateTermsConditionMutation,
   useUpdateTermsConditionMutation,
 } = rulesApi;

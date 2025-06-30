@@ -3,6 +3,7 @@ import JoditEditor from "jodit-react";
 import { Button } from "antd";
 import toast from "react-hot-toast";
 import {
+  useCreatePrivacyPolicyMutation,
   useGetPrivacyPolicyQuery,
   useUpdatePrivacyPolicyMutation,
 } from "../../../redux/features/rulesApi";
@@ -12,15 +13,28 @@ const PrivacyPolicy = () => {
   const [content, setContent] = useState("");
   const { data: privacyPolicy, refetch } = useGetPrivacyPolicyQuery();
   const [updatePrivacyPolicy, { isLoading }] = useUpdatePrivacyPolicyMutation();
+  const [createPrivacyPolicy, { isLoading: isCreationLoading }] =
+    useCreatePrivacyPolicyMutation();
 
   const privacyDataSave = async () => {
     try {
-      const response = await updatePrivacyPolicy({ content }).unwrap();
-      const { success, message } = response;
+      if (privacyPolicy) {
+        const response = await updatePrivacyPolicy({ content }).unwrap();
+        const { success, message } = response;
 
-      if (success) {
-        toast.success(message);
-        refetch();
+        if (success) {
+          toast.success(message);
+          refetch();
+        }
+      }
+      if (!privacyPolicy) {
+        const response = await createPrivacyPolicy({ content }).unwrap();
+        const { success, message } = response;
+
+        if (success) {
+          toast.success(message);
+          refetch();
+        }
       }
     } catch (error) {
       console.error("Mutation error:", error);
@@ -55,7 +69,7 @@ const PrivacyPolicy = () => {
           fontWeight: "600",
         }}
       >
-        {isLoading ? "Updating..." : "Save"}
+        {isLoading || isCreationLoading ? "Updating..." : "Save"}
       </Button>
     </div>
   );
