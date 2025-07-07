@@ -23,6 +23,7 @@ import AddBanner from "../Pages/Dashboard/settings/AddBanner";
 import PaymentSuccess from "../Pages/AppPages/PaymentSuccess";
 import Privacy from "../Pages/AppPages/Privacy";
 import Terms from "../Pages/AppPages/Terms";
+import DeleteAccount from "../Pages/AppPages/DeleteAccount";
 
 const router = createBrowserRouter([
   {
@@ -132,6 +133,10 @@ const router = createBrowserRouter([
   {
     path: "/terms-and-condition",
     element: <Terms />,
+  },
+  {
+    path: "/delete-account",
+    element: <DeleteAccount />,
   },
 ]);
 

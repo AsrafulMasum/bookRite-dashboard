@@ -10,6 +10,17 @@ const usersApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    deleteUser: builder.mutation({
+      query: (data) => {
+        console.log("from redux", data);
+        return {
+          method: "DELETE",
+          url: `/user/deleteByUser`,
+          body: data,
+        };
+      },
+    }),
   }),
 });
-export const { useGetUsersQuery } = usersApi;
+export const { useGetUsersQuery, useDeleteUserMutation } = usersApi;
