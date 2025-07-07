@@ -7,15 +7,12 @@ const DeleteAccount = () => {
   const [deleteUser] = useDeleteUserMutation();
 
   const onFinish = async (values) => {
-    console.log(values); 
-
     const data = {
         email: values.email,
         password: values.password,
       }
     try { 
       const res = await deleteUser(data).unwrap();
-      console.log(res);
       if (res?.success) {
         toast.success("User deletion successful!");
       } else {
