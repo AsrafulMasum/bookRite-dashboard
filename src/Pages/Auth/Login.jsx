@@ -5,9 +5,10 @@ import { useLoginMutation } from "../../redux/features/authApi";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [login] = useLoginMutation();
+  
 
   const onFinish = async (values) => {
     try {
@@ -20,7 +21,10 @@ const Login = () => {
       if (res?.success) {
         localStorage.setItem("token", JSON.stringify(res?.data?.Token));
         toast.success("Login successful!");
-        navigate("/");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 500);
+
       } else {
         toast.error("Login failed.", res?.message || "Please try again.");
       }
