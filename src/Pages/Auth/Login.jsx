@@ -1,14 +1,11 @@
 import { Form, Input, Button } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
 import { useLoginMutation } from "../../redux/features/authApi";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  // const navigate = useNavigate();
-
   const [login] = useLoginMutation();
-  
 
   const onFinish = async (values) => {
     try {
@@ -24,7 +21,6 @@ const Login = () => {
         setTimeout(() => {
           window.location.href = "/";
         }, 500);
-
       } else {
         toast.error("Login failed.", res?.message || "Please try again.");
       }
