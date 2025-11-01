@@ -1,7 +1,7 @@
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { useCreateSubscriptionMutation } from "../../redux/features/subscriptionApi";
+import { useCreateSubscriptionMutation, useUpdateSubscriptionMutation } from "../../redux/features/subscriptionApi";
 import toast from "react-hot-toast";
 
 const formItemLayoutWithOutLabel = {
@@ -13,7 +13,7 @@ const formItemLayoutWithOutLabel = {
 
 const AddInputFrom = ({ refetch, setOpenAddModel }) => {
   const [form] = Form.useForm();
-  const [createSubscription] = useCreateSubscriptionMutation();
+  const [updateSubscription] = useUpdateSubscriptionMutation();
 
   const onFinish = async (values) => {
     const { title, credit, price, description } = values;
@@ -25,8 +25,13 @@ const AddInputFrom = ({ refetch, setOpenAddModel }) => {
       duration: "1 year",
       paymentType: "Yearly",
     };
+    const data = {
+      body: packageData,
+    };
+    
     try {
-      const res = await createSubscription(packageData).unwrap();
+      const res = await updateSubscription(data).unwrap();
+      console.log(res)
       if (res?.success) {
         refetch();
         setOpenAddModel(false);

@@ -60,7 +60,7 @@ const Subscription = () => {
   const [deleteId, setDeleteId] = useState("");
   const [packages, setPackages] = useState([]);
   const [editPackage, setEditPackage] = useState(null);
-  const { data: packageData, refetch } = useGetSubscriptionsQuery();
+  const { data: singleData, refetch } = useGetSubscriptionsQuery();
   const [deleteSubscription] = useDeleteSubscriptionMutation();
 
   // Open edit modal for a specific package
@@ -92,14 +92,6 @@ const Subscription = () => {
     }
   };
 
-  useEffect(() => {
-    if (Array.isArray(packageData)) {
-      setPackages(packageData);
-    } else {
-      setPackages([]);
-    }
-  }, [packageData]);
-
   return (
     <div>
       {/* header */}
@@ -126,63 +118,53 @@ const Subscription = () => {
         </Button>
       </div>
 
-      <div className="flex flex-wrap justify-center items-center gap-10 mt-10">
-        {Array.isArray(packages) &&
-          packages?.map((singleData) => (
-            <div
-              key={singleData?._id}
-              className="max-w-[320px] bg-[#F4F4F4] py-4 px-6 border border-[#B1B1FF] rounded-lg"
-            >
-              <div className="flex justify-end items-center py-2">
-                <div
-                  onClick={() => {
-                    setDeleteId(singleData?._id);
-                    setShowDelete(true);
-                  }}
-                  className="cursor-pointer bg-[#0304FF1A] rounded-full p-2"
-                >
-                  <img className="w-5 h-5" src={deleteIcon} alt="Delete Icon" />
-                </div>
-              </div>
-              <h4 className="text-text text-xl font-medium text-center pb-2.5">
-                Get {singleData?.title} Package
-              </h4>
-              <p className="text-sub_title text-sm leading-[148%] text-center pb-4">
-                {singleData?.credit} % Service Fee Per Booking
-              </p>
-              <h4 className="text-text text-center pb-3">
-                <span className="text-4xl font-semibold">
-                  $ {singleData?.price}
-                </span>{" "}
-                / per {singleData?.duration?.split(" ")[1]}
-              </h4>
-              <div className="space-y-4">
-                {singleData?.description?.map((details, idx) => (
-                  <div className="flex gap-2" key={idx}>
-                    <IoCheckmarkCircle className="min-w-[24px] text-[#00BA00]" />
-                    <p className="text-xs text-sub_title leading-[148%]">
-                      {details}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <Button
-                onClick={() => handleEditClick(singleData)}
-                style={{
-                  width: "100%",
-                  height: 40,
-                  marginTop: "24px",
-                  backgroundColor: "#3536FF",
-                  color: "white",
-                  fontSize: "16px",
-                  fontWeight: "500",
-                  borderRadius: "8px",
-                }}
-              >
-                Edit Package
-              </Button>
+      <div
+        className="max-w-[320px] mx-auto mt-10 bg-[#F4F4F4] py-4 px-6 border border-[#B1B1FF] rounded-lg"
+      >
+        {/* <div className="flex justify-end items-center py-2">
+          <div
+            onClick={() => {
+              setDeleteId(singleData?._id);
+              setShowDelete(true);
+            }}
+            className="cursor-pointer bg-[#0304FF1A] rounded-full p-2"
+          >
+            <img className="w-5 h-5" src={deleteIcon} alt="Delete Icon" />
+          </div>
+        </div> */}
+        <h4 className="text-text text-xl font-medium text-center pb-2.5">
+          Get {singleData?.title} Package
+        </h4>
+        <p className="text-sub_title text-sm leading-[148%] text-center pb-4">
+          {singleData?.credit} % Service Fee Per Booking
+        </p>
+        <h4 className="text-text text-center pb-3">
+          <span className="text-4xl font-semibold">$ {singleData?.price}</span>{" "}
+          / per {singleData?.duration?.split(" ")[1]}
+        </h4>
+        <div className="space-y-4">
+          {singleData?.description?.map((details, idx) => (
+            <div className="flex gap-2" key={idx}>
+              <IoCheckmarkCircle className="min-w-[24px] text-[#00BA00]" />
+              <p className="text-xs text-sub_title leading-[148%]">{details}</p>
             </div>
           ))}
+        </div>
+        <Button
+          onClick={() => handleEditClick(singleData)}
+          style={{
+            width: "100%",
+            height: 40,
+            marginTop: "24px",
+            backgroundColor: "#3536FF",
+            color: "white",
+            fontSize: "16px",
+            fontWeight: "500",
+            borderRadius: "8px",
+          }}
+        >
+          Edit Package
+        </Button>
       </div>
 
       {/* edit modal */}
@@ -223,10 +205,7 @@ const Subscription = () => {
           >
             Add Package
           </h1>
-          <AddInputFrom
-            refetch={refetch}
-            setOpenAddModel={setOpenAddModel}
-          />
+          <AddInputFrom refetch={refetch} setOpenAddModel={setOpenAddModel} />
         </div>
       </Modal>
 

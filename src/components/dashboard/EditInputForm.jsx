@@ -17,7 +17,6 @@ const EditInputFrom = ({ packageData, refetch, setOpenEditModal }) => {
 
   const onFinish = async (values) => {
     const res = await updateSubscription({
-      id: packageData._id,
       body: values,
     })
       .unwrap()
@@ -71,6 +70,16 @@ const EditInputFrom = ({ packageData, refetch, setOpenEditModal }) => {
       >
         <Input
           placeholder="Package Price"
+          style={{ height: 48, width: "100%" }}
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="duration"
+        rules={[{ required: true, message: "Please input package duration!" }]}
+      >
+        <Input
+          placeholder="Package Duration"
           style={{ height: 48, width: "100%" }}
         />
       </Form.Item>
