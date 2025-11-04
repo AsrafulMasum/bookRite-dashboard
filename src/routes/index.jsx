@@ -24,6 +24,7 @@ import PaymentSuccess from "../Pages/AppPages/PaymentSuccess";
 import Privacy from "../Pages/AppPages/Privacy";
 import Terms from "../Pages/AppPages/Terms";
 import DeleteAccount from "../Pages/AppPages/DeleteAccount";
+import DeleteAccountInstructions from "../Pages/AppPages/DeleteAccountInstructions";
 
 const router = createBrowserRouter([
   {
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
   {
     path: "/delete-account",
     element: <DeleteAccount />,
+  },
+  {
+    path: "/delete-account-instructions",
+    element: <DeleteAccountInstructions />,
   },
 ]);
 
